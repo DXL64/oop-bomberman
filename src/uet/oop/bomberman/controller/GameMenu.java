@@ -41,20 +41,20 @@ public class GameMenu {
         text.setFont(Graphics.DEFAULTFONT); 
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
-            Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getCenterY(), text));
+            Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
 
         text = new Text("MULTI PLAY");
         text.setFont(Graphics.DEFAULTFONT);
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
-            Graphics.HEIGHT / 8 * 7 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getCenterY(), text));
+            Graphics.HEIGHT / 8 * 7 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
         text = new Text("EXIT");
         text.setFont(Graphics.DEFAULTFONT);
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
-            Graphics.HEIGHT / 3 * 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getCenterY(), text));
+            Graphics.HEIGHT / 3 * 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
         titleText = new Text("BOMBERMAN");
         titleText.setFont(Graphics.TITLEFONT);
