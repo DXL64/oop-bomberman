@@ -2,7 +2,6 @@ package uet.oop.bomberman.graphics;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javafx.scene.canvas.Canvas;
@@ -10,11 +9,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.controller.Button;
 import uet.oop.bomberman.controller.GameMenu;
-import uet.oop.bomberman.graphics.Sprite;
 
 
 
@@ -32,7 +29,7 @@ public class Graphics {
         gc = canvas.getGraphicsContext2D();
         try {
             TITLEFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 50);
-            DEFAULTFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/default.TTF")), 30);
+            DEFAULTFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/default.ttf")), 30);
             CHOOSENFONT = Font .loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 25);
         } catch (IOException e) {
             System.out.println("[IOException] Wrong filepaths.");
