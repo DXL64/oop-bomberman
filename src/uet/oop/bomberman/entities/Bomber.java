@@ -94,7 +94,7 @@ public class Bomber extends Entity {
         else {
             if(direction == backStep) {
                 countStep++;
-                countStep = countStep%3;
+                countStep = countStep%15;
 
             }
             else
@@ -102,21 +102,21 @@ public class Bomber extends Entity {
             switch (direction) {
                 case moveLeft:
                     backStep = moveLeft;
-                    if(countStep == 0) return Sprite.player_left.getFxImage();
-                    if(countStep == 1) return Sprite.player_left_1.getFxImage();
-                    if(countStep == 2) return Sprite.player_left_2.getFxImage();
+                    if(countStep/5 == 0) return Sprite.player_left.getFxImage();
+                    if(countStep/5 == 1) return Sprite.player_left_1.getFxImage();
+                    if(countStep/5 == 2) return Sprite.player_left_2.getFxImage();
                     break;
                 case moveRight:
                     backStep = moveRight;
-                    if(countStep == 0) return Sprite.player_right.getFxImage();
-                    if(countStep == 1) return Sprite.player_right_1.getFxImage();
-                    if(countStep == 2) return Sprite.player_right_2.getFxImage();
+                    if(countStep/5 == 0) return Sprite.player_right.getFxImage();
+                    if(countStep/5 == 1) return Sprite.player_right_1.getFxImage();
+                    if(countStep/5 == 2) return Sprite.player_right_2.getFxImage();
                     break;
                 case moveUp:
                     backStep = moveUp;
-                    if(countStep == 0) return Sprite.player_up.getFxImage();
-                    if(countStep == 1) return Sprite.player_up_1.getFxImage();
-                    if(countStep == 2) return Sprite.player_up_2.getFxImage();
+                    if(countStep/5 == 0) return Sprite.player_up.getFxImage();
+                    if(countStep/5 == 1) return Sprite.player_up_1.getFxImage();
+                    if(countStep/5 == 2) return Sprite.player_up_2.getFxImage();
                     break;
                 case moveDown:
                     backStep = moveDown;
