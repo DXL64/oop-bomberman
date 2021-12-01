@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,6 +15,7 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.controller.Button;
 import uet.oop.bomberman.controller.GameMenu;
+import uet.oop.bomberman.entities.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 
 
@@ -48,6 +50,8 @@ public class Graphics {
             map.getMap().get(i).forEach(g -> g.render(gc,map.getCamera()));    
         }
         map.getBomberman().render(gc, map.getCamera());
+        List<Enemy> enemies = map.getEnemy();
+        for(Enemy enemy : enemies) enemy.render(gc, map.getCamera());;
     }
 
     public void renderText(Font font, Text text, int x, int y) {

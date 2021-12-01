@@ -15,6 +15,7 @@ public abstract class Entity {
     protected Hitbox hitbox;
 
     protected Image img;
+    protected int valueCompare;
 
     /**
      * Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas và hitbox.
@@ -58,7 +59,9 @@ public abstract class Entity {
     public int getX() {
         return x;
     }
-
+    public int getModX(){
+        return Math.round((x - 16) / Sprite.SCALED_SIZE) + 1;
+    }
     /**
      * Getter method for y coordination.
      * 
@@ -66,6 +69,16 @@ public abstract class Entity {
      */
     public int getY() {
         return y;
+    }
+    public int getModY(){
+        return Math.round((y - 16) / Sprite.SCALED_SIZE) + 1;
+    }
+
+    public int getValueCompare(){
+        return valueCompare;
+    }
+    public void setValueCompare(int value){
+        valueCompare = value;
     }
 
     /**

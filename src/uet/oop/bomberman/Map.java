@@ -13,10 +13,13 @@ import javafx.scene.Scene;
 import uet.oop.bomberman.controller.Camera;
 import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.KeyListener;
+import uet.oop.bomberman.entities.BalloomEnemy;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Brick;
+import uet.oop.bomberman.entities.Enemy;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
+import uet.oop.bomberman.entities.OnealEnemy;
 import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -24,6 +27,7 @@ public class Map {
 
     private List<List<Entity>> map = new ArrayList<>();
     private Bomber bomberman;
+    private List<Enemy> enemies = new ArrayList<>();
     private Camera camera;
     
     public Map(int level, KeyListener keyListener) {
@@ -34,6 +38,7 @@ public class Map {
             int height = scanner.nextInt();
             height = scanner.nextInt();
             int width = scanner.nextInt();
+
             scanner.nextLine();
             for (int i = 0; i < height; i++) {
                 String tempString = scanner.nextLine();
@@ -52,7 +57,12 @@ public class Map {
                         tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
                         break;
                     }
-                    
+                    if(tempString.charAt(j) == '1'){
+                        enemies.add(new BalloomEnemy(j, i, Sprite.balloom_left1.getFxImage(), new CollisionManager(this)));
+                    }
+                    if(tempString.charAt(j) == '2'){
+                        enemies.add(new OnealEnemy(j, i, Sprite.oneal_left1.getFxImage(), new CollisionManager(this)));
+                    }
                 } 
                 map.add(tempList);
             }
@@ -66,6 +76,10 @@ public class Map {
 
     public void update() {
         bomberman.update();
+        for(Enemy enemy : enemies){
+            if(enemy instanceof BalloomEnemy) enemy.update();
+            if(enemy instanceof OnealEnemy) enemy.update(map, bomberman.getModX(), bomberman.getModY());
+        }
         camera.update(bomberman);
     }
 
@@ -82,6 +96,9 @@ public class Map {
     public Bomber getBomberman() {
         return bomberman;
     }
+    public List<Enemy> getEnemy() {
+        return enemies;
+    }
 
     /**
      * Getter for camera.
@@ -91,6 +108,7 @@ public class Map {
     }
 
     public Entity getCoordinate(int x, int y) {
+        /*
         x -= x % Sprite.SCALED_SIZE;
         y -= y % Sprite.SCALED_SIZE;
         System.out.println("\tx: " + x);
@@ -99,6 +117,10 @@ public class Map {
         int modY = Math.round(y / Sprite.SCALED_SIZE);
         System.out.println("\tmodX = " + modX);
         System.out.println("\tmodY = " + modY);
+        */
+        int modX = Math.round(x / Sprite.SCALED_SIZE);
+        int modY = Math.round(y / Sprite.SCALED_SIZE);
         return map.get(modY).get(modX);
+        
     }
 }
