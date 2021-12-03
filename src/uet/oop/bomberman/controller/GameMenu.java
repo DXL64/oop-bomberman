@@ -78,7 +78,7 @@ public class GameMenu {
                         case MULTI_GAME:
                             System.out.println("[ENTER MULTIPLAYER GAME]");
                             gameState = GAME_STATE.IN_MULTIPLAYER_GAME;
-                            BombermanGame.map = new MultiPlayerMap(6, keyListener);
+                            BombermanGame.map = new MultiPlayerMap(1, keyListener);
                             break;
                         case EXIT: 
                             System.out.println("[ENTER END STATE]");

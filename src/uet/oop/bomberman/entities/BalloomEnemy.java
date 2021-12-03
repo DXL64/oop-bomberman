@@ -2,27 +2,14 @@ package uet.oop.bomberman.entities;
 
 import java.util.List;
 
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import uet.oop.bomberman.Map;
 import uet.oop.bomberman.controller.CollisionManager;
-import uet.oop.bomberman.controller.KeyListener;
-import uet.oop.bomberman.controller.CollisionManager.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
 import javafx.util.Pair;
 import uet.oop.bomberman.controller.Camera;
 
 public class BalloomEnemy extends Enemy {
-    private int count = 0;
-    private int spriteImage = 0;
-    private int direction = moveLeft;
     public static final int delayFPS = 4;
 
     public BalloomEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager){
@@ -32,67 +19,16 @@ public class BalloomEnemy extends Enemy {
 
     public void update(){
         ++count;
-        if(count % delayFPS == 0){
-            int rand;
-            switch(direction){
-                case moveLeft:
-                    if(goLeft() == true) return;
-                    spriteImage = 0;
-                    rand = (int)(Math.random() * 2);
-                    switch(rand){
-                        case 0:
-                            if(goRight() == true) return;
-                            if(goDown() == true) return;
-                            if(goUp() == true) return;
-                        case 1:
-                            if(goDown() == true) return;
-                            if(goUp() == true) return;
-                            if(goRight() == true) return;
-                    }
-                case moveRight:
-                    if(goRight() == true) return;
-                    spriteImage = 0;
-                    rand = (int)(Math.random() * 2);
-                    switch(rand){
-                        case 0:
-                            if(goLeft() == true) return;
-                            if(goUp() == true) return;
-                            if(goDown() == true) return;
-                        case 1:
-                            if(goUp() == true) return;
-                            if(goDown() == true) return;
-                            if(goLeft() == true) return;
-                    }
-                case moveUp:
-                    if(goUp() == true) return;
-                    spriteImage = 0;
-                    rand = (int)(Math.random() * 2);
-                    switch(rand){
-                        case 0:
-                            if(goDown() == true) return;
-                            if(goLeft() == true) return;
-                            if(goRight() == true) return;
-                        case 1:
-                            if(goLeft() == true) return;
-                            if(goRight() == true) return;
-                            if(goDown() == true) return;
-                    }
-                case moveDown:
-                    if(goDown() == true) return;
-                    spriteImage = 0;
-                    rand = (int)(Math.random() * 2);
-                    switch(rand){
-                        case 0:
-                            if(goUp() == true) return;
-                            if(goRight() == true) return;
-                            if(goLeft() == true) return;
-                        case 1:
-                            if(goRight() == true) return;
-                            if(goLeft() == true) return;
-                            if(goUp() == true) return;
-                    }
-            }
+        if(count % 4 == 0 || count % 4 == 2 || count % 4 == 3) return;
+        if(count % 64 == 1){
+            goRand();
+            return;
         }
+        if(direction == moveLeft) goLeft();
+        else if(direction == moveRight) goRight();
+        else if(direction == moveDown) goDown();
+        else if(direction == moveUp) goUp();
+        return;
     }
     public Boolean goLeft(){
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speed, y, moveLeft);

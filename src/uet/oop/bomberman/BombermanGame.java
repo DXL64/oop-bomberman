@@ -49,7 +49,6 @@ public class BombermanGame extends Application {
         Scene scene = new Scene(root);
         keyListener = new KeyListener(scene);
         menu = new GameMenu(keyListener);
-        map = new Map(1, keyListener);
         timer = new Timer(this);
         
         stage.setScene(scene);
@@ -107,7 +106,7 @@ public class BombermanGame extends Application {
 
         case IN_MULTIPLAYER_GAME:
             graphics.clearScreen(canvas);
-            graphics.renderMultiPlayerMap(map);
+            graphics.renderMap(map);
 
             break;
 

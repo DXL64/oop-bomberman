@@ -35,6 +35,7 @@ public class SocketGame {
                     String msgHello = hashCode + ",Hello";
                     byte[] data = msgHello.getBytes();
                     outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
+
                     try {
                         socket.send(outPacket);
                     } catch (Exception e){
@@ -59,7 +60,20 @@ public class SocketGame {
                                 } catch (Exception e){
                                     e.printStackTrace();
                                 }
+                                if(map.getCurrentBomber() == 0){
+                                    msgRely = hashCode + ",Rand," + Map.randomStart; 
+                                    dataRely = msgRely.getBytes();
+                                    outPacket = new DatagramPacket(dataRely, dataRely.length, SocketGame.address, SocketGame.PORT);
+                                    try {
+                                        socket.send(outPacket);
+                                    } catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
+                        }
+                        else if(tokens[1].equals("Rand")){
+                            Map.randomStart = Integer.parseInt(tokens[2]);
                         }
                         else if(tokens[1].equals("Hi")){
                             if(tokens[3].equals(hashCode)){

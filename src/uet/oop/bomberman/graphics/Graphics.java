@@ -51,18 +51,9 @@ public class Graphics {
         for (int i = 0; i < map.getMap().size(); i++) {
             map.getMap().get(i).forEach(g -> g.render(gc,map.getCamera()));    
         }
-        map.getBomberman().render(gc, map.getCamera());
-        List<Enemy> enemies = map.getEnemy();
-        for(Enemy enemy : enemies) enemy.render(gc, map.getCamera());
-    }
-    public void renderMultiPlayerMap(Map map){
-        for (int i = 0; i < map.getMap().size(); i++) {
-            map.getMap().get(i).forEach(g -> g.render(gc,map.getCamera()));    
-        }
-        List<Bomber> bombers = map.getBombermans();
-        for(int i = 0; i < map.getNumberBomber(); ++i){
-            Bomber bomber = bombers.get(i);
-            bomber.render(gc, map.getCamera());
+        for(int i = 0; i < map.getFlexEntities().size(); ++i){
+            if(i < map.getNumberBomber() || i > map.MAX_NUMBER_BOMBERS) 
+                map.getFlexEntities().get(i).render(gc, map.getCamera());
         }
     }
     public void renderText(Font font, Text text, int x, int y) {

@@ -23,7 +23,6 @@ public class OnealEnemy extends Enemy {
         if(count % 32 == 1){
             List<List<Integer>> data = formatData(map, xModBomber, yModBomber);
             direction = getDirectFromAStar(data, map.size(), map.get(0).size(), yModBomber, xModBomber);
-            System.out.println(x + " " + y + " " +  direction + " " + xModBomber + " " + yModBomber);
             if(direction == notGo){
                 sizeCheckCollision = Sprite.SCALED_SIZE;
                 goRand();

@@ -35,10 +35,11 @@ public class Map {
     protected int currentBomber = 0;
     protected int numberBomber = 1;
     public static final int MAX_NUMBER_BOMBERS = 4;
+    public static int randomStart = 9;
     
     public Map(int level, KeyListener keyListener) {
         mapLevel = level;
-
+        randomStart = (int)(Math.random() * 1000);
         Path currentWorkingDir = Paths.get("").toAbsolutePath();
         File file = new File(currentWorkingDir.normalize().toString() + "/res/levels/Level" + level +".txt");
         try {
@@ -76,7 +77,7 @@ public class Map {
                         flexEntities.add(new OnealEnemy(j, i, Sprite.oneal_left1.getFxImage(), new CollisionManager(this)));
                     }
                     if(tempString.charAt(j) == '3'){
-                        flexEntities.add(new DollEnemy(j, i, Sprite.oneal_left1.getFxImage(), new CollisionManager(this)));
+                        flexEntities.add(new DollEnemy(j, i, Sprite.doll_left1.getFxImage(), new CollisionManager(this)));
                     }
                     if(tempString.charAt(j) == 'p'){
                         coordinateBomberman.add(new Pair<>(j, i));
@@ -101,8 +102,9 @@ public class Map {
     }
 
     public void update() {
+        flexEntities.get(currentBomber).update();
         for(Entity flexEntity : flexEntities){
-            if(flexEntity instanceof Bomber) flexEntities.get(currentBomber).update();
+            if(flexEntity instanceof Bomber) continue;
             if(flexEntity instanceof BalloomEnemy || flexEntity instanceof DollEnemy) flexEntity.update();
             if(flexEntity instanceof OnealEnemy) flexEntity.update(map, flexEntities.get(currentBomber).getModX(), flexEntities.get(currentBomber).getModY());
         }
@@ -142,6 +144,10 @@ public class Map {
      */
     public Camera getCamera() {
         return camera;
+    }
+
+    public List<Entity> getFlexEntities(){
+        return flexEntities;
     }
 
     public Entity getCoordinate(int x, int y) {
