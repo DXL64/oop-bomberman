@@ -1,7 +1,9 @@
 package uet.oop.bomberman.controller;
 
+
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -16,7 +18,7 @@ public class Camera {
         this.screenWidth = screenWidth;
     }
 
-    public void update(Bomber bomber) {
+    public void update(Entity bomber) {
         x = bomber.getX() - Graphics.WIDTH * Sprite.DEFAULT_SIZE;
         if (x < 0) x = 0;
         if (x + Graphics.WIDTH * Sprite.SCALED_SIZE > screenWidth * Sprite.SCALED_SIZE) {

@@ -1,44 +1,29 @@
 package uet.oop.bomberman.entities;
 
+import java.util.List;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import uet.oop.bomberman.controller.Camera;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
-
     //Tọa độ X tính từ góc trái trên trong Canvas
     protected int x;
 
     //Tọa độ Y tính từ góc trái trên trong Canvas
     protected int y;
-    protected Hitbox hitbox;
-
-    protected Image img;
     protected int valueCompare;
+    protected Image img;
+    Hitbox hitbox;
 
-    /**
-     * Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas và hitbox.
-     */
+    //Khởi tạo đối tượng, chuyển từ tọa độ đơn vị sang tọa độ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
         this.x = xUnit * Sprite.SCALED_SIZE;
         this.y = yUnit * Sprite.SCALED_SIZE;
         this.img = img;
-        this.hitbox = new Hitbox(xUnit - 1, yUnit - 1, x - 2, y - 2);
-    }
-
-    /**
-     * Constructor 2.
-     * @param xUnit     int
-     * @param yUnit     int
-     * @param img       Image
-     * @param hitbox    Hitbox
-     */
-    public Entity(int xUnit, int yUnit, Image img, Hitbox hitbox) {
-        this.x = xUnit * Sprite.SCALED_SIZE;
-        this.y = yUnit * Sprite.SCALED_SIZE;
-        this.img = img;
-        this.hitbox = hitbox;
     }
 
     public void render(GraphicsContext gc) {
@@ -50,7 +35,12 @@ public abstract class Entity {
     // }
     public abstract void render(GraphicsContext gc, Camera camera);
     
-    public abstract void update();
+    public void update(){
+
+    }
+
+    public void update(List<List<Entity>> map, int xBomber, int yBomber) {
+    }
 
     /**
      * Getter method for x coordination.
@@ -58,6 +48,12 @@ public abstract class Entity {
      */
     public int getX() {
         return x;
+    }
+    public void setX(int X){
+        x = X;
+    }
+    public void setXUnit(int X){
+        x = X * Sprite.SCALED_SIZE;
     }
     public int getModX(){
         return Math.round((x - 16) / Sprite.SCALED_SIZE) + 1;
@@ -69,6 +65,12 @@ public abstract class Entity {
      */
     public int getY() {
         return y;
+    }
+    public void setY(int Y){
+        y = Y;
+    }
+    public void setYUnit(int Y){
+        y = Y * Sprite.SCALED_SIZE;
     }
     public int getModY(){
         return Math.round((y - 16) / Sprite.SCALED_SIZE) + 1;

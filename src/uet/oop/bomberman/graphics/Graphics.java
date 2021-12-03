@@ -13,8 +13,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Map;
+import uet.oop.bomberman.MultiPlayerMap;
 import uet.oop.bomberman.controller.Button;
 import uet.oop.bomberman.controller.GameMenu;
+import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -51,9 +53,18 @@ public class Graphics {
         }
         map.getBomberman().render(gc, map.getCamera());
         List<Enemy> enemies = map.getEnemy();
-        for(Enemy enemy : enemies) enemy.render(gc, map.getCamera());;
+        for(Enemy enemy : enemies) enemy.render(gc, map.getCamera());
     }
-
+    public void renderMultiPlayerMap(Map map){
+        for (int i = 0; i < map.getMap().size(); i++) {
+            map.getMap().get(i).forEach(g -> g.render(gc,map.getCamera()));    
+        }
+        List<Bomber> bombers = map.getBombermans();
+        for(int i = 0; i < map.getNumberBomber(); ++i){
+            Bomber bomber = bombers.get(i);
+            bomber.render(gc, map.getCamera());
+        }
+    }
     public void renderText(Font font, Text text, int x, int y) {
         gc.setFont(font);
         gc.setFill(text.getFill());

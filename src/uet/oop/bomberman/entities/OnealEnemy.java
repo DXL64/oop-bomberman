@@ -15,41 +15,19 @@ public class OnealEnemy extends Enemy {
 
     public OnealEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager){
         super(xUnit, yUnit, img, collisionManager);
-        this.speed = 1;
+        this.speed = 2;
     }
     public void update(List<List<Entity>> map, int xModBomber, int yModBomber){
         ++count;
+        if(count % 2 == 0) return;
         if(count % 32 == 1){
             List<List<Integer>> data = formatData(map, xModBomber, yModBomber);
             direction = getDirectFromAStar(data, map.size(), map.get(0).size(), yModBomber, xModBomber);
             System.out.println(x + " " + y + " " +  direction + " " + xModBomber + " " + yModBomber);
             if(direction == notGo){
-                int rand = (int)(Math.random() * 4);
                 sizeCheckCollision = Sprite.SCALED_SIZE;
-                if(rand == 0){
-                    if(goLeft() == true) return;
-                    if(goUp() == true) return;
-                    if(goRight() == true) return;
-                    if(goDown() == true) return;
-                }
-                else if(rand == 1){
-                    if(goRight() == true) return;
-                    if(goDown() == true) return;
-                    if(goLeft() == true) return;
-                    if(goUp() == true) return;
-                }
-                else if(rand == 2){
-                    if(goUp() == true) return;
-                    if(goRight() == true) return;
-                    if(goDown() == true) return;
-                    if(goLeft() == true) return;
-                }
-                else if(rand == 3){
-                    if(goDown() == true) return;
-                    if(goLeft() == true) return;
-                    if(goUp() == true) return;
-                    if(goRight() == true) return;
-                }
+                goRand();
+                return;
             }
         }
         sizeCheckCollision = speed;

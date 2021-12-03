@@ -1,5 +1,8 @@
 package uet.oop.bomberman.entities;
 
+import java.net.DatagramPacket;
+import java.net.Socket;
+
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
@@ -7,11 +10,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import uet.oop.bomberman.Map;
+import uet.oop.bomberman.MultiPlayerMap;
+import uet.oop.bomberman.SocketGame;
 import uet.oop.bomberman.controller.CollisionManager;
+import uet.oop.bomberman.controller.GameMenu;
 import uet.oop.bomberman.controller.KeyListener;
 import uet.oop.bomberman.controller.CollisionManager.DIRECTION;
 import uet.oop.bomberman.graphics.Graphics;
@@ -27,10 +32,12 @@ public class Bomber extends Entity {
     public final static int moveRight = 1;
     public final static int moveUp = -2;
     public final static int moveDown = 2;
-    public static boolean isRunning = false;
-    public static int direction = moveRight;
-    public static int backStep = moveRight;
-    public static int countStep = 0;
+    public boolean isRunning = false;
+    public int direction = moveRight;
+    public int backStep = moveRight;
+    public int countStep = 0;
+    private Boolean isCamFollow = false;
+    private int curNumberInMap;
     
 
     public Bomber(int x, int y, Image img, KeyListener keyListener, CollisionManager collisionManager) {
@@ -40,40 +47,78 @@ public class Bomber extends Entity {
         // System.out.println(this.getWidth() + " " + this.getHeight());
     }
 
+    public void setIsCamFollow(Boolean is){
+        isCamFollow = is;
+    }
+
+    public void setCurNumberInMap(int number){
+        curNumberInMap = number;
+    }
+
     @Override
     public void update() {
-        isRunning = false;
         if (keyListener.isPressed(KeyCode.D)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + CollisionManager.STEP, y, 1);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                x += CollisionManager.STEP;
+                if(GameMenu.gameState == GameMenu.GAME_STATE.IN_SINGLE_GAME) updateDirect(moveRight, true);
+                else if(GameMenu.gameState == GameMenu.GAME_STATE.IN_MULTIPLAYER_GAME) sendMessageSocket(moveRight, true);
+                return;
             }
-            isRunning = true;
-            direction = moveRight;
+            if(GameMenu.gameState == GameMenu.GAME_STATE.IN_SINGLE_GAME) updateDirect(moveRight, false);
+            else if(GameMenu.gameState == GameMenu.GAME_STATE.IN_MULTIPLAYER_GAME) sendMessageSocket(moveRight, false);
         }     
         if (keyListener.isPressed(KeyCode.A)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - CollisionManager.STEP, y, -1);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                x -= CollisionManager.STEP;
+                if(GameMenu.gameState == GameMenu.GAME_STATE.IN_SINGLE_GAME) updateDirect(moveLeft, true);
+                else if(GameMenu.gameState == GameMenu.GAME_STATE.IN_MULTIPLAYER_GAME) sendMessageSocket(moveLeft, true);
+                return;
             }
-            isRunning = true;
-            direction = moveLeft;
+            if(GameMenu.gameState == GameMenu.GAME_STATE.IN_SINGLE_GAME) updateDirect(moveLeft, false);
+            else if(GameMenu.gameState == GameMenu.GAME_STATE.IN_MULTIPLAYER_GAME) sendMessageSocket(moveLeft, false);
         }
         if (keyListener.isPressed(KeyCode.W)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - CollisionManager.STEP, -2);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                y -= CollisionManager.STEP;
+                if(GameMenu.gameState == GameMenu.GAME_STATE.IN_SINGLE_GAME) updateDirect(moveUp, true);
+                else if(GameMenu.gameState == GameMenu.GAME_STATE.IN_MULTIPLAYER_GAME) sendMessageSocket(moveUp, true);
+                return;
             }
-            isRunning = true;
-            direction = moveUp;
+            if(GameMenu.gameState == GameMenu.GAME_STATE.IN_SINGLE_GAME) updateDirect(moveUp, false);
+            else if(GameMenu.gameState == GameMenu.GAME_STATE.IN_MULTIPLAYER_GAME) sendMessageSocket(moveUp, false);
         }
         if (keyListener.isPressed(KeyCode.S)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + CollisionManager.STEP, 2);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                y += CollisionManager.STEP;
+                if(GameMenu.gameState == GameMenu.GAME_STATE.IN_SINGLE_GAME) updateDirect(moveDown, true);
+                else if(GameMenu.gameState == GameMenu.GAME_STATE.IN_MULTIPLAYER_GAME) sendMessageSocket(moveDown, true);
+                return;
             }
-            isRunning = true;
-            direction = moveDown;
+            if(GameMenu.gameState == GameMenu.GAME_STATE.IN_SINGLE_GAME) updateDirect(moveDown, false);
+            else if(GameMenu.gameState == GameMenu.GAME_STATE.IN_MULTIPLAYER_GAME) sendMessageSocket(moveDown, false);
+        }
+    }
+    public void updateDirect(int direct, Boolean success){
+        direction = direct;
+        isRunning = true;
+        if(success == false) return;
+        if(direct == moveDown) y += CollisionManager.STEP;
+        if(direct == moveUp) y -= CollisionManager.STEP;
+        if(direct == moveLeft) x -= CollisionManager.STEP;
+        if(direct == moveRight) x += CollisionManager.STEP;
+    }
+    public void sendMessageSocket(int direct, Boolean success){
+        String msg = new String();
+        if(direct == moveDown) msg = curNumberInMap + ",S," + success;
+        if(direct == moveUp) msg = curNumberInMap + ",W," + success;
+        if(direct == moveLeft) msg = curNumberInMap + ",A," + success;
+        if(direct == moveRight) msg = curNumberInMap + ",D," + success;
+        byte[] data = msg.getBytes();
+        DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
+        try {
+            SocketGame.socket.send(outPacket);
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
     public Image chooseSprite() {
@@ -133,17 +178,21 @@ public class Bomber extends Entity {
 
     @Override
     public void render(GraphicsContext gc, Camera camera) {
-        
         img = chooseSprite();
-        // TODO Auto-generated method stub
-        if (camera.getX() > 0 && camera.getX() < camera.getScreenWidth() * Sprite.SCALED_SIZE - Graphics.WIDTH * Sprite.SCALED_SIZE) {
-            int tempX = Graphics.WIDTH * Sprite.DEFAULT_SIZE;
-            gc.drawImage(img, tempX, y);
-        } else if (camera.getX() == camera.getScreenWidth() * Sprite.SCALED_SIZE - Graphics.WIDTH * Sprite.SCALED_SIZE) {
-            int tempX = x - (camera.getScreenWidth()* Sprite.SCALED_SIZE - Graphics.WIDTH * Sprite.SCALED_SIZE);
-            gc.drawImage(img, tempX, y);
-        } else {
-            gc.drawImage(img, x, y);
+        isRunning = false;
+        if(isCamFollow == true){
+            if (camera.getX() > 0 && camera.getX() < camera.getScreenWidth() * Sprite.SCALED_SIZE - Graphics.WIDTH * Sprite.SCALED_SIZE) {
+                int tempX = Graphics.WIDTH * Sprite.DEFAULT_SIZE;
+                gc.drawImage(img, tempX, y);
+            } else if (camera.getX() == camera.getScreenWidth() * Sprite.SCALED_SIZE - Graphics.WIDTH * Sprite.SCALED_SIZE) {
+                int tempX = x - (camera.getScreenWidth()* Sprite.SCALED_SIZE - Graphics.WIDTH * Sprite.SCALED_SIZE);
+                gc.drawImage(img, tempX, y);
+            } else {
+                gc.drawImage(img, x, y);
+            }
+        }
+        else {
+            gc.drawImage(img, x - camera.getX(), y - camera.getY());
         }
     }
 }

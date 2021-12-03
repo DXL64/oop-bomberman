@@ -31,6 +31,7 @@ public class Enemy extends Entity {
     protected int direction = moveLeft;
     protected int speed;
     protected int sizeCheckCollision;
+    protected Boolean isCheckCollision = true;
 
     public final static int OBSTACLE = 0;
     public final static int GRASS = 1;
@@ -53,6 +54,13 @@ public class Enemy extends Entity {
     };
 
     public Boolean goLeft() {
+        if(isCheckCollision == false){
+            if(x - speed <= 0) return false;
+            x -= speed;
+            direction = moveLeft;
+            spriteImage = (spriteImage + 1) % 9;
+            return true;
+        }
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - sizeCheckCollision, y, moveLeft);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             x -= speed;
@@ -64,6 +72,13 @@ public class Enemy extends Entity {
     }
 
     protected Boolean goRight() {
+        if(isCheckCollision == false){
+            if(x + speed >= (31 - 1) * Sprite.SCALED_SIZE) return false;
+            x += speed;
+            direction = moveRight;
+            spriteImage = (spriteImage + 1) % 9;
+            return true;
+        }
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + sizeCheckCollision, y, moveRight);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             x += speed;
@@ -75,6 +90,13 @@ public class Enemy extends Entity {
     }
 
     protected Boolean goUp() {
+        if(isCheckCollision == false){
+            if(y - speed <= 0) return false;
+            y -= speed;
+            direction = moveUp;
+            spriteImage = (spriteImage + 1) % 9;
+            return true;
+        }
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - sizeCheckCollision, moveUp);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             y -= speed;
@@ -86,14 +108,47 @@ public class Enemy extends Entity {
     }
 
     protected Boolean goDown() {
+        if(isCheckCollision == false){
+            if(y + speed >= (13 - 1) * Sprite.SCALED_SIZE) return false;
+            y += speed;
+            direction = moveDown;
+            spriteImage = (spriteImage + 1) % 9;
+            return true;
+        }
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + sizeCheckCollision, moveDown);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-            System.out.println(speed);
             y += speed;
             direction = moveDown;
             spriteImage = (spriteImage + 1) % 9;
             return true;
         }
         return false;
+    }
+    protected void goRand(){
+        int rand = (int)(Math.random() * 4);
+        if(rand == 0){
+            if(goLeft() == true) return;
+            if(goUp() == true) return;
+            if(goRight() == true) return;
+            if(goDown() == true) return;
+        }
+        else if(rand == 1){
+            if(goRight() == true) return;
+            if(goDown() == true) return;
+            if(goLeft() == true) return;
+            if(goUp() == true) return;
+        }
+        else if(rand == 2){
+            if(goUp() == true) return;
+            if(goRight() == true) return;
+            if(goDown() == true) return;
+            if(goLeft() == true) return;
+        }
+        else if(rand == 3){
+            if(goDown() == true) return;
+            if(goLeft() == true) return;
+            if(goUp() == true) return;
+            if(goRight() == true) return;
+        }
     }
 }

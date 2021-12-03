@@ -91,7 +91,6 @@ public class BalloomEnemy extends Enemy {
                             if(goLeft() == true) return;
                             if(goUp() == true) return;
                     }
-
             }
         }
     }
