@@ -11,12 +11,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Map;
+import uet.oop.bomberman.MultiPlayerMap;
 import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
 
 
 public class GameMenu {
-    public enum GAME_STATE {
+    public static enum GAME_STATE {
         IN_MENU, IN_SINGLE_GAME, IN_MULTIPLAYER_GAME, IN_PAUSE, END;
     }
 
@@ -32,7 +34,7 @@ public class GameMenu {
     private int choosenButton;
 
     private KeyListener keyListener;
-    private GAME_STATE gameState;
+    public static GAME_STATE gameState;
 
     public GameMenu(KeyListener keyListener) {
         this.gameState = GAME_STATE.IN_MENU;
@@ -75,10 +77,12 @@ public class GameMenu {
                         case SINGLE_GAME:
                             System.out.println("[ENTER SINGLE GAME]");
                             gameState = GAME_STATE.IN_SINGLE_GAME;
+                            BombermanGame.map = new Map(1, keyListener);
                             break;
                         case MULTI_GAME:
                             System.out.println("[ENTER MULTIPLAYER GAME]");
                             gameState = GAME_STATE.IN_MULTIPLAYER_GAME;
+                            BombermanGame.map = new MultiPlayerMap(1, keyListener);
                             break;
                         case EXIT: 
                             System.out.println("[ENTER END STATE]");

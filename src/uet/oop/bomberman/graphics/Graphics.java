@@ -3,6 +3,7 @@ package uet.oop.bomberman.graphics;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,8 +11,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import uet.oop.bomberman.Map;
+import uet.oop.bomberman.MultiPlayerMap;
 import uet.oop.bomberman.controller.Button;
 import uet.oop.bomberman.controller.GameMenu;
+import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.Enemy;
+import uet.oop.bomberman.graphics.Sprite;
 
 
 
@@ -44,9 +49,11 @@ public class Graphics {
         for (int i = 0; i < map.getMap().size(); i++) {
             map.getMap().get(i).forEach(g -> g.render(gc,map.getCamera()));    
         }
-        map.getBomberman().render(gc, map.getCamera());
+        for(int i = 0; i < map.getFlexEntities().size(); ++i){
+            if(i < map.getNumberBomber() || i > map.MAX_NUMBER_BOMBERS) 
+                map.getFlexEntities().get(i).render(gc, map.getCamera());
+        }
     }
-
     public void renderText(Font font, Text text, int x, int y) {
         gc.setFont(font);
         gc.setFill(text.getFill());
