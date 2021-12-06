@@ -3,22 +3,12 @@ package uet.oop.bomberman.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.net.DatagramPacket;
-import java.net.Socket;
-
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.util.Pair;
 import uet.oop.bomberman.Map;
-import uet.oop.bomberman.MultiPlayerMap;
-import uet.oop.bomberman.SocketGame;
+import javafx.util.Pair;
 import uet.oop.bomberman.controller.CollisionManager;
-import uet.oop.bomberman.controller.GameMenu;
 import uet.oop.bomberman.controller.KeyListener;
 import uet.oop.bomberman.controller.Timer;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
@@ -70,12 +60,9 @@ public class Bomber extends AnimationEntity {
         if (keyListener.isPressed(KeyCode.D)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + CollisionManager.STEP, y, DIRECTION.RIGHT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                isRunning = true;
                 super.update(DIRECTION.RIGHT, true, curNumberInMap);
-
-                return;
             }
-            super.update(DIRECTION.RIGHT, false, curNumberInMap);
+            else super.update(DIRECTION.RIGHT, false, curNumberInMap);
 
         }
 
@@ -83,11 +70,9 @@ public class Bomber extends AnimationEntity {
         if (keyListener.isPressed(KeyCode.A)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - CollisionManager.STEP, y, DIRECTION.LEFT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                isRunning = true;
                 super.update(DIRECTION.LEFT, true, curNumberInMap);
-                return;
             }
-            super.update(DIRECTION.LEFT, false, curNumberInMap);
+            else super.update(DIRECTION.LEFT, false, curNumberInMap);
 
         }
         // Handle Key Press W
@@ -96,24 +81,19 @@ public class Bomber extends AnimationEntity {
         {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - CollisionManager.STEP, DIRECTION.UP);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                isRunning = true;
                 super.update(DIRECTION.UP, true, curNumberInMap);
-                return;
             }
-            super.update(DIRECTION.UP, false, curNumberInMap);
+            else super.update(DIRECTION.UP, false, curNumberInMap);
         }
 
         // Handle Key Press S
         if (keyListener.isPressed(KeyCode.S))
-
         {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + CollisionManager.STEP, DIRECTION.DOWN);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                isRunning = true;
                 super.update(DIRECTION.DOWN, true, curNumberInMap);
-                return;
             }
-            super.update(DIRECTION.DOWN, false, curNumberInMap);
+            else super.update(DIRECTION.DOWN, false, curNumberInMap);
         }
 
     }

@@ -3,7 +3,6 @@ package uet.oop.bomberman.entities;
 import java.net.DatagramPacket;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.skin.TextInputControlSkin.Direction;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.SocketGame;
 import uet.oop.bomberman.controller.Camera;
@@ -16,7 +15,6 @@ public abstract class AnimationEntity extends Entity {
     protected DIRECTION backStep = DIRECTION.RIGHT;
     protected int countStep = 0;
     protected boolean isRunning = false;
-
 
     public AnimationEntity(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -31,7 +29,7 @@ public abstract class AnimationEntity extends Entity {
     public void update() {
         // TODO Auto-generated method stub
     }
-    
+
     public void update(DIRECTION direct, boolean success, int curNumberInMap) {
         switch (GameMenu.gameState) {
             case IN_SINGLE_GAME:
@@ -46,18 +44,18 @@ public abstract class AnimationEntity extends Entity {
     }
 
     public void updateDirect(DIRECTION direct, boolean success) {
-        direction = direct;
-        isRunning = true;
-        if (success == false)
-            return;
-        if (direct == DIRECTION.DOWN)
-            y += CollisionManager.STEP;
-        if (direct == DIRECTION.UP)
-            y -= CollisionManager.STEP;
-        if (direct == DIRECTION.LEFT)
-            x -= CollisionManager.STEP;
-        if (direct == DIRECTION.RIGHT)
-            x += CollisionManager.STEP;
+        if (success) {
+            isRunning = true;
+            direction = direct;
+            if (direct == DIRECTION.DOWN)
+                y += CollisionManager.STEP;
+            if (direct == DIRECTION.UP)
+                y -= CollisionManager.STEP;
+            if (direct == DIRECTION.LEFT)
+                x -= CollisionManager.STEP;
+            if (direct == DIRECTION.RIGHT)
+                x += CollisionManager.STEP;
+        }
     }
 
     public void sendMessageSocket(DIRECTION direct, boolean success, int curNumberInMap) {
@@ -81,5 +79,4 @@ public abstract class AnimationEntity extends Entity {
 
     public abstract Image chooseSprite();
 
-    
 }

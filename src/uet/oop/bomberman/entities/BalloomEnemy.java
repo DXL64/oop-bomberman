@@ -1,10 +1,10 @@
 package uet.oop.bomberman.entities;
 
-import java.util.List;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.controller.CollisionManager;
+import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
 import javafx.util.Pair;
 import uet.oop.bomberman.controller.Camera;
@@ -31,7 +31,7 @@ public class BalloomEnemy extends Enemy {
         return;
     }
     public Boolean goLeft(){
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speed, y, moveLeft);
+        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speed, y, DIRECTION.LEFT);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             x -= speed;
             direction = moveLeft;
@@ -41,7 +41,7 @@ public class BalloomEnemy extends Enemy {
         return false;
     }
     public Boolean goRight(){
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speed, y, moveRight);
+        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speed, y, DIRECTION.RIGHT);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             x += speed;
             direction = moveRight;
@@ -51,7 +51,7 @@ public class BalloomEnemy extends Enemy {
         return false;
     }
     public Boolean goUp(){
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speed, moveUp);
+        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speed, DIRECTION.UP);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             y -= speed;
             direction = moveUp;
@@ -61,7 +61,7 @@ public class BalloomEnemy extends Enemy {
         return false;
     }
     public Boolean goDown(){
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speed, moveDown);
+        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speed, DIRECTION.DOWN);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             y += speed;
             direction = moveDown;
