@@ -2,6 +2,7 @@ package uet.oop.bomberman.controller;
 
 import javafx.util.Pair;
 import uet.oop.bomberman.Map;
+import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Obstacle;
 import uet.oop.bomberman.graphics.Sprite;
@@ -12,35 +13,35 @@ public class CollisionManager {
     public final static int STEP = 2;
     public final static int fixWidth = 3;
     public final static int fixHeight = 2;
-    public final static int moveLeft = -1;
-    public final static int moveRight = 1;
-    public final static int moveUp = -2;
-    public final static int moveDown = 2;
-    public enum DIRECTION {
-        UP, DOWN, LEFT, RIGHT;
-    }
-
 
     public CollisionManager(Map map) {
         this.map = map;
     }
- 
-    public Pair<Entity, Entity> checkCollision(int x, int y, int move) {
+
+    public Entity getEntityAt(int xMap, int yMap) {
+        return map.getMap().get(yMap).get(xMap);
+    }
+    
+    public Map getMap() {
+        return map;
+    }
+
+    public Pair<Entity, Entity> checkCollision(int x, int y, DIRECTION direction) {
         Entity object1, object2;
-        switch(move) {
-            case moveLeft: 
+        switch(direction) {
+            case LEFT: 
                 object1 = map.getCoordinate(x + fixWidth, y + fixHeight);
                 object2 = map.getCoordinate(x + fixWidth, y + Sprite.SCALED_SIZE - fixHeight);
                 break;
-            case moveRight:
+            case RIGHT:
                 object1 = map.getCoordinate(x + 24 - fixWidth, y + fixHeight);
                 object2 = map.getCoordinate(x + 24 - fixWidth, y + Sprite.SCALED_SIZE - fixHeight);
                 break;
-            case moveUp:
+            case UP:
                 object1 = map.getCoordinate(x + fixWidth, y + fixHeight);
                 object2 = map.getCoordinate(x + 24 - fixWidth, y + fixHeight);
                 break;
-            case moveDown:
+            case DOWN:
                 object1 = map.getCoordinate(x + fixWidth, y + Sprite.SCALED_SIZE - fixHeight);
                 object2 = map.getCoordinate(x + 24 - fixWidth, y + Sprite.SCALED_SIZE - fixHeight);
                 break;

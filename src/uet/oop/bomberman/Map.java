@@ -68,6 +68,16 @@ public class Map {
     }
 
     /**
+     * Replace an entity to x, y coordinate in map.
+     * @param x x coordinate in map.
+     * @param y y coordinate in map.
+     * @param entity entity to replace.
+     */
+    public void replace(int x, int y, Entity entity) {
+        map.get(y).set(x, entity);
+    }
+
+    /**
      * getter for map.
      */
     public List<List<Entity>> getMap() {
@@ -91,12 +101,12 @@ public class Map {
     public Entity getCoordinate(int x, int y) {
         x -= x % Sprite.SCALED_SIZE;
         y -= y % Sprite.SCALED_SIZE;
-        System.out.println("\tx: " + x);
-        System.out.println("\ty: " + y);
+        //System.out.println("\tx: " + x);
+        //System.out.println("\ty: " + y);
         int modX = Math.round(x / Sprite.SCALED_SIZE);
         int modY = Math.round(y / Sprite.SCALED_SIZE);
-        System.out.println("\tmodX = " + modX);
-        System.out.println("\tmodY = " + modY);
+        //System.out.println("\tmodX = " + modX);
+        //System.out.println("\tmodY = " + modY);
         return map.get(modY).get(modX);
     }
 }

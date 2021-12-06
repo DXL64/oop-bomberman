@@ -7,8 +7,13 @@ import uet.oop.bomberman.BombermanGame;
 
 public class Timer {
 
+    
     private static final int FPS = 60;
     private static final long TIME_PER_FRAME = 1000000000 / FPS;
+    
+    public static final long TIME_FOR_SINGLE_INPUT = TIME_PER_FRAME * 8;
+    public static final long TIME_FOR_BOMB_EXPLODE = 2000000000; // 2s
+    
     private AnimationTimer timer;
     private long lastTime;
     private BombermanGame theGame;
@@ -33,12 +38,16 @@ public class Timer {
 
     public long delay() {
         long endTime = System.nanoTime();
-        long delayTime= endTime - lastTime;
+        long delayTime = endTime - lastTime;
         lastTime = endTime;
         if (delayTime < TIME_PER_FRAME) {
             return TIME_PER_FRAME - delayTime;
         }
         return 0;
+    }
+
+    public static long now() {
+        return System.nanoTime();
     }
 
     public static void delayInGameMenu() {
