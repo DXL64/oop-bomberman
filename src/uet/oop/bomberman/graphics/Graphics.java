@@ -65,8 +65,8 @@ public class Graphics {
         gc.fillRect(0, 0, WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE);
 
         renderText(TITLEFONT, menu.getTitleText(), 
-            WIDTH / 2 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getCenterX(), 
-            HEIGHT / 6 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getCenterY());
+            WIDTH / 2 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getWidth() / 2, 
+            HEIGHT / 6 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getHeight() / 2);
 
         menu.render(gc);
     }

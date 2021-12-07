@@ -18,7 +18,6 @@ import uet.oop.bomberman.SocketGame;
 import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.GameMenu;
 import uet.oop.bomberman.controller.KeyListener;
-import uet.oop.bomberman.controller.CollisionManager.DIRECTION;
 import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.controller.Camera;
