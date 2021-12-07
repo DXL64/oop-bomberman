@@ -35,7 +35,7 @@ public class Graphics {
         try {
             TITLEFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 50);
             DEFAULTFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/default.ttf")), 30);
-            CHOOSENFONT = Font .loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 25);
+            CHOOSENFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 25);
         } catch (IOException e) {
             System.out.println("[IOException] Wrong filepaths.");
         }
@@ -65,8 +65,8 @@ public class Graphics {
         gc.fillRect(0, 0, WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE);
 
         renderText(TITLEFONT, menu.getTitleText(), 
-            WIDTH / 2 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getCenterX(), 
-            HEIGHT / 6 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getCenterY());
+            WIDTH / 2 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getWidth() / 5 * 2, 
+            HEIGHT / 6 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getHeight() / 5 * 2);
 
         menu.render(gc);
     }

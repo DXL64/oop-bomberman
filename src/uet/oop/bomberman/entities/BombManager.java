@@ -45,13 +45,20 @@ public class BombManager {
                 bombExplode(i);
             }
         }
+        for (int i = 0; i < explosions.size(); i++) {
+            explosions.get(i).update();
+            if (explosions.get(i).isExploded()) {
+                explosions.remove(i);
+                i--;
+            }
+        }
     }
 
     public void bombExplode(int iBomb) {
         Bomb bomb = bombs.get(iBomb);
         int x = bomb.x / Sprite.SCALED_SIZE;
         int y = bomb.y / Sprite.SCALED_SIZE;
-        explosions.add(new Explosion(x, y, Sprite.bomb_exploded2.getFxImage(), DIRECTION.CENTER, EXPLOSION_STATE.BEGIN));
+        explosions.add(new Explosion(x, y, Sprite.bomb_exploded2.getFxImage(), DIRECTION.CENTER, EXPLOSION_STATE.MIDDLE));
         Stack<Pair<Integer, Integer>> stack = new Stack<>();
 
         // Destroy the down side
@@ -60,7 +67,9 @@ public class BombManager {
                 stack.push(new Pair<Integer, Integer>(x, y + i));
             } else {
                 if (map.getMap().get(y + i).get(x) instanceof Brick) {
+                    explosions.add(new Explosion(x, y + i, Sprite.brick.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK));
                     map.replace(x, y + i, new Grass(x, y + i, Sprite.grass.getFxImage()));
+
                 }
                 break;
             }
@@ -80,17 +89,18 @@ public class BombManager {
                 stack.push(new Pair<Integer, Integer>(x - i, y));
             } else {
                 if (map.getMap().get(y).get(x - i) instanceof Brick) {
+                    explosions.add(new Explosion(x - i, y, Sprite.brick.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK));
                     map.replace(x - i, y, new Grass(x - i, y, Sprite.grass.getFxImage()));
                 }
                 break;
             }
         }
         if (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.END));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.LEFT, EXPLOSION_STATE.END));
             stack.pop();
         }
         while (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.MIDDLE));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.LEFT, EXPLOSION_STATE.MIDDLE));
             stack.pop();
         }
 
@@ -100,17 +110,18 @@ public class BombManager {
                 stack.push(new Pair<Integer, Integer>(x + i, y));
             } else {
                 if (map.getMap().get(y).get(x + i) instanceof Brick) {
+                    explosions.add(new Explosion(x + i, y, Sprite.brick.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK));
                     map.replace(x + i, y, new Grass(x + i, y, Sprite.grass.getFxImage()));
                 }
                 break;
             }
         }
         if (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.END));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.RIGHT, EXPLOSION_STATE.END));
             stack.pop();
         }
         while (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.MIDDLE));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.RIGHT, EXPLOSION_STATE.MIDDLE));
             stack.pop();
         }
 
@@ -120,20 +131,21 @@ public class BombManager {
                 stack.push(new Pair<Integer, Integer>(x, y - i));
             } else {
                 if (map.getMap().get(y - i).get(x) instanceof Brick) {
+                    explosions.add(new Explosion(x, y - i, Sprite.brick.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK));
                     map.replace(x, y - i, new Grass(x, y - i, Sprite.grass.getFxImage()));
                 }
                 break;
             }
         }
         if (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.END));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.UP, EXPLOSION_STATE.END));
             stack.pop();
         }
         while (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.MIDDLE));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.UP, EXPLOSION_STATE.MIDDLE));
             stack.pop();
         }
-
+        
         bombs.remove(iBomb);
     }
 
@@ -163,6 +175,9 @@ public class BombManager {
     public void renderBombs(GraphicsContext gc, Camera camera) {
         for (Bomb bomb : bombs) {
             bomb.render(gc, camera);
+        }
+        for (Explosion explosion : explosions) {
+            explosion.render(gc, camera);
         }
     }
 }
