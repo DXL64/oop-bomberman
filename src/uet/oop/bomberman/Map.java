@@ -1,15 +1,13 @@
 package uet.oop.bomberman;
 
-import java.io.*;
-import java.nio.file.Files;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.util.Pair;
 import uet.oop.bomberman.controller.Camera;
 import uet.oop.bomberman.controller.CollisionManager;
@@ -103,12 +101,22 @@ public class Map {
 
     public void update() {
         flexEntities.get(currentBomber).update();
-        for(Entity flexEntity : flexEntities){
-            if(flexEntity instanceof Bomber) continue;
-            if(flexEntity instanceof BalloomEnemy || flexEntity instanceof DollEnemy) flexEntity.update();
-            if(flexEntity instanceof OnealEnemy) flexEntity.update(map, flexEntities.get(currentBomber).getModX(), flexEntities.get(currentBomber).getModY());
+        for (int i = 0; i < flexEntities.size(); ++i) {
+            if(flexEntities.get(i) instanceof Bomber) continue;
+            if(flexEntities.get(i) instanceof BalloomEnemy || flexEntities.get(i) instanceof DollEnemy) flexEntities.get(i).update();
+            if(flexEntities.get(i) instanceof OnealEnemy) flexEntities.get(i).update(map, flexEntities.get(currentBomber).getModX(), flexEntities.get(currentBomber).getModY());
         }
         camera.update(flexEntities.get(currentBomber));
+    }
+
+    /**
+     * Replace an entity to x, y coordinate in map.
+     * @param x x coordinate in map.
+     * @param y y coordinate in map.
+     * @param entity entity to replace.
+     */
+    public void replace(int x, int y, Entity entity) {
+        map.get(y).set(x, entity);
     }
 
     /**
@@ -154,8 +162,8 @@ public class Map {
         /*
         x -= x % Sprite.SCALED_SIZE;
         y -= y % Sprite.SCALED_SIZE;
-        System.out.println("\tx: " + x);
-        System.out.println("\ty: " + y);
+        //System.out.println("\tx: " + x);
+        //System.out.println("\ty: " + y);
         int modX = Math.round(x / Sprite.SCALED_SIZE);
         int modY = Math.round(y / Sprite.SCALED_SIZE);
         System.out.println("\tmodX = " + modX);
@@ -179,5 +187,4 @@ public class Map {
     public int getNumberBomber(){
         return numberBomber;
     }
-
 }

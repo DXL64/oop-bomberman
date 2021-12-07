@@ -2,7 +2,6 @@ package uet.oop.bomberman.graphics;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.MultiPlayerMap;
 import uet.oop.bomberman.controller.Button;
@@ -36,7 +34,7 @@ public class Graphics {
         gc = canvas.getGraphicsContext2D();
         try {
             TITLEFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 50);
-            DEFAULTFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/default.TTF")), 30);
+            DEFAULTFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/default.ttf")), 30);
             CHOOSENFONT = Font .loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 25);
         } catch (IOException e) {
             System.out.println("[IOException] Wrong filepaths.");
@@ -67,8 +65,8 @@ public class Graphics {
         gc.fillRect(0, 0, WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE);
 
         renderText(TITLEFONT, menu.getTitleText(), 
-            WIDTH / 2 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getWidth()/2, 
-            HEIGHT / 6 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getHeight()/2);
+            WIDTH / 2 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getCenterX(), 
+            HEIGHT / 6 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getCenterY());
 
         menu.render(gc);
     }

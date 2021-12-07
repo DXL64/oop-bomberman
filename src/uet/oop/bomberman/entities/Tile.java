@@ -1,5 +1,6 @@
 package uet.oop.bomberman.entities;
 
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.controller.Camera;
@@ -17,6 +18,7 @@ public class Tile extends Entity {
     public void update() {
         
     }
+
 
 
     @Override

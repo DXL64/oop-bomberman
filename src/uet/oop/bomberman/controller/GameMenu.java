@@ -25,6 +25,7 @@ public class GameMenu {
     private final int SINGLE_GAME = 0;
     private final int MULTI_GAME = 1;
     private final int EXIT = 2;
+    private long delayInput = 0;
 
     private Text titleText;
 
@@ -68,7 +69,10 @@ public class GameMenu {
     public void update() {
         switch (gameState) {
             case IN_MENU:
-                if (keyListener.isPressed(KeyCode.SPACE)) {
+            long now = Timer.now();
+            if (now - delayInput > Timer.TIME_FOR_SINGLE_INPUT) {
+                delayInput = now;
+                if (keyListener.isPressed(KeyCode.ENTER)) {
                     switch (choosenButton) {
                         case SINGLE_GAME:
                             System.out.println("[ENTER SINGLE GAME]");
@@ -102,7 +106,7 @@ public class GameMenu {
                 } else if (keyListener.isPressed(KeyCode.B)) {
                     choosenButton = EXIT;
                 }
-                Timer.delayInGameMenu();
+            }
                 break;
 
             case IN_SINGLE_GAME:

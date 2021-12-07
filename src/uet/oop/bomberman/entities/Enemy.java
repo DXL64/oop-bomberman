@@ -2,25 +2,16 @@ package uet.oop.bomberman.entities;
 
 import java.util.List;
 
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import uet.oop.bomberman.Map;
-import uet.oop.bomberman.controller.Camera;
 import uet.oop.bomberman.controller.CollisionManager;
-import uet.oop.bomberman.controller.KeyListener;
-import uet.oop.bomberman.controller.CollisionManager.DIRECTION;
+import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Enemy extends Entity {
+public class Enemy extends AnimationEntity {
     protected CollisionManager collisionManager;
+
     public final static int notGo = 0;
     public final static int moveLeft = -1;
     public final static int moveRight = 1;
@@ -50,9 +41,6 @@ public class Enemy extends Entity {
     public void update(List<List<Entity>> map, int xBomber, int yBomber) {
     }
 
-    @Override
-    public void render(GraphicsContext gc, Camera camera) {
-    };
 
     public Boolean goLeft() {
         if(isCheckCollision == false){
@@ -62,7 +50,7 @@ public class Enemy extends Entity {
             spriteImage = (spriteImage + 1) % 9;
             return true;
         }
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - sizeCheckCollision, y, moveLeft);
+        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - sizeCheckCollision, y, DIRECTION.LEFT);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             x -= speed;
             direction = moveLeft;
@@ -80,7 +68,7 @@ public class Enemy extends Entity {
             spriteImage = (spriteImage + 1) % 9;
             return true;
         }
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + sizeCheckCollision, y, moveRight);
+        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + sizeCheckCollision, y, DIRECTION.RIGHT);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             x += speed;
             direction = moveRight;
@@ -98,7 +86,7 @@ public class Enemy extends Entity {
             spriteImage = (spriteImage + 1) % 9;
             return true;
         }
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - sizeCheckCollision, moveUp);
+        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - sizeCheckCollision, DIRECTION.UP);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             y -= speed;
             direction = moveUp;
@@ -116,7 +104,7 @@ public class Enemy extends Entity {
             spriteImage = (spriteImage + 1) % 9;
             return true;
         }
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + sizeCheckCollision, moveDown);
+        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + sizeCheckCollision, DIRECTION.DOWN);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             y += speed;
             direction = moveDown;
@@ -151,5 +139,11 @@ public class Enemy extends Entity {
             if(goUp() == true) return;
             if(goRight() == true) return;
         }
+    }
+
+    @Override
+    public Image chooseSprite() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

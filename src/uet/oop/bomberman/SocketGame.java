@@ -7,6 +7,7 @@ import javax.swing.text.html.parser.Entity;
 
 import javafx.application.Platform;
 import uet.oop.bomberman.controller.CollisionManager;
+import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.entities.Bomber;
 
 public class SocketGame {
@@ -35,8 +36,9 @@ public class SocketGame {
                     String msgHello = hashCode + ",Hello";
                     byte[] data = msgHello.getBytes();
                     outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
-
+                    
                     try {
+                        //Send messages to multicast group
                         socket.send(outPacket);
                     } catch (Exception e){
                         e.printStackTrace();
@@ -87,22 +89,22 @@ public class SocketGame {
                         else if(tokens[1].equals("D")){
                             int curBomber = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            bombermans.get(curBomber).updateDirect(Bomber.moveRight, success);
+                            bombermans.get(curBomber).updateDirect(DIRECTION.RIGHT, success);
                         }
                         else if(tokens[1].equals("S")){
                             int curBomber = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            bombermans.get(curBomber).updateDirect(Bomber.moveDown, success);
+                            bombermans.get(curBomber).updateDirect(DIRECTION.DOWN, success);
                         }
                         else if(tokens[1].equals("A")){
                             int curBomber = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            bombermans.get(curBomber).updateDirect(Bomber.moveLeft, success);
+                            bombermans.get(curBomber).updateDirect(DIRECTION.LEFT, success);
                         }
                         else if(tokens[1].equals("W")){
                             int curBomber = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            bombermans.get(curBomber).updateDirect(Bomber.moveUp, success);
+                            bombermans.get(curBomber).updateDirect(DIRECTION.UP, success);
                         }
 
                     }
