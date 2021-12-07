@@ -116,7 +116,7 @@ public class BombManager {
 
         //Destroy the up side 
         for (int i = 1; i <= flame; i++) {
-            if (!(map.getMap().get(y + i).get(x) instanceof Obstacle)) {
+            if (!(map.getMap().get(y - i).get(x) instanceof Obstacle)) {
                 stack.push(new Pair<Integer, Integer>(x, y - i));
             } else {
                 if (map.getMap().get(y - i).get(x) instanceof Brick) {
