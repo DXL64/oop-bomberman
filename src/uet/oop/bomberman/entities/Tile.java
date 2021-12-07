@@ -1,11 +1,9 @@
 package uet.oop.bomberman.entities;
 
-import javax.swing.Spring;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.controller.Camera;
-import uet.oop.bomberman.graphics.Sprite;
 
 
 public class Tile extends Entity {

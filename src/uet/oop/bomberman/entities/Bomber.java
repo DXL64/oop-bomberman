@@ -1,40 +1,29 @@
 package uet.oop.bomberman.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.scene.image.Image;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import uet.oop.bomberman.Map;
 import javafx.util.Pair;
 import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.KeyListener;
-import uet.oop.bomberman.controller.Timer;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.controller.Camera;
 
 public class Bomber extends AnimationEntity {
-    private List<Bomb> bombs = new ArrayList<>();
     private KeyListener keyListener;
     private CollisionManager collisionManager;
-    private int numberOfBombs;
-    private long delayBombSet;
     private Boolean isCamFollow = false;
     protected int curNumberInMap;
+    private BombManager bombManager;
+
 
     public Bomber(int x, int y, Image img, KeyListener keyListener, CollisionManager collisionManager) {
         super(x, y, img);
         this.keyListener = keyListener;
         this.collisionManager = collisionManager;
-        numberOfBombs = 10;
-        delayBombSet = Timer.now();
-    }
-
-    public Map getMap() {
-        return collisionManager.getMap();
+        bombManager = new BombManager(collisionManager);
     }
 
     public void setIsCamFollow(Boolean is) {
@@ -61,9 +50,9 @@ public class Bomber extends AnimationEntity {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + CollisionManager.STEP, y, DIRECTION.RIGHT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.RIGHT, true, curNumberInMap);
+            } else {
+                super.update(DIRECTION.RIGHT, false, curNumberInMap);
             }
-            else super.update(DIRECTION.RIGHT, false, curNumberInMap);
-
         }
 
         // Handle Key Press A
@@ -71,8 +60,9 @@ public class Bomber extends AnimationEntity {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - CollisionManager.STEP, y, DIRECTION.LEFT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.LEFT, true, curNumberInMap);
+            } else {
+                super.update(DIRECTION.LEFT, false, curNumberInMap);
             }
-            else super.update(DIRECTION.LEFT, false, curNumberInMap);
 
         }
         // Handle Key Press W
@@ -82,23 +72,25 @@ public class Bomber extends AnimationEntity {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - CollisionManager.STEP, DIRECTION.UP);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.UP, true, curNumberInMap);
+            } else {
+                super.update(DIRECTION.UP, false, curNumberInMap);
             }
-            else super.update(DIRECTION.UP, false, curNumberInMap);
         }
 
         // Handle Key Press S
-        if (keyListener.isPressed(KeyCode.S))
-        {
+        if (keyListener.isPressed(KeyCode.S)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + CollisionManager.STEP, DIRECTION.DOWN);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.DOWN, true, curNumberInMap);
+            } else {
+                super.update(DIRECTION.DOWN, false, curNumberInMap);
             }
-            else super.update(DIRECTION.DOWN, false, curNumberInMap);
         }
 
     }
 
     private void updateBombs() {
+
         // Handle Key Press SPACE
         if (keyListener.isPressed(KeyCode.SPACE)) {
             int xBomb = x + Sprite.DEFAULT_SIZE;
@@ -109,45 +101,12 @@ public class Bomber extends AnimationEntity {
             yBomb /= Sprite.SCALED_SIZE;
             Bomb bomb = new Bomb(xBomb, yBomb, Sprite.bomb.getFxImage());
             // getMap().replace(xBomb, yBomb, bomb);
-            if (canSetBomb(xBomb, yBomb))
-                bombs.add(bomb);
-        }
-        for (int i = 0; i < bombs.size(); i++) {
-            if (bombs.get(i).explode()) {
-                removeBomb(i);
-            }
-        }
-    }
-
-    private void removeBomb(int iBomb) {
-        // int x = bombs.get(iBomb).getX();
-        // int y = bombs.get(iBomb).getY();
-        bombs.remove(iBomb);
-
-        // System.out.println(x / Sprite.SCALED_SIZE + " " + y / Sprite.SCALED_SIZE);
-
-        // getMap().replace(x, y, new Grass(x / Sprite.SCALED_SIZE, y /
-        // Sprite.SCALED_SIZE, Sprite.grass.getFxImage()));
-
-    }
-
-    private boolean canSetBomb(int xBomb, int yBomb) {
-        long now = Timer.now();
-        if (now - delayBombSet > Timer.TIME_FOR_SINGLE_INPUT) {
-            delayBombSet = now;
-            if (bombs.size() < numberOfBombs) {
-                for (Bomb bomb : bombs) {
-                    if (bomb.getX() / Sprite.SCALED_SIZE == xBomb && bomb.getY() / Sprite.SCALED_SIZE == yBomb)
-                        return false;
+            if (bombManager.canSetBomb(xBomb, yBomb))
+                {
+                    bombManager.addBomb(bomb);
                 }
-                if (collisionManager.getEntityAt(xBomb, yBomb) instanceof Grass)
-                    return true;
-                else
-                    return false;
-            } else
-                return false;
-        } else
-            return false;
+        }
+        bombManager.update();
     }
 
     public Image chooseSprite() {
@@ -217,21 +176,19 @@ public class Bomber extends AnimationEntity {
         }
         return img;
     }
-
+    
     @Override
     public void render(GraphicsContext gc, Camera camera) {
-        // Render bombs behind Bomberman;
-        for (Entity bomb : bombs) {
-            bomb.render(gc, camera);
-        }
+        
         img = chooseSprite();
+        isRunning = false;
         if (isCamFollow == true) {
             if (camera.getX() > 0 && camera.getX() < camera.getScreenWidth() * Sprite.SCALED_SIZE
-                    - Graphics.WIDTH * Sprite.SCALED_SIZE) {
+            - Graphics.WIDTH * Sprite.SCALED_SIZE) {
                 int tempX = Graphics.WIDTH * Sprite.DEFAULT_SIZE;
                 gc.drawImage(img, tempX, y);
             } else if (camera.getX() == camera.getScreenWidth() * Sprite.SCALED_SIZE
-                    - Graphics.WIDTH * Sprite.SCALED_SIZE) {
+            - Graphics.WIDTH * Sprite.SCALED_SIZE) {
                 int tempX = x - (camera.getScreenWidth() * Sprite.SCALED_SIZE - Graphics.WIDTH * Sprite.SCALED_SIZE);
                 gc.drawImage(img, tempX, y);
             } else {
@@ -240,5 +197,7 @@ public class Bomber extends AnimationEntity {
         } else {
             gc.drawImage(img, x - camera.getX(), y - camera.getY());
         }
+        // Render bombs front of Bomberman;
+        bombManager.renderBombs(gc, camera);
     }
 }

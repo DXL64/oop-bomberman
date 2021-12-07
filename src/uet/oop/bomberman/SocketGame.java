@@ -36,8 +36,9 @@ public class SocketGame {
                     String msgHello = hashCode + ",Hello";
                     byte[] data = msgHello.getBytes();
                     outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
-
+                    
                     try {
+                        //Send messages to multicast group
                         socket.send(outPacket);
                     } catch (Exception e){
                         e.printStackTrace();

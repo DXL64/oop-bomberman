@@ -4,7 +4,6 @@ import javafx.util.Pair;
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Obstacle;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class CollisionManager {

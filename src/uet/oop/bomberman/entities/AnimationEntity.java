@@ -55,6 +55,8 @@ public abstract class AnimationEntity extends Entity {
                 x -= CollisionManager.STEP;
             if (direct == DIRECTION.RIGHT)
                 x += CollisionManager.STEP;
+        } else {
+            isRunning = false;
         }
     }
 
