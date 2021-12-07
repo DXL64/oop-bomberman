@@ -9,7 +9,7 @@ import uet.oop.bomberman.graphics.Sprite;
 public class Explosion extends AnimationEntity {
 
     public static enum EXPLOSION_STATE {
-        BEGIN, MIDDLE, END;
+        BRICK, MIDDLE, END;
     }
 
     private DIRECTION direction;
@@ -27,63 +27,21 @@ public class Explosion extends AnimationEntity {
     public void update() {
         countStep++;
 
-        if (countStep == 15)
+        if (countStep == 45)
             exploded = true;
 
         img = chooseSprite();
     }
 
-    public boolean isExploed() {
-        return isExploed();
+    public boolean isExploded() {
+        return exploded;
     }
 
     @Override
     public Image chooseSprite() {
-        int chooseFrame = countStep / 5;
+        int chooseFrame = countStep / 15;
 
         switch (explosionState) {
-            case BEGIN:
-                switch (chooseFrame) {
-                    case 0:
-                        switch (direction) {
-                            case RIGHT:
-                                return Sprite.explosion_horizontal_left_last2.getFxImage();
-                            case LEFT:
-                                return Sprite.explosion_horizontal_right_last2.getFxImage();
-                            case UP:
-                                return Sprite.explosion_vertical_down_last2.getFxImage();
-                            case DOWN:
-                                return Sprite.explosion_vertical_top_last2.getFxImage();
-                            case CENTER:
-                                return Sprite.bomb_exploded2.getFxImage();
-                        }
-                    case 1:
-                        switch (direction) {
-                            case RIGHT:
-                                return Sprite.explosion_horizontal_left_last1.getFxImage();
-                            case LEFT:
-                                return Sprite.explosion_horizontal_right_last1.getFxImage();
-                            case UP:
-                                return Sprite.explosion_vertical_down_last1.getFxImage();
-                            case DOWN:
-                                return Sprite.explosion_vertical_top_last1.getFxImage();
-                            case CENTER:
-                                return Sprite.bomb_exploded1.getFxImage();
-                        }
-                    case 2:
-                        switch (direction) {
-                            case RIGHT:
-                                return Sprite.explosion_horizontal_left_last.getFxImage();
-                            case LEFT:
-                                return Sprite.explosion_horizontal_right_last.getFxImage();
-                            case UP:
-                                return Sprite.explosion_vertical_down_last.getFxImage();
-                            case DOWN:
-                                return Sprite.explosion_vertical_top_last.getFxImage();
-                            case CENTER:
-                                return Sprite.bomb_exploded.getFxImage();
-                        }
-                }
             case MIDDLE:
                 switch (chooseFrame) {
                     case 0:
@@ -161,6 +119,15 @@ public class Explosion extends AnimationEntity {
                             case CENTER:
                                 return Sprite.bomb_exploded.getFxImage();
                         }
+                }
+            case BRICK: 
+                switch (chooseFrame) {
+                    case 0:
+                        return Sprite.brick_exploded.getFxImage();                
+                    case 1:
+                        return Sprite.brick_exploded1.getFxImage();                
+                    case 2:
+                        return Sprite.brick_exploded2.getFxImage();                
                 }
         }
         return null;
