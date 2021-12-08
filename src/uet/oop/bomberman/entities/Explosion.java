@@ -1,8 +1,12 @@
 package uet.oop.bomberman.entities;
 
+import java.util.List;
+
 import javafx.scene.control.skin.TextInputControlSkin.Direction;
 import javafx.scene.image.Image;
 import javafx.scene.input.PickResult;
+import uet.oop.bomberman.Map;
+import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -15,19 +19,39 @@ public class Explosion extends AnimationEntity {
     private DIRECTION direction;
     private boolean exploded;
     private EXPLOSION_STATE explosionState;
+    private CollisionManager collisionManager;
 
-    public Explosion(int xUnit, int yUnit, Image img, DIRECTION direction, EXPLOSION_STATE explosionState) {
+    public Explosion(int xUnit, int yUnit, Image img, DIRECTION direction, EXPLOSION_STATE explosionState, CollisionManager collisionManager) {
         super(xUnit, yUnit, img);
         this.direction = direction;
         this.explosionState = explosionState;
+        this.collisionManager = collisionManager;
         exploded = false;
         countStep = 0;
     }
 
     public void update() {
+
+        Map map = collisionManager.getMap();
+
+        for (int i = 0; i < map.getFlexEntities().size(); i++) {
+            if (map.getFlexEntities().get(i) instanceof DestroyableEntity) {
+                DestroyableEntity tmp = (DestroyableEntity) map.getFlexEntities().get(i);
+                if (collisionManager.collide(this, tmp)) {
+                    tmp.die();
+                }
+            }
+        }
+        List<Bomb> bombs = collisionManager.getBombList();
+        for (Bomb bomb : bombs) {
+            if (x == bomb.x && y == bomb.y) {
+                bomb.setExploded(true);
+            }
+        }
+
         countStep++;
 
-        if (countStep == 45)
+        if (countStep == 30)
             exploded = true;
 
         img = chooseSprite();
@@ -39,7 +63,7 @@ public class Explosion extends AnimationEntity {
 
     @Override
     public Image chooseSprite() {
-        int chooseFrame = countStep / 15;
+        int chooseFrame = countStep / 10;
 
         switch (explosionState) {
             case MIDDLE:
@@ -133,4 +157,8 @@ public class Explosion extends AnimationEntity {
         return null;
     }
 
+
+    public String toString() {
+        return "Explosion [" + super.toString() + "]";
+    }
 }

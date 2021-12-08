@@ -1,13 +1,10 @@
 package uet.oop.bomberman.entities;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Stack;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Spinner;
 import javafx.util.Pair;
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.controller.Camera;
@@ -39,12 +36,6 @@ public class BombManager {
     }
 
     public void update() {
-        for (int i = 0; i < bombs.size(); i++) {
-            bombs.get(i).update();
-            if (bombs.get(i).explode()) {
-                bombExplode(i);
-            }
-        }
         for (int i = 0; i < explosions.size(); i++) {
             explosions.get(i).update();
             if (explosions.get(i).isExploded()) {
@@ -52,13 +43,23 @@ public class BombManager {
                 i--;
             }
         }
+        for (int i = 0; i < bombs.size(); i++) {
+            bombs.get(i).update();
+            if (bombs.get(i).isExploded()) {
+                bombExplode(i);
+            }
+        }
+    }
+
+    public List<Bomb> getBombs() {
+        return bombs;
     }
 
     public void bombExplode(int iBomb) {
         Bomb bomb = bombs.get(iBomb);
         int x = bomb.x / Sprite.SCALED_SIZE;
         int y = bomb.y / Sprite.SCALED_SIZE;
-        explosions.add(new Explosion(x, y, Sprite.bomb_exploded2.getFxImage(), DIRECTION.CENTER, EXPLOSION_STATE.MIDDLE));
+        explosions.add(new Explosion(x, y, Sprite.bomb_exploded2.getFxImage(), DIRECTION.CENTER, EXPLOSION_STATE.MIDDLE, collisionManager));
         Stack<Pair<Integer, Integer>> stack = new Stack<>();
 
         // Destroy the down side
@@ -67,7 +68,7 @@ public class BombManager {
                 stack.push(new Pair<Integer, Integer>(x, y + i));
             } else {
                 if (map.getMap().get(y + i).get(x) instanceof Brick) {
-                    explosions.add(new Explosion(x, y + i, Sprite.brick.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK));
+                    explosions.add(new Explosion(x, y + i, Sprite.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK, collisionManager));
                     map.replace(x, y + i, new Grass(x, y + i, Sprite.grass.getFxImage()));
 
                 }
@@ -75,11 +76,11 @@ public class BombManager {
             }
         }
         if (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.END));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.END, collisionManager));
             stack.pop();
         }
         while (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.MIDDLE));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.MIDDLE, collisionManager));
             stack.pop();
         }
 
@@ -89,18 +90,18 @@ public class BombManager {
                 stack.push(new Pair<Integer, Integer>(x - i, y));
             } else {
                 if (map.getMap().get(y).get(x - i) instanceof Brick) {
-                    explosions.add(new Explosion(x - i, y, Sprite.brick.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK));
+                    explosions.add(new Explosion(x - i, y, Sprite.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK, collisionManager));
                     map.replace(x - i, y, new Grass(x - i, y, Sprite.grass.getFxImage()));
                 }
                 break;
             }
         }
         if (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.LEFT, EXPLOSION_STATE.END));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.LEFT, EXPLOSION_STATE.END, collisionManager));
             stack.pop();
         }
         while (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.LEFT, EXPLOSION_STATE.MIDDLE));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.LEFT, EXPLOSION_STATE.MIDDLE, collisionManager));
             stack.pop();
         }
 
@@ -110,18 +111,18 @@ public class BombManager {
                 stack.push(new Pair<Integer, Integer>(x + i, y));
             } else {
                 if (map.getMap().get(y).get(x + i) instanceof Brick) {
-                    explosions.add(new Explosion(x + i, y, Sprite.brick.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK));
+                    explosions.add(new Explosion(x + i, y, Sprite.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK, collisionManager));
                     map.replace(x + i, y, new Grass(x + i, y, Sprite.grass.getFxImage()));
                 }
                 break;
             }
         }
         if (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.RIGHT, EXPLOSION_STATE.END));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.RIGHT, EXPLOSION_STATE.END, collisionManager));
             stack.pop();
         }
         while (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.RIGHT, EXPLOSION_STATE.MIDDLE));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.RIGHT, EXPLOSION_STATE.MIDDLE, collisionManager));
             stack.pop();
         }
 
@@ -131,18 +132,18 @@ public class BombManager {
                 stack.push(new Pair<Integer, Integer>(x, y - i));
             } else {
                 if (map.getMap().get(y - i).get(x) instanceof Brick) {
-                    explosions.add(new Explosion(x, y - i, Sprite.brick.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK));
+                    explosions.add(new Explosion(x, y - i, Sprite.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK, collisionManager));
                     map.replace(x, y - i, new Grass(x, y - i, Sprite.grass.getFxImage()));
                 }
                 break;
             }
         }
         if (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.UP, EXPLOSION_STATE.END));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.UP, EXPLOSION_STATE.END, collisionManager));
             stack.pop();
         }
         while (!stack.empty()) {
-            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.UP, EXPLOSION_STATE.MIDDLE));
+            explosions.add(new Explosion(stack.peek().getKey(), stack.peek().getValue(), Sprite.explosion_vertical_down_last2.getFxImage(), DIRECTION.UP, EXPLOSION_STATE.MIDDLE, collisionManager));
             stack.pop();
         }
         
@@ -151,7 +152,7 @@ public class BombManager {
 
     public boolean canSetBomb(int xBomb, int yBomb) {
         long now = Timer.now();
-        if (now - delayBombSet > Timer.TIME_FOR_SINGLE_INPUT) {
+        if (now - delayBombSet > Timer.TIME_FOR_DELAY_BOMB_SET) {
             delayBombSet = now;
             if (bombs.size() < numberOfBombs) {
                 for (Bomb bomb : bombs) {
@@ -180,4 +181,6 @@ public class BombManager {
             explosion.render(gc, camera);
         }
     }
+
+    
 }

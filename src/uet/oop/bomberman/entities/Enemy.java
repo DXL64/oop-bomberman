@@ -9,7 +9,7 @@ import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Enemy extends AnimationEntity {
+public class Enemy extends DestroyableEntity {
     protected CollisionManager collisionManager;
 
     public final static int notGo = 0;
@@ -28,7 +28,18 @@ public class Enemy extends AnimationEntity {
     public final static int GRASS = 1;
     public final static int BOMBERMAN = 2;
     public final static int ENEMY = 3;
-    public final static int[] randomGo = {1, 3, 2, 0, 1, 0, 2, 2, 2, 0, 1, 1, 1, 3, 1, 3, 3, 2, 3, 0, 3, 0, 2, 1, 0, 2, 1, 0, 2, 3, 3, 2, 3, 2, 1, 0, 3, 3, 3, 2, 3, 3, 2, 1, 1, 0, 1, 3, 1, 0, 3, 0, 2, 1, 1, 3, 3, 1, 1, 2, 0, 3, 2, 2, 0, 2, 0, 2, 0, 0, 2, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 3, 0, 2, 0, 0, 2, 0, 3, 0, 0, 3, 2, 3, 1, 2, 2, 2, 1, 1, 1, 3, 3, 2, 0, 2, 1, 2, 1, 2, 1, 1, 0, 0, 2, 1, 1, 1, 1, 0, 2, 2, 1, 0, 3, 3, 3, 2, 3, 0, 2, 2, 1, 0, 2, 2, 3, 3, 3, 1, 1, 3, 1, 3, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, 1, 0, 0, 3, 2, 3, 2, 3, 0, 1, 0, 3, 3, 1, 2, 2, 3, 0, 2, 0, 0, 1, 0, 3, 0, 0, 1, 2, 1, 3, 2, 2, 0, 0, 3, 3, 0, 1, 0, 3, 3, 1, 2, 1, 1, 2, 1, 0, 3, 3, 0, 1, 3, 0, 2, 3, 0, 0, 0, 1, 1, 2, 3, 1, 1, 3, 3, 3, 2, 3, 0, 0, 2, 2, 0, 0, 2, 1, 1, 2, 1, 1, 0, 2, 2, 0, 2, 3, 2, 1, 2, 3, 3, 0, 0, 3, 2, 2, 0, 3, 0, 2, 2, 2, 3, 1, 1, 2, 0, 0, 1, 2, 2, 3, 1, 3, 1, 0, 0, 1, 3, 0, 0, 2, 3, 1, 1, 0, 1, 1, 3, 3, 2, 1, 2, 1, 0, 2, 1, 1, 0, 0, 1, 2, 1, 1, 0, 1, 0, 0, 1, 3, 2, 1, 1, 0, 1, 0, 2, 1, 3, 3, 3, 0, 3, 1, 1, 1, 2, 1, 1, 3, 1, 0, 2, 1, 0, 2, 3, 2, 2, 1, 0, 3, 2, 3, 1, 3, 1, 1, 0, 0, 0, 1, 1, 0, 1, 2, 2, 2, 1, 0, 0, 2, 1, 1, 3, 2, 1, 2, 0, 3, 0, 3, 1, 0, 2, 2, 1, 1, 2, 1, 2, 2, 0, 2, 3, 1, 2, 3, 2, 1, 1, 2, 2, 0, 2, 2, 0, 3, 1, 2, 3, 1, 2, 1};
+    public final static int[] randomGo = { 1, 3, 2, 0, 1, 0, 2, 2, 2, 0, 1, 1, 1, 3, 1, 3, 3, 2, 3, 0, 3, 0, 2, 1, 0, 2,
+            1, 0, 2, 3, 3, 2, 3, 2, 1, 0, 3, 3, 3, 2, 3, 3, 2, 1, 1, 0, 1, 3, 1, 0, 3, 0, 2, 1, 1, 3, 3, 1, 1, 2, 0, 3,
+            2, 2, 0, 2, 0, 2, 0, 0, 2, 1, 2, 1, 2, 2, 2, 1, 1, 0, 1, 3, 0, 2, 0, 0, 2, 0, 3, 0, 0, 3, 2, 3, 1, 2, 2, 2,
+            1, 1, 1, 3, 3, 2, 0, 2, 1, 2, 1, 2, 1, 1, 0, 0, 2, 1, 1, 1, 1, 0, 2, 2, 1, 0, 3, 3, 3, 2, 3, 0, 2, 2, 1, 0,
+            2, 2, 3, 3, 3, 1, 1, 3, 1, 3, 1, 1, 1, 2, 1, 0, 2, 2, 2, 2, 1, 0, 0, 3, 2, 3, 2, 3, 0, 1, 0, 3, 3, 1, 2, 2,
+            3, 0, 2, 0, 0, 1, 0, 3, 0, 0, 1, 2, 1, 3, 2, 2, 0, 0, 3, 3, 0, 1, 0, 3, 3, 1, 2, 1, 1, 2, 1, 0, 3, 3, 0, 1,
+            3, 0, 2, 3, 0, 0, 0, 1, 1, 2, 3, 1, 1, 3, 3, 3, 2, 3, 0, 0, 2, 2, 0, 0, 2, 1, 1, 2, 1, 1, 0, 2, 2, 0, 2, 3,
+            2, 1, 2, 3, 3, 0, 0, 3, 2, 2, 0, 3, 0, 2, 2, 2, 3, 1, 1, 2, 0, 0, 1, 2, 2, 3, 1, 3, 1, 0, 0, 1, 3, 0, 0, 2,
+            3, 1, 1, 0, 1, 1, 3, 3, 2, 1, 2, 1, 0, 2, 1, 1, 0, 0, 1, 2, 1, 1, 0, 1, 0, 0, 1, 3, 2, 1, 1, 0, 1, 0, 2, 1,
+            3, 3, 3, 0, 3, 1, 1, 1, 2, 1, 1, 3, 1, 0, 2, 1, 0, 2, 3, 2, 2, 1, 0, 3, 2, 3, 1, 3, 1, 1, 0, 0, 0, 1, 1, 0,
+            1, 2, 2, 2, 1, 0, 0, 2, 1, 1, 3, 2, 1, 2, 0, 3, 0, 3, 1, 0, 2, 2, 1, 1, 2, 1, 2, 2, 0, 2, 3, 1, 2, 3, 2, 1,
+            1, 2, 2, 0, 2, 2, 0, 3, 1, 2, 3, 1, 2, 1 };
 
     public Enemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager) {
         super(xUnit, yUnit, img);
@@ -36,15 +47,27 @@ public class Enemy extends AnimationEntity {
     }
 
     public void update() {
+        if (death) {
+            super.update();
+        }
+    }
+
+    protected boolean checkCollide(int xPredict, int yPredict) {
+        for (Bomb bomb : collisionManager.getBombList()) {
+            if (collisionManager.collide(xPredict, yPredict, bomb)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void update(List<List<Entity>> map, int xBomber, int yBomber) {
     }
 
-
     public Boolean goLeft() {
-        if(isCheckCollision == false){
-            if(x - speed <= 0) return false;
+        if (isCheckCollision == false) {
+            if (x - speed <= 0)
+                return false;
             x -= speed;
             direction = moveLeft;
             spriteImage = (spriteImage + 1) % 9;
@@ -52,6 +75,11 @@ public class Enemy extends AnimationEntity {
         }
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - sizeCheckCollision, y, DIRECTION.LEFT);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
+            if (this instanceof BalloomEnemy) {
+                if (checkCollide(x - sizeCheckCollision, y)) {
+                    return false;
+                }
+            }
             x -= speed;
             direction = moveLeft;
             spriteImage = (spriteImage + 1) % 9;
@@ -61,8 +89,9 @@ public class Enemy extends AnimationEntity {
     }
 
     protected Boolean goRight() {
-        if(isCheckCollision == false){
-            if(x + speed >= (31 - 1) * Sprite.SCALED_SIZE) return false;
+        if (isCheckCollision == false) {
+            if (x + speed >= (31 - 1) * Sprite.SCALED_SIZE)
+                return false;
             x += speed;
             direction = moveRight;
             spriteImage = (spriteImage + 1) % 9;
@@ -70,6 +99,11 @@ public class Enemy extends AnimationEntity {
         }
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + sizeCheckCollision, y, DIRECTION.RIGHT);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
+            if (this instanceof BalloomEnemy) {
+                if (checkCollide(x + sizeCheckCollision, y)) {
+                    return false;
+                }
+            }
             x += speed;
             direction = moveRight;
             spriteImage = (spriteImage + 1) % 9;
@@ -79,8 +113,9 @@ public class Enemy extends AnimationEntity {
     }
 
     protected Boolean goUp() {
-        if(isCheckCollision == false){
-            if(y - speed <= 0) return false;
+        if (isCheckCollision == false) {
+            if (y - speed <= 0)
+                return false;
             y -= speed;
             direction = moveUp;
             spriteImage = (spriteImage + 1) % 9;
@@ -88,6 +123,11 @@ public class Enemy extends AnimationEntity {
         }
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - sizeCheckCollision, DIRECTION.UP);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
+            if (this instanceof BalloomEnemy) {
+                if (checkCollide(x, y - sizeCheckCollision)) {
+                    return false;
+                }
+            }
             y -= speed;
             direction = moveUp;
             spriteImage = (spriteImage + 1) % 9;
@@ -97,8 +137,9 @@ public class Enemy extends AnimationEntity {
     }
 
     protected Boolean goDown() {
-        if(isCheckCollision == false){
-            if(y + speed >= (13 - 1) * Sprite.SCALED_SIZE) return false;
+        if (isCheckCollision == false) {
+            if (y + speed >= (13 - 1) * Sprite.SCALED_SIZE)
+                return false;
             y += speed;
             direction = moveDown;
             spriteImage = (spriteImage + 1) % 9;
@@ -106,6 +147,11 @@ public class Enemy extends AnimationEntity {
         }
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + sizeCheckCollision, DIRECTION.DOWN);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
+            if (this instanceof BalloomEnemy) {
+                if (checkCollide(x, y + sizeCheckCollision)) {
+                    return false;
+                }
+            }
             y += speed;
             direction = moveDown;
             spriteImage = (spriteImage + 1) % 9;
@@ -113,31 +159,45 @@ public class Enemy extends AnimationEntity {
         }
         return false;
     }
-    protected void goRand(){
+
+    protected void goRand() {
         int rand = randomGo[((count + Map.randomStart) % randomGo.length)];
-        if(rand == 0){
-            if(goLeft() == true) return;
-            if(goUp() == true) return;
-            if(goRight() == true) return;
-            if(goDown() == true) return;
-        }
-        else if(rand == 1){
-            if(goRight() == true) return;
-            if(goDown() == true) return;
-            if(goLeft() == true) return;
-            if(goUp() == true) return;
-        }
-        else if(rand == 2){
-            if(goUp() == true) return;
-            if(goRight() == true) return;
-            if(goDown() == true) return;
-            if(goLeft() == true) return;
-        }
-        else if(rand == 3){
-            if(goDown() == true) return;
-            if(goLeft() == true) return;
-            if(goUp() == true) return;
-            if(goRight() == true) return;
+        if (rand == 0) {
+            if (goLeft() == true)
+                return;
+            if (goUp() == true)
+                return;
+            if (goRight() == true)
+                return;
+            if (goDown() == true)
+                return;
+        } else if (rand == 1) {
+            if (goRight() == true)
+                return;
+            if (goDown() == true)
+                return;
+            if (goLeft() == true)
+                return;
+            if (goUp() == true)
+                return;
+        } else if (rand == 2) {
+            if (goUp() == true)
+                return;
+            if (goRight() == true)
+                return;
+            if (goDown() == true)
+                return;
+            if (goLeft() == true)
+                return;
+        } else if (rand == 3) {
+            if (goDown() == true)
+                return;
+            if (goLeft() == true)
+                return;
+            if (goUp() == true)
+                return;
+            if (goRight() == true)
+                return;
         }
     }
 
@@ -145,5 +205,11 @@ public class Enemy extends AnimationEntity {
     public Image chooseSprite() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void die() {
+        // TODO Auto-generated method stub
+
     }
 }

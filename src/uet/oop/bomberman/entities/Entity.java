@@ -94,4 +94,8 @@ public abstract class Entity {
     public Hitbox getHitbox() {
         return hitbox;
     }
+
+    public String toString() {
+        return "Entity [" + x + ", " + y + "]";
+    }
 }

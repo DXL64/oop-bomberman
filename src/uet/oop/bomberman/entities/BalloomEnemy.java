@@ -1,6 +1,5 @@
 package uet.oop.bomberman.entities;
 
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.controller.CollisionManager;
@@ -12,25 +11,50 @@ import uet.oop.bomberman.controller.Camera;
 public class BalloomEnemy extends Enemy {
     public static final int delayFPS = 4;
 
-    public BalloomEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager){
+    public BalloomEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager) {
         super(xUnit, yUnit, img, collisionManager);
         this.speed = 2;
     }
 
-    public void update(){
-        ++count;
-        if(count % 4 == 0 || count % 4 == 2 || count % 4 == 3) return;
-        if(count % 64 == 1){
-            goRand();
-            return;
+    public void update() {
+        if (death) {
+            super.update();
+        } else {
+            ++count;
+            if (count % 4 == 0 || count % 4 == 2 || count % 4 == 3)
+                return;
+            if (count % 64 == 1) {
+                goRand();
+                return;
+            }
+            if (direction == moveLeft) {
+                if (checkCollide(x, y)) {
+                    goRand();
+                }
+                else goLeft();
+            }
+            else if (direction == moveRight) {
+                if (checkCollide(x, y)) {
+                    goRand();
+                }
+                else goRight();
+            }
+            else if (direction == moveDown) {
+                if (checkCollide(x, y)) {
+                    goRand();
+                }
+                else goDown();
+            }
+            else if (direction == moveUp) {
+                if (checkCollide(x, y)) {
+                    goRand();
+                }
+                else goUp();
+            }
         }
-        if(direction == moveLeft) goLeft();
-        else if(direction == moveRight) goRight();
-        else if(direction == moveDown) goDown();
-        else if(direction == moveUp) goUp();
-        return;
     }
-    public Boolean goLeft(){
+
+    public Boolean goLeft() {
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speed, y, DIRECTION.LEFT);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             x -= speed;
@@ -40,7 +64,8 @@ public class BalloomEnemy extends Enemy {
         }
         return false;
     }
-    public Boolean goRight(){
+
+    public Boolean goRight() {
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speed, y, DIRECTION.RIGHT);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             x += speed;
@@ -50,7 +75,8 @@ public class BalloomEnemy extends Enemy {
         }
         return false;
     }
-    public Boolean goUp(){
+
+    public Boolean goUp() {
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speed, DIRECTION.UP);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             y -= speed;
@@ -60,7 +86,8 @@ public class BalloomEnemy extends Enemy {
         }
         return false;
     }
-    public Boolean goDown(){
+
+    public Boolean goDown() {
         Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speed, DIRECTION.DOWN);
         if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
             y += speed;
@@ -70,26 +97,48 @@ public class BalloomEnemy extends Enemy {
         }
         return false;
     }
+
     public Image chooseSprite() {
-        if(direction == moveLeft || direction == moveUp){
-            switch(spriteImage){
-                case 0: return Sprite.balloom_left1.getFxImage();
-                case 1: return Sprite.balloom_left2.getFxImage();
-                case 2: return Sprite.balloom_left3.getFxImage();
+        if (death) {
+            if (countStep < 30) {
+                return Sprite.balloom_dead.getFxImage();
             }
         }
-        else if(direction == moveRight || direction == moveDown){
-            switch(spriteImage){
-                case 0: return Sprite.balloom_right1.getFxImage();
-                case 1: return Sprite.balloom_right2.getFxImage();
-                case 2: return Sprite.balloom_right3.getFxImage();
+        if (direction == moveLeft || direction == moveUp) {
+            switch (spriteImage) {
+                case 0:
+                    return Sprite.balloom_left1.getFxImage();
+                case 1:
+                    return Sprite.balloom_left2.getFxImage();
+                case 2:
+                    return Sprite.balloom_left3.getFxImage();
+            }
+        } else if (direction == moveRight || direction == moveDown) {
+            switch (spriteImage) {
+                case 0:
+                    return Sprite.balloom_right1.getFxImage();
+                case 1:
+                    return Sprite.balloom_right2.getFxImage();
+                case 2:
+                    return Sprite.balloom_right3.getFxImage();
             }
         }
         return null;
     }
+
     @Override
     public void render(GraphicsContext gc, Camera camera) {
-        Image img = chooseSprite();
-        gc.drawImage(img, x - camera.getX(), y - camera.getY());
+        if (countStep < 30) {
+            Image img = chooseSprite();
+            gc.drawImage(img, x - camera.getX(), y - camera.getY());
+        }
+    }
+
+    public void die() {
+        if (!death) {
+            death = true;
+            count = 0;
+            countStep = 0;
+        }
     }
 }

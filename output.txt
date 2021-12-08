@@ -1,0 +1,586 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-------------------------< [0;36muet.oop:bomberman[0;1m >--------------------------[m
+[[1;34mINFO[m] [1mBuilding Bomberman v0.1[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m>>> [0;32mjavafx-maven-plugin:0.0.8:run[m [1m(default-cli)[0;1m > [0;1mprocess-classes[m @ [36mbomberman[0;1m >>>[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mbomberman[0;1m ---[m
+[[1;33mWARNING[m] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+[[1;34mINFO[m] Copying 98 resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.0:compile[m [1m(default-compile)[m @ [36mbomberman[0;1m ---[m
+[[1;34mINFO[m] Nothing to compile - all classes are up to date
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m<<< [0;32mjavafx-maven-plugin:0.0.8:run[m [1m(default-cli)[0;1m < [0;1mprocess-classes[m @ [36mbomberman[0;1m <<<[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mjavafx-maven-plugin:0.0.8:run[m [1m(default-cli)[m @ [36mbomberman[0;1m ---[m
+[ENTER SINGLE GAME]
+Bomber 32 190
+32 192
+Entity 32 192
+32=190
+56=190
+32=222
+56=222
+LAST 1 6
+Bomber 32 188
+32 192
+Entity 32 192
+32=188
+56=188
+32=220
+56=220
+LAST 1 6
+Bomber 32 186
+32 192
+Entity 32 192
+32=186
+56=186
+32=218
+56=218
+LAST 1 6
+Bomber 32 184
+32 192
+Entity 32 192
+32=184
+56=184
+32=216
+56=216
+LAST 1 6
+Bomber 32 182
+32 192
+Entity 32 192
+32=182
+56=182
+32=214
+56=214
+LAST 1 6
+Bomber 32 180
+32 192
+Entity 32 192
+32=180
+56=180
+32=212
+56=212
+LAST 1 6
+Bomber 32 178
+32 192
+Entity 32 192
+32=178
+56=178
+32=210
+56=210
+LAST 1 6
+Bomber 32 176
+32 192
+Entity 32 192
+32=176
+56=176
+32=208
+56=208
+LAST 1 6
+Bomber 32 174
+32 192
+Entity 32 192
+32=174
+56=174
+32=206
+56=206
+LAST 1 6
+Bomber 32 172
+32 192
+Entity 32 192
+32=172
+56=172
+32=204
+56=204
+LAST 1 6
+Bomber 32 170
+32 192
+Entity 32 192
+32=170
+56=170
+32=202
+56=202
+LAST 1 6
+Bomber 32 168
+32 192
+Entity 32 192
+32=168
+56=168
+32=200
+56=200
+LAST 1 6
+Bomber 32 166
+32 192
+Entity 32 192
+32=166
+56=166
+32=198
+56=198
+LAST 1 6
+Bomber 32 164
+32 192
+Entity 32 192
+32=164
+56=164
+32=196
+56=196
+LAST 1 6
+Bomber 32 162
+32 192
+Entity 32 192
+32=162
+56=162
+32=194
+56=194
+LAST 1 6
+Bomber 32 160
+32 192
+Entity 32 192
+32=160
+56=160
+32=192
+56=192
+LAST 1 6
+Bomber 32 158
+32 192
+Entity 32 192
+32=158
+56=158
+32=190
+56=190
+LAST 1 6
+Bomber 32 156
+32 192
+Entity 32 192
+32=156
+56=156
+32=188
+56=188
+Bomber 32 154
+32 192
+Entity 32 192
+32=154
+56=154
+32=186
+56=186
+Bomber 32 152
+32 192
+Entity 32 192
+32=152
+56=152
+32=184
+56=184
+Bomber 32 150
+32 192
+Entity 32 192
+32=150
+56=150
+32=182
+56=182
+Bomber 32 148
+32 192
+Entity 32 192
+32=148
+56=148
+32=180
+56=180
+Bomber 32 146
+32 192
+Entity 32 192
+32=146
+56=146
+32=178
+56=178
+Bomber 32 144
+32 192
+Entity 32 192
+32=144
+56=144
+32=176
+56=176
+Bomber 32 142
+32 192
+Entity 32 192
+32=142
+56=142
+32=174
+56=174
+Bomber 32 140
+32 192
+Entity 32 192
+32=140
+56=140
+32=172
+56=172
+Bomber 32 138
+32 192
+Entity 32 192
+32=138
+56=138
+32=170
+56=170
+Bomber 32 136
+32 192
+Entity 32 192
+32=136
+56=136
+32=168
+56=168
+Bomber 32 134
+32 192
+Entity 32 192
+32=134
+56=134
+32=166
+56=166
+Bomber 32 132
+32 192
+Entity 32 192
+32=132
+56=132
+32=164
+56=164
+Bomber 32 130
+32 192
+Entity 32 192
+32=130
+56=130
+32=162
+56=162
+Bomber 32 128
+32 192
+Entity 32 192
+32=128
+56=128
+32=160
+56=160
+Bomber 32 126
+32 192
+Entity 32 192
+32=126
+56=126
+32=158
+56=158
+Bomber 32 124
+32 192
+Entity 32 192
+32=124
+56=124
+32=156
+56=156
+Bomber 32 122
+32 192
+Entity 32 192
+32=122
+56=122
+32=154
+56=154
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+Bomber 190 30
+192 32
+Entity 192 32
+190=30
+214=30
+190=62
+214=62
+LAST 6 1
+Bomber 188 30
+192 32
+Entity 192 32
+188=30
+212=30
+188=62
+212=62
+LAST 6 1
+Bomber 186 30
+192 32
+Entity 192 32
+186=30
+210=30
+186=62
+210=62
+LAST 6 1
+Bomber 184 30
+192 32
+Entity 192 32
+184=30
+208=30
+184=62
+208=62
+LAST 6 1
+Bomber 182 30
+192 32
+Entity 192 32
+182=30
+206=30
+182=62
+206=62
+LAST 6 1
+Bomber 180 30
+192 32
+Entity 192 32
+180=30
+204=30
+180=62
+204=62
+LAST 6 1
+Bomber 178 30
+192 32
+Entity 192 32
+178=30
+202=30
+178=62
+202=62
+LAST 6 1
+Bomber 176 30
+192 32
+Entity 192 32
+176=30
+200=30
+176=62
+200=62
+LAST 6 1
+Bomber 174 30
+192 32
+Entity 192 32
+174=30
+198=30
+174=62
+198=62
+LAST 6 1
+Bomber 172 30
+192 32
+Entity 192 32
+172=30
+196=30
+172=62
+196=62
+LAST 6 1
+Bomber 170 30
+192 32
+Entity 192 32
+170=30
+194=30
+170=62
+194=62
+Bomber 168 30
+192 32
+Entity 192 32
+168=30
+192=30
+168=62
+192=62
+Bomber 166 30
+192 32
+Entity 192 32
+166=30
+190=30
+166=62
+190=62
+Bomber 164 30
+192 32
+Entity 192 32
+164=30
+188=30
+164=62
+188=62
+Bomber 162 30
+192 32
+Entity 192 32
+162=30
+186=30
+162=62
+186=62
+Bomber 160 30
+192 32
+Entity 192 32
+160=30
+184=30
+160=62
+184=62
+Bomber 158 30
+192 32
+Entity 192 32
+158=30
+182=30
+158=62
+182=62
+Bomber 156 30
+192 32
+Entity 192 32
+156=30
+180=30
+156=62
+180=62
+Bomber 154 30
+192 32
+Entity 192 32
+154=30
+178=30
+154=62
+178=62
+Bomber 152 30
+192 32
+Entity 192 32
+152=30
+176=30
+152=62
+176=62
+Bomber 150 30
+192 32
+Entity 192 32
+150=30
+174=30
+150=62
+174=62
+Bomber 148 30
+192 32
+Entity 192 32
+148=30
+172=30
+148=62
+172=62
+Bomber 146 30
+192 32
+Entity 192 32
+146=30
+170=30
+146=62
+170=62
+Bomber 144 30
+192 32
+Entity 192 32
+144=30
+168=30
+144=62
+168=62
+Bomber 142 30
+192 32
+Entity 192 32
+142=30
+166=30
+142=62
+166=62
+Bomber 140 30
+192 32
+Entity 192 32
+140=30
+164=30
+140=62
+164=62
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+RIGHT
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  16.903 s
+[[1;34mINFO[m] Finished at: 2021-12-08T01:30:02+07:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
