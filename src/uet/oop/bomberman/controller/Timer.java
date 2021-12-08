@@ -8,7 +8,7 @@ import uet.oop.bomberman.BombermanGame;
 public class Timer {
 
     
-    private static final int FPS = 60;
+    private static final int FPS = 30;
     private static final long TIME_PER_FRAME = 1000000000 / FPS;
     
     public static final long TIME_FOR_SINGLE_INPUT = TIME_PER_FRAME * 8;

@@ -15,6 +15,7 @@ public abstract class AnimationEntity extends Entity {
     protected DIRECTION backStep = DIRECTION.RIGHT;
     protected int countStep = 0;
     protected boolean isRunning = false;
+    protected int speedBomber = 2;
 
     public AnimationEntity(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -48,13 +49,13 @@ public abstract class AnimationEntity extends Entity {
             isRunning = true;
             direction = direct;
             if (direct == DIRECTION.DOWN)
-                y += CollisionManager.STEP;
+                y += speedBomber;
             if (direct == DIRECTION.UP)
-                y -= CollisionManager.STEP;
+                y -= speedBomber;
             if (direct == DIRECTION.LEFT)
-                x -= CollisionManager.STEP;
+                x -= speedBomber;
             if (direct == DIRECTION.RIGHT)
-                x += CollisionManager.STEP;
+                x += speedBomber;
         } else {
             isRunning = false;
         }
@@ -81,4 +82,11 @@ public abstract class AnimationEntity extends Entity {
 
     public abstract Image chooseSprite();
 
+    public int getSpeedBomber() {
+        return speedBomber;
+    }
+
+    public void setSpeedBomber(int speedBomber) {
+        this.speedBomber = speedBomber;
+    }
 }

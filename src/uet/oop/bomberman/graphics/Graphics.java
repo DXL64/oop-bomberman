@@ -69,6 +69,7 @@ public class Graphics {
             HEIGHT / 6 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getHeight() / 5 * 2);
 
         menu.render(gc);
+        gc.drawImage(Sprite.player_dead1.getFxImage(), 0, 0);
     }
 
     public void renderButton(Button button) {

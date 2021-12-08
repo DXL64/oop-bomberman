@@ -6,20 +6,27 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
+import javax.sound.sampled.SourceDataLine;
+
+import javafx.print.PageOrientation;
 import javafx.util.Pair;
 import uet.oop.bomberman.controller.Camera;
 import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.KeyListener;
 import uet.oop.bomberman.entities.BalloomEnemy;
+import uet.oop.bomberman.entities.BombItem;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Brick;
 import uet.oop.bomberman.entities.DollEnemy;
 import uet.oop.bomberman.entities.Enemy;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.FlameItem;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.OnealEnemy;
+import uet.oop.bomberman.entities.SpeedItem;
 import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -27,6 +34,8 @@ public class Map {
 
     protected List<List<Entity>> map = new ArrayList<>();
     protected List<Entity> flexEntities = new ArrayList<>(); // 4 first elements is for bomber
+    protected List< Pair<Integer, Integer> > brickList = new ArrayList<>();
+    protected int[][] itemList = new int[13][31];
     protected Camera camera;
     protected List< Pair<Integer, Integer> > coordinateBomberman = new ArrayList<>();
     protected int mapLevel;
@@ -61,6 +70,8 @@ public class Map {
                         break;
                         case '*':
                         tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
+                        Pair<Integer, Integer> e = new Pair<Integer, Integer> (i,j);
+                        brickList.add(e);
                         break;
                         // case 'x':
                         //     tempList.add(new Portal(j, i, Sprite.portal.getFxImage()));
@@ -84,11 +95,29 @@ public class Map {
                 map.add(tempList);
             }
             setupBomberman(keyListener);
+            randomItem();
             camera = new Camera(0, 0, width);
             scanner.close();
         } catch (FileNotFoundException exception) {
             System.out.println(exception.getMessage());
         }
+    }
+
+    public void randomItem() {
+        int n = brickList.size();
+        Random random = new Random();
+        Pair<Integer, Integer> x = brickList.get((random.nextInt(n/3)));
+        System.out.print(x.getKey() + " ");
+        System.out.println(x.getValue());
+        itemList[x.getKey()][x.getValue()] = SpeedItem.code;
+        x = brickList.get((random.nextInt(n/3) + n/3));
+        System.out.print(x.getKey() + " ");
+        System.out.println(x.getValue());
+        itemList[x.getKey()][x.getValue()] = FlameItem.code;
+        x = brickList.get((random.nextInt(n/3) + 2 * n / 3));
+        System.out.print(x.getKey() + " ");
+        System.out.println(x.getValue());
+        itemList[x.getKey()][x.getValue()] = BombItem.code;
     }
 
     public void setupBomberman(KeyListener keyListener){
@@ -186,5 +215,8 @@ public class Map {
     }
     public int getNumberBomber(){
         return numberBomber;
+    }
+    public int getItem(int x, int y) {
+        return itemList[y][x];
     }
 }

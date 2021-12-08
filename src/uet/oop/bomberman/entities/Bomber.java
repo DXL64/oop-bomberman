@@ -44,10 +44,9 @@ public class Bomber extends AnimationEntity {
 
     private void updateBomberman() {
         isRunning = false;
-
         // Handle Key Press D
         if (keyListener.isPressed(KeyCode.D)) {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + CollisionManager.STEP, y, DIRECTION.RIGHT);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speedBomber, y, DIRECTION.RIGHT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.RIGHT, true, curNumberInMap);
             } else {
@@ -57,7 +56,7 @@ public class Bomber extends AnimationEntity {
 
         // Handle Key Press A
         if (keyListener.isPressed(KeyCode.A)) {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - CollisionManager.STEP, y, DIRECTION.LEFT);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speedBomber, y, DIRECTION.LEFT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.LEFT, true, curNumberInMap);
             } else {
@@ -69,7 +68,7 @@ public class Bomber extends AnimationEntity {
         if (keyListener.isPressed(KeyCode.W))
 
         {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - CollisionManager.STEP, DIRECTION.UP);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speedBomber, DIRECTION.UP);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.UP, true, curNumberInMap);
             } else {
@@ -79,14 +78,21 @@ public class Bomber extends AnimationEntity {
 
         // Handle Key Press S
         if (keyListener.isPressed(KeyCode.S)) {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + CollisionManager.STEP, DIRECTION.DOWN);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speedBomber, DIRECTION.DOWN);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.DOWN, true, curNumberInMap);
             } else {
                 super.update(DIRECTION.DOWN, false, curNumberInMap);
             }
         }
-
+        // Handle item
+        Entity item = collisionManager.getEntityAt(x/Sprite.SCALED_SIZE, y/Sprite.SCALED_SIZE);
+        if(item instanceof Items) {
+            System.out.println(item);
+            Items tmp = (Items) item;
+            tmp.powerUp(this);
+            collisionManager.getMap().replace(x/Sprite.SCALED_SIZE, y/Sprite.SCALED_SIZE, new Grass(x/Sprite.SCALED_SIZE, y/Sprite.SCALED_SIZE, Sprite.grass.getFxImage()));
+        }
     }
 
     private void updateBombs() {
@@ -199,5 +205,21 @@ public class Bomber extends AnimationEntity {
         }
         // Render bombs front of Bomberman;
         bombManager.renderBombs(gc, camera);
+    }
+
+    public int getFlame() {
+        return bombManager.getFlame();
+    }
+
+    public void setFlame(int flame) {
+        bombManager.setFlame(flame);
+    }
+
+    public int getNumberOfBombs() {
+        return bombManager.getNumberOfBombs();
+    }
+
+    public void setNumberOfBombs(int numberOfBombs) {
+        bombManager.setNumberOfBombs(numberOfBombs);
     }
 }

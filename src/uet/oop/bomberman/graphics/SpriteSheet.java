@@ -17,6 +17,7 @@ public class SpriteSheet {
 	public BufferedImage image;
 
 	public static SpriteSheet tiles = new SpriteSheet("/textures/classic.png", 256);
+	public static SpriteSheet tilesBomber = new SpriteSheet("/textures/bomber.png", 384);
 	
 	public SpriteSheet(String path, int size) {
 		_path = path;
