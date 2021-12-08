@@ -11,6 +11,7 @@ public class DollEnemy extends Enemy {
         super(xUnit, yUnit, img, collisionManager);
         this.speed = 2;
         this.isCheckCollision = false;
+        sizeCheckCollision = speed;
     }
 
     public void update() {

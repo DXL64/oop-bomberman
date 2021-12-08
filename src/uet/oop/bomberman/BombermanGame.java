@@ -21,7 +21,7 @@ public class BombermanGame extends Application {
     private Graphics graphics;
     private Canvas canvas;
     private Timer timer;
-    private GameMenu menu;
+    public static GameMenu menu;
     public static Map map;
     private KeyListener keyListener;
 
@@ -67,11 +67,23 @@ public class BombermanGame extends Application {
             menu.update();
             break;
 
+        case IN_MULTIPLAYER_MENU:
+            menu.update();
+            break;
+
+        case IN_SURVIVAL_MENU:
+            menu.update();
+            break;
+
         case IN_SINGLE_GAME:
             map.update();
             break;
 
         case IN_MULTIPLAYER_GAME:
+            map.update();
+            break;
+        
+        case IN_SURVIVAL_GAME:
             map.update();
             break;
         
@@ -91,6 +103,14 @@ public class BombermanGame extends Application {
         case IN_MENU:
             graphics.renderMenu(menu);
             break;
+        
+        case IN_MULTIPLAYER_MENU:
+            graphics.renderMenu(menu);
+            break;
+        
+        case IN_SURVIVAL_MENU:
+            graphics.renderMenu(menu);
+            break;
 
         case IN_SINGLE_GAME:
             graphics.clearScreen(canvas);
@@ -100,7 +120,11 @@ public class BombermanGame extends Application {
         case IN_MULTIPLAYER_GAME:
             graphics.clearScreen(canvas);
             graphics.renderMap(map);
-
+            break;
+        
+        case IN_SURVIVAL_GAME:
+            graphics.clearScreen(canvas);
+            graphics.renderMap(map);
             break;
 
         case IN_PAUSE:

@@ -8,12 +8,14 @@ public class Bomb extends AnimationEntity implements Obstacle {
 
     private long timeSet;
     private boolean exploded;
+    private int flame;
 
-    public Bomb(int xUnit, int yUnit, Image img) {
+    public Bomb(int xUnit, int yUnit, Image img, int flame) {
         super(xUnit, yUnit, img);
         timeSet = Timer.now();
         countStep = 0;
         exploded = false;
+        this.flame = flame;
     }
 
     @Override
@@ -48,4 +50,10 @@ public class Bomb extends AnimationEntity implements Obstacle {
         return null;
     }
 
+    public void setFlame(int flame){
+        this.flame = flame;
+    }
+    public int getFlame(){
+        return flame;
+    }
 }

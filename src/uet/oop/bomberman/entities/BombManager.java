@@ -19,15 +19,13 @@ public class BombManager {
     private List<Explosion> explosions = new ArrayList<>();
     private Map map;
     private CollisionManager collisionManager;
-    private int numberOfBombs;
+    private int numberOfBombs = 1;
     private long delayBombSet;
-    private int flame;
+    private int flame = 1;
 
     public BombManager(CollisionManager collisionManager) {
         this.map = collisionManager.getMap();
         this.collisionManager = collisionManager;
-        numberOfBombs = 10;
-        flame = 1;
         delayBombSet = Timer.now();
     }
 
@@ -69,8 +67,15 @@ public class BombManager {
             } else {
                 if (map.getMap().get(y + i).get(x) instanceof Brick) {
                     explosions.add(new Explosion(x, y + i, Sprite.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK, collisionManager));
-                    map.replace(x, y + i, new Grass(x, y + i, Sprite.grass.getFxImage()));
-
+                    if(map.getItem(x, y + i) == SpeedItem.code)
+                        map.replace(x, y + i, new SpeedItem(x, y + i, Sprite.powerup_speed.getFxImage()));
+                    else if(map.getItem(x, y + i) == FlameItem.code)
+                        map.replace(x, y + i, new FlameItem(x, y + i, Sprite.powerup_flames.getFxImage()));
+                    else if(map.getItem(x, y + i) == BombItem.code)
+                        map.replace(x, y + i, new BombItem(x, y + i, Sprite.powerup_bombs.getFxImage()));
+                    else
+                        map.replace(x, y + i, new Grass(x, y + i, Sprite.grass.getFxImage()));
+                    System.out.println(Sprite.grass.getFxImage());
                 }
                 break;
             }
@@ -91,7 +96,14 @@ public class BombManager {
             } else {
                 if (map.getMap().get(y).get(x - i) instanceof Brick) {
                     explosions.add(new Explosion(x - i, y, Sprite.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK, collisionManager));
-                    map.replace(x - i, y, new Grass(x - i, y, Sprite.grass.getFxImage()));
+                    if(map.getItem(x - i, y) == SpeedItem.code)
+                        map.replace(x - i, y, new SpeedItem(x - i, y, Sprite.powerup_speed.getFxImage()));
+                    else if(map.getItem(x - i, y) == FlameItem.code)
+                        map.replace(x - i, y, new FlameItem(x - i, y, Sprite.powerup_flames.getFxImage()));
+                    else if(map.getItem(x - i, y) == BombItem.code)
+                        map.replace(x - i, y, new BombItem(x - i, y, Sprite.powerup_bombs.getFxImage()));
+                    else
+                        map.replace(x - i, y, new Grass(x - i, y, Sprite.grass.getFxImage()));
                 }
                 break;
             }
@@ -112,7 +124,14 @@ public class BombManager {
             } else {
                 if (map.getMap().get(y).get(x + i) instanceof Brick) {
                     explosions.add(new Explosion(x + i, y, Sprite.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK, collisionManager));
-                    map.replace(x + i, y, new Grass(x + i, y, Sprite.grass.getFxImage()));
+                    if(map.getItem(x + i, y) == SpeedItem.code)
+                        map.replace(x + i, y, new SpeedItem(x + i, y, Sprite.powerup_speed.getFxImage()));
+                    else if(map.getItem(x + i, y) == FlameItem.code)
+                        map.replace(x + i, y, new FlameItem(x + i, y, Sprite.powerup_flames.getFxImage()));
+                    else if(map.getItem(x + i, y) == BombItem.code)
+                        map.replace(x + i, y, new BombItem(x + i, y, Sprite.powerup_bombs.getFxImage()));
+                    else
+                        map.replace(x + i, y, new Grass(x + i, y, Sprite.grass.getFxImage()));
                 }
                 break;
             }
@@ -133,7 +152,14 @@ public class BombManager {
             } else {
                 if (map.getMap().get(y - i).get(x) instanceof Brick) {
                     explosions.add(new Explosion(x, y - i, Sprite.brick_exploded2.getFxImage(), DIRECTION.DOWN, EXPLOSION_STATE.BRICK, collisionManager));
-                    map.replace(x, y - i, new Grass(x, y - i, Sprite.grass.getFxImage()));
+                    if(map.getItem(x, y - i) == SpeedItem.code)
+                        map.replace(x, y - i, new SpeedItem(x, y - i, Sprite.powerup_speed.getFxImage()));
+                    else if(map.getItem(x, y - i) == FlameItem.code)
+                        map.replace(x, y - i, new FlameItem(x, y - i, Sprite.powerup_flames.getFxImage()));
+                    else if(map.getItem(x, y - i) == BombItem.code)
+                        map.replace(x, y - i, new BombItem(x, y - i, Sprite.powerup_bombs.getFxImage()));
+                    else
+                        map.replace(x, y - i, new Grass(x, y - i, Sprite.grass.getFxImage()));
                 }
                 break;
             }
@@ -181,6 +207,19 @@ public class BombManager {
             explosion.render(gc, camera);
         }
     }
+    public int getFlame() {
+        return flame;
+    }
 
-    
+    public void setFlame(int flame) {
+        this.flame = flame;
+    }
+
+    public int getNumberOfBombs() {
+        return numberOfBombs;
+    }
+
+    public void setNumberOfBombs(int numberOfBombs) {
+        this.numberOfBombs = numberOfBombs;
+    }
 }

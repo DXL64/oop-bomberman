@@ -14,6 +14,7 @@ public class BalloomEnemy extends Enemy {
     public BalloomEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager) {
         super(xUnit, yUnit, img, collisionManager);
         this.speed = 2;
+        sizeCheckCollision = speed;
     }
 
     public void update() {
@@ -97,30 +98,21 @@ public class BalloomEnemy extends Enemy {
         }
         return false;
     }
-
+    
     public Image chooseSprite() {
-        if (death) {
-            if (countStep < 30) {
-                return Sprite.balloom_dead.getFxImage();
+        spriteImage = count % 9;
+        if(direction == moveLeft || direction == moveUp){
+            switch(spriteImage / 3){
+                case 0: return Sprite.balloom_left1.getFxImage();
+                case 1: return Sprite.balloom_left2.getFxImage();
+                case 2: return Sprite.balloom_left3.getFxImage();
             }
         }
-        if (direction == moveLeft || direction == moveUp) {
-            switch (spriteImage) {
-                case 0:
-                    return Sprite.balloom_left1.getFxImage();
-                case 1:
-                    return Sprite.balloom_left2.getFxImage();
-                case 2:
-                    return Sprite.balloom_left3.getFxImage();
-            }
-        } else if (direction == moveRight || direction == moveDown) {
-            switch (spriteImage) {
-                case 0:
-                    return Sprite.balloom_right1.getFxImage();
-                case 1:
-                    return Sprite.balloom_right2.getFxImage();
-                case 2:
-                    return Sprite.balloom_right3.getFxImage();
+        else if(direction == moveRight || direction == moveDown){
+            switch(spriteImage / 3){
+                case 0: return Sprite.balloom_right1.getFxImage();
+                case 1: return Sprite.balloom_right2.getFxImage();
+                case 2: return Sprite.balloom_right3.getFxImage();
             }
         }
         return null;
