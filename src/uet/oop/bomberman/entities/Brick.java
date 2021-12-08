@@ -1,5 +1,4 @@
 package uet.oop.bomberman.entities;
-
 import javafx.scene.image.Image;
 
 
@@ -8,10 +7,12 @@ public class Brick extends Tile implements Obstacle, Destroyable {
         super(x, y, img);
     }
 
+    public void die(){
+    }
+
     @Override
     public void update() {
         // TODO Auto-generated method stub
         
     }
-
 }

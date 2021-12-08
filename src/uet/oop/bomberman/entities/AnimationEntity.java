@@ -2,6 +2,8 @@ package uet.oop.bomberman.entities;
 
 import java.net.DatagramPacket;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.SocketGame;
@@ -15,7 +17,8 @@ public abstract class AnimationEntity extends Entity {
     protected DIRECTION backStep = DIRECTION.RIGHT;
     protected int countStep = 0;
     protected boolean isRunning = false;
-    protected int speedBomber = 2;
+    protected int speed = 2;
+    protected int indexOfFlex;
 
     public AnimationEntity(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -37,6 +40,7 @@ public abstract class AnimationEntity extends Entity {
                 updateDirect(direct, success);
                 break;
             case IN_MULTIPLAYER_GAME:
+            case IN_SURVIVAL_GAME:
                 sendMessageSocket(direct, success, curNumberInMap);
                 break;
             default:
@@ -49,13 +53,13 @@ public abstract class AnimationEntity extends Entity {
             isRunning = true;
             direction = direct;
             if (direct == DIRECTION.DOWN)
-                y += speedBomber;
+                y += speed;
             if (direct == DIRECTION.UP)
-                y -= speedBomber;
+                y -= speed;
             if (direct == DIRECTION.LEFT)
-                x -= speedBomber;
+                x -= speed;
             if (direct == DIRECTION.RIGHT)
-                x += speedBomber;
+                x += speed;
         } else {
             isRunning = false;
         }
@@ -79,14 +83,20 @@ public abstract class AnimationEntity extends Entity {
             e.printStackTrace();
         }
     }
+    public void setIndexOfFlex(int indexOfFlex){
+        this.indexOfFlex = indexOfFlex;
+    }
+    public int getIndexOfFlex(){
+        return indexOfFlex;
+    }
 
     public abstract Image chooseSprite();
 
     public int getSpeedBomber() {
-        return speedBomber;
+        return speed;
     }
 
     public void setSpeedBomber(int speedBomber) {
-        this.speedBomber = speedBomber;
+        this.speed = speedBomber;
     }
 }

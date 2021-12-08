@@ -11,6 +11,7 @@ public class DollEnemy extends Enemy {
         super(xUnit, yUnit, img, collisionManager);
         this.speed = 2;
         this.isCheckCollision = false;
+        sizeCheckCollision = speed;
     }
     public void update(){
         ++count;
@@ -26,6 +27,7 @@ public class DollEnemy extends Enemy {
         return;
     }
     public Image chooseSprite() {
+        spriteImage = count % 9;
         if(direction == moveLeft || direction == moveUp){
             switch(spriteImage / 3){
                 case 0: return Sprite.doll_left1.getFxImage();

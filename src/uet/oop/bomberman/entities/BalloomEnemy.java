@@ -15,6 +15,7 @@ public class BalloomEnemy extends Enemy {
     public BalloomEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager){
         super(xUnit, yUnit, img, collisionManager);
         this.speed = 2;
+        sizeCheckCollision = speed;
     }
 
     public void update(){
@@ -30,56 +31,17 @@ public class BalloomEnemy extends Enemy {
         else if(direction == moveUp) goUp();
         return;
     }
-    public Boolean goLeft(){
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speed, y, DIRECTION.LEFT);
-        if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-            x -= speed;
-            direction = moveLeft;
-            spriteImage = (spriteImage + 1) % 3;
-            return true;
-        }
-        return false;
-    }
-    public Boolean goRight(){
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speed, y, DIRECTION.RIGHT);
-        if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-            x += speed;
-            direction = moveRight;
-            spriteImage = (spriteImage + 1) % 3;
-            return true;
-        }
-        return false;
-    }
-    public Boolean goUp(){
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speed, DIRECTION.UP);
-        if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-            y -= speed;
-            direction = moveUp;
-            spriteImage = (spriteImage + 1) % 3;
-            return true;
-        }
-        return false;
-    }
-    public Boolean goDown(){
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speed, DIRECTION.DOWN);
-        if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-            y += speed;
-            direction = moveDown;
-            spriteImage = (spriteImage + 1) % 3;
-            return true;
-        }
-        return false;
-    }
     public Image chooseSprite() {
+        spriteImage = count % 9;
         if(direction == moveLeft || direction == moveUp){
-            switch(spriteImage){
+            switch(spriteImage / 3){
                 case 0: return Sprite.balloom_left1.getFxImage();
                 case 1: return Sprite.balloom_left2.getFxImage();
                 case 2: return Sprite.balloom_left3.getFxImage();
             }
         }
         else if(direction == moveRight || direction == moveDown){
-            switch(spriteImage){
+            switch(spriteImage / 3){
                 case 0: return Sprite.balloom_right1.getFxImage();
                 case 1: return Sprite.balloom_right2.getFxImage();
                 case 2: return Sprite.balloom_right3.getFxImage();

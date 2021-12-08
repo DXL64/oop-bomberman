@@ -221,4 +221,7 @@ public class BombManager {
     public void setNumberOfBombs(int numberOfBombs) {
         this.numberOfBombs = numberOfBombs;
     }
+    public List<Bomb> getBombs(){
+        return bombs;
+    }
 }
