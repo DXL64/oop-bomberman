@@ -3,15 +3,15 @@ import java.io.IOException;
 import java.net.*;
 import java.util.List;
 
-import javax.swing.text.html.parser.Entity;
-
 import javafx.application.Platform;
 import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.GameMenu;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
+import uet.oop.bomberman.entities.AnimationEntity;
 import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.BombManager;
 import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class SocketGame {
@@ -26,7 +26,7 @@ public class SocketGame {
     public static String hashCode;
     public static Thread threadSocket;
 
-    public SocketGame(List<Bomber> bombermans, Map map){
+    public SocketGame(Map map){
         threadSocket = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -40,6 +40,8 @@ public class SocketGame {
                     String msgHello = hashCode + ",Hello";
                     byte[] data = msgHello.getBytes();
                     outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
+
+                    List<Entity> flexEntities = map.getFlexEntities();
                     
                     try {
                         //Send messages to multicast group
@@ -53,7 +55,6 @@ public class SocketGame {
                         socket.receive(inPacket);
                         String msg = new String(BUFFER, 0, inPacket.getLength());
                         String[] tokens = msg.split(","); 
-                        System.out.println("msg: " + msg);
                         if(tokens[1].equals("Hello")){
                             if(!tokens[0].equals(hashCode)){
                                 map.setNumberBomber(map.getNumberBomber() + 1);
@@ -67,20 +68,7 @@ public class SocketGame {
                                 } catch (Exception e){
                                     e.printStackTrace();
                                 }
-                                if(map.getCurrentBomber() == 0){
-                                    msgRely = hashCode + ",Rand," + Map.randomStart; 
-                                    dataRely = msgRely.getBytes();
-                                    outPacket = new DatagramPacket(dataRely, dataRely.length, SocketGame.address, SocketGame.PORT);
-                                    try {
-                                        socket.send(outPacket);
-                                    } catch (Exception e){
-                                        e.printStackTrace();
-                                    }
-                                }
                             }
-                        }
-                        else if(tokens[1].equals("Rand")){
-                            Map.randomStart = Integer.parseInt(tokens[2]);
                         }
                         else if(tokens[1].equals("Hi")){
                             if(tokens[3].equals(hashCode)){
@@ -88,32 +76,38 @@ public class SocketGame {
                                 map.setNumberBomber(map.getCurrentBomber() + 1);
                                 System.out.println("You are number: " + map.getCurrentBomber());
                                 System.out.println("Number players current is in room: " + map.getNumberBomber());
-                                bombermans.get(map.getCurrentBomber()).setIsCamFollow(true);
+                                Bomber bomberCur = (Bomber)flexEntities.get(map.getCurrentBomber());
+                                bomberCur.setIsCamFollow(true);
                             }
                         }
                         else if(tokens[1].equals("D")){
-                            int curBomber = Integer.parseInt(tokens[0]);
+                            int cur = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            bombermans.get(curBomber).updateDirect(DIRECTION.RIGHT, success);
+                            AnimationEntity animationEntity = (AnimationEntity)flexEntities.get(cur);
+                            animationEntity.updateDirect(DIRECTION.RIGHT, success);
                         }
                         else if(tokens[1].equals("S")){
-                            int curBomber = Integer.parseInt(tokens[0]);
+                            int cur = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            bombermans.get(curBomber).updateDirect(DIRECTION.DOWN, success);
+                            AnimationEntity animationEntity = (AnimationEntity)flexEntities.get(cur);
+                            animationEntity.updateDirect(DIRECTION.DOWN, success);
                         }
                         else if(tokens[1].equals("A")){
-                            int curBomber = Integer.parseInt(tokens[0]);
+                            int cur = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            bombermans.get(curBomber).updateDirect(DIRECTION.LEFT, success);
+                            AnimationEntity animationEntity = (AnimationEntity)flexEntities.get(cur);
+                            animationEntity.updateDirect(DIRECTION.LEFT, success);
                         }
                         else if(tokens[1].equals("W")){
-                            int curBomber = Integer.parseInt(tokens[0]);
+                            int cur = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            bombermans.get(curBomber).updateDirect(DIRECTION.UP, success);
+                            AnimationEntity animationEntity = (AnimationEntity)flexEntities.get(cur);
+                            animationEntity.updateDirect(DIRECTION.UP, success);
                         }
                         else if(tokens[1].equals("Bomb")){
                             int curBomber = Integer.parseInt(tokens[0]);
-                            BombManager bombManager = bombermans.get(curBomber).getBombManager();
+                            Bomber bomberCur = (Bomber)flexEntities.get(curBomber);
+                            BombManager bombManager = bomberCur.getBombManager();
                             int xBomb = Integer.parseInt(tokens[2]);
                             int yBomb = Integer.parseInt(tokens[3]);
                             bombManager.addBomb(new Bomb(xBomb, yBomb, Sprite.bomb.getFxImage(), bombManager.getFlame()));
@@ -131,8 +125,8 @@ public class SocketGame {
                         }
                         else if(tokens[1].equals("Start")){
                             if(GameMenu.gameState == GameMenu.GAME_STATE.IN_MULTIPLAYER_MENU){
+                                System.out.println("[ENTER MULTIPLAYER GAME]");
                                 BombermanGame.menu.setGameState(GameMenu.GAME_STATE.IN_MULTIPLAYER_GAME);
-                                System.out.println("[ENTER MULTIPLAYER GAME]" + BombermanGame.menu.getGameState());
 
 
                             }
@@ -143,11 +137,13 @@ public class SocketGame {
                         }
                         else if(tokens[1].equals("Ready")){
                             int curBomber = Integer.parseInt(tokens[0]);
-                            bombermans.get(curBomber).setReady(true);
+                            Bomber bomberCur = (Bomber)flexEntities.get(curBomber);
+                            bomberCur.setReady(true);
                         }
                         else if(tokens[1].equals("NotReady")){
                             int curBomber = Integer.parseInt(tokens[0]);
-                            bombermans.get(curBomber).setReady(false);
+                            Bomber bomberCur = (Bomber)flexEntities.get(curBomber);
+                            bomberCur.setReady(false);
                         }
                     }
                 } catch (IOException ex) {

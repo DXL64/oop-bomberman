@@ -71,6 +71,7 @@ public class OnealEnemy extends Enemy {
         return formatMap;
     }
     public Image chooseSprite() {
+        spriteImage = count % 9;
         if(direction == moveLeft || direction == moveUp){
             switch(spriteImage / 3){
                 case 0: return Sprite.oneal_left1.getFxImage();

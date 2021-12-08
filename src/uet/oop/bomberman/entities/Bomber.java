@@ -20,7 +20,6 @@ public class Bomber extends AnimationEntity {
     private KeyListener keyListener;
     private CollisionManager collisionManager;
     private Boolean isCamFollow = false;
-    protected int curNumberInMap;
     private BombManager bombManager;
     private boolean ready = false;
 
@@ -29,15 +28,11 @@ public class Bomber extends AnimationEntity {
         this.keyListener = keyListener;
         this.collisionManager = collisionManager;
         bombManager = new BombManager(collisionManager);
-        speed = 4;
+        speed = 2;
     }
 
     public void setIsCamFollow(Boolean is) {
         isCamFollow = is;
-    }
-
-    public void setCurNumberInMap(int number) {
-        curNumberInMap = number;
     }
 
     @Override
@@ -53,9 +48,9 @@ public class Bomber extends AnimationEntity {
         if (keyListener.isPressed(KeyCode.D)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speed, y, DIRECTION.RIGHT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                super.update(DIRECTION.RIGHT, true, curNumberInMap);
+                super.update(DIRECTION.RIGHT, true, indexOfFlex);
             } else {
-                super.update(DIRECTION.RIGHT, false, curNumberInMap);
+                super.update(DIRECTION.RIGHT, false, indexOfFlex);
             }
         }
 
@@ -63,9 +58,9 @@ public class Bomber extends AnimationEntity {
         if (keyListener.isPressed(KeyCode.A)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speed, y, DIRECTION.LEFT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                super.update(DIRECTION.LEFT, true, curNumberInMap);
+                super.update(DIRECTION.LEFT, true, indexOfFlex);
             } else {
-                super.update(DIRECTION.LEFT, false, curNumberInMap);
+                super.update(DIRECTION.LEFT, false, indexOfFlex);
             }
 
         }
@@ -75,9 +70,9 @@ public class Bomber extends AnimationEntity {
         {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speed, DIRECTION.UP);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                super.update(DIRECTION.UP, true, curNumberInMap);
+                super.update(DIRECTION.UP, true, indexOfFlex);
             } else {
-                super.update(DIRECTION.UP, false, curNumberInMap);
+                super.update(DIRECTION.UP, false, indexOfFlex);
             }
         }
 
@@ -85,9 +80,9 @@ public class Bomber extends AnimationEntity {
         if (keyListener.isPressed(KeyCode.S)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speed, DIRECTION.DOWN);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-                super.update(DIRECTION.DOWN, true, curNumberInMap);
+                super.update(DIRECTION.DOWN, true, indexOfFlex);
             } else {
-                super.update(DIRECTION.DOWN, false, curNumberInMap);
+                super.update(DIRECTION.DOWN, false, indexOfFlex);
             }
         }
 
@@ -111,7 +106,8 @@ public class Bomber extends AnimationEntity {
                         bombManager.addBomb(bomb);
                         break;
                     case IN_MULTIPLAYER_GAME:
-                        String msg = curNumberInMap + ",Bomb," + xBomb + "," + yBomb;
+                    case IN_SURVIVAL_GAME:
+                        String msg = indexOfFlex + ",Bomb," + xBomb + "," + yBomb;
                         byte[] data = msg.getBytes();
                         DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
                         try {

@@ -31,6 +31,6 @@ public class MultiPlayerMap extends Map {
 
     public MultiPlayerMap(int level, KeyListener keyListener){
         super(level, keyListener);
-        socketGame = new SocketGame(getAllBombermans(), this);
+        socketGame = new SocketGame(this);
     }
 }

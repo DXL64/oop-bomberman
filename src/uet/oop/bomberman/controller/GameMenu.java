@@ -110,12 +110,12 @@ public class GameMenu {
                             case SINGLE_GAME:
                                 System.out.println("[ENTER SINGLE GAME]");
                                 gameState = GAME_STATE.IN_SINGLE_GAME;
-                                BombermanGame.map = new Map(6, keyListener);
+                                BombermanGame.map = new Map(1, keyListener);
                                 break;
                             case MULTI_GAME:
                                 System.out.println("[ENTER MULTIPLAYER MENU]");
                                 gameState = GAME_STATE.IN_MULTIPLAYER_MENU;
-                                BombermanGame.map = new MultiPlayerMap(6, keyListener);
+                                BombermanGame.map = new MultiPlayerMap(1, keyListener);
                                 break;
                             case SURVIVAL_MULTI_GAME:
                                 System.out.println("[ENTER SURVIVAL MENU]");

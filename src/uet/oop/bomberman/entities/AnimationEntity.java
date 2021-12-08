@@ -18,7 +18,7 @@ public abstract class AnimationEntity extends Entity {
     protected int countStep = 0;
     protected boolean isRunning = false;
     protected int speed;
-    protected int index;
+    protected int indexOfFlex;
 
     public AnimationEntity(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -40,6 +40,7 @@ public abstract class AnimationEntity extends Entity {
                 updateDirect(direct, success);
                 break;
             case IN_MULTIPLAYER_GAME:
+            case IN_SURVIVAL_GAME:
                 sendMessageSocket(direct, success, curNumberInMap);
                 break;
             default:
@@ -81,6 +82,12 @@ public abstract class AnimationEntity extends Entity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void setIndexOfFlex(int indexOfFlex){
+        this.indexOfFlex = indexOfFlex;
+    }
+    public int getIndexOfFlex(){
+        return indexOfFlex;
     }
 
     public abstract Image chooseSprite();

@@ -53,7 +53,7 @@ public class Map {
             scanner.nextLine();
             for(int i = 0; i < MAX_NUMBER_BOMBERS; ++i){
                 Bomber temp = new Bomber(1, 1, Sprite.player_right.getFxImage(), keyListener, new CollisionManager(this));
-                temp.setCurNumberInMap(i);
+                temp.setIndexOfFlex(i);
                 flexEntities.add(temp);
             }
             for (int i = 0; i < height; i++) {
@@ -141,8 +141,15 @@ public class Map {
                 Bomber bomber = (Bomber)flexEntities.get(i);
                 bomber.getBombManager().update();
             }
-            if(flexEntities.get(i) instanceof BalloomEnemy || flexEntities.get(i) instanceof DollEnemy) flexEntities.get(i).update();
-            if(flexEntities.get(i) instanceof OnealEnemy || flexEntities.get(i) instanceof NightmareEnemy) flexEntities.get(i).update(map, getBombermans());
+            if(flexEntities.get(i) instanceof Enemy){
+                if(currentBomber != 0){
+                    flexEntities.get(i).updateCount();
+                }
+                else {
+                    if(flexEntities.get(i) instanceof BalloomEnemy || flexEntities.get(i) instanceof DollEnemy) flexEntities.get(i).update();
+                    if(flexEntities.get(i) instanceof OnealEnemy || flexEntities.get(i) instanceof NightmareEnemy) flexEntities.get(i).update(map, getBombermans());
+                }
+            }
         }
         camera.update(flexEntities.get(currentBomber));
     }
@@ -229,6 +236,12 @@ public class Map {
     }
     public int getNumberBomber(){
         return numberBomber;
+    }
+    public int getWidth(){
+        return width;
+    }
+    public int getHeight(){
+        return height;
     }
 
     public void sendItemRand(){

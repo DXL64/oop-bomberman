@@ -28,6 +28,10 @@ public abstract class Entity {
         gc.drawImage(img, x, y);
     }
 
+    public void updateCount(){
+        
+    }
+
     // public void render(GraphicsContext gc, Camera camera) {
     //     gc.drawImage(img, x - camera.getX(), y - camera.getY());
     // }
