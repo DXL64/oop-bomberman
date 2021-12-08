@@ -2,6 +2,7 @@ package uet.oop.bomberman;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.DatagramPacket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -19,7 +20,9 @@ import uet.oop.bomberman.entities.DollEnemy;
 import uet.oop.bomberman.entities.Enemy;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
+import uet.oop.bomberman.entities.NightmareEnemy;
 import uet.oop.bomberman.entities.OnealEnemy;
+import uet.oop.bomberman.entities.Portal;
 import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -29,6 +32,8 @@ public class Map {
     protected List<Entity> flexEntities = new ArrayList<>(); // 4 first elements is for bomber
     protected Camera camera;
     protected List< Pair<Integer, Integer> > coordinateBomberman = new ArrayList<>();
+    protected int height;
+    protected int width;
     protected int mapLevel;
     protected int currentBomber = 0;
     protected int numberBomber = 1;
@@ -42,9 +47,9 @@ public class Map {
         File file = new File(currentWorkingDir.normalize().toString() + "/res/levels/Level" + level +".txt");
         try {
             Scanner scanner = new Scanner(file);
-            int height = scanner.nextInt();
             height = scanner.nextInt();
-            int width = scanner.nextInt();
+            height = scanner.nextInt();
+            width = scanner.nextInt();
             scanner.nextLine();
             for(int i = 0; i < MAX_NUMBER_BOMBERS; ++i){
                 Bomber temp = new Bomber(1, 1, Sprite.player_right.getFxImage(), keyListener, new CollisionManager(this));
@@ -57,28 +62,58 @@ public class Map {
                 for (int j = 0; j < width; j++) {
                     switch (tempString.charAt(j)) {
                         case '#':
-                        tempList.add(new Wall(j, i, Sprite.wall.getFxImage()));
-                        break;
+                            tempList.add(new Wall(j, i, Sprite.wall.getFxImage()));
+                            break;
                         case '*':
-                        tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
-                        break;
-                        // case 'x':
-                        //     tempList.add(new Portal(j, i, Sprite.portal.getFxImage()));
+                            tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
+                            break;
+                        case '1':
+                            Enemy temp = new BalloomEnemy(j, i, Sprite.balloom_left1.getFxImage(), new CollisionManager(this));
+                            flexEntities.add(temp);
+                            temp.setIndexOfFlex(flexEntities.size() - 1);
+                            tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            break;
+                        case '2':
+                            temp = new OnealEnemy(j, i, Sprite.oneal_left1.getFxImage(), new CollisionManager(this));
+                            flexEntities.add(temp);
+                            temp.setIndexOfFlex(flexEntities.size() - 1);
+                            tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            break;
+                        case '3':
+                            temp = new DollEnemy(j, i, Sprite.doll_left1.getFxImage(), new CollisionManager(this));
+                            flexEntities.add(temp);
+                            temp.setIndexOfFlex(flexEntities.size() - 1);
+                            tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            break;
+                        case '4':
+                            temp = new NightmareEnemy(j, i, Sprite.doll_left1.getFxImage(), new CollisionManager(this));
+                            flexEntities.add(temp);
+                            temp.setIndexOfFlex(flexEntities.size() - 1);
+                            tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            break;
+                        case 'p':
+                            coordinateBomberman.add(new Pair<>(j, i));
+                            tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            break;
+                        case 'x':
+                            tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
+                            flexEntities.add(new Portal(j, i, Sprite.portal.getFxImage()));
+                            break;
+                        case 'b':
+                            tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
+                            //flexEntities.add(new BombItem(j, i, Sprite.item.getFxImage()));
+                            break;
+                        case 'f':
+                            tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
+                            //flexEntities.add(new BombItem(j, i, Sprite.item.getFxImage()));
+                            break;
+                        case 's':
+                            tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
+                            //flexEntities.add(new BombItem(j, i, Sprite.item.getFxImage()));
+                            break;
                         default:
-                        tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
-                        break;
-                    }
-                    if(tempString.charAt(j) == '1'){
-                        flexEntities.add(new BalloomEnemy(j, i, Sprite.balloom_left1.getFxImage(), new CollisionManager(this)));
-                    }
-                    if(tempString.charAt(j) == '2'){
-                        flexEntities.add(new OnealEnemy(j, i, Sprite.oneal_left1.getFxImage(), new CollisionManager(this)));
-                    }
-                    if(tempString.charAt(j) == '3'){
-                        flexEntities.add(new DollEnemy(j, i, Sprite.doll_left1.getFxImage(), new CollisionManager(this)));
-                    }
-                    if(tempString.charAt(j) == 'p'){
-                        coordinateBomberman.add(new Pair<>(j, i));
+                            tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            break;
                     }
                 } 
                 map.add(tempList);
@@ -102,9 +137,12 @@ public class Map {
     public void update() {
         flexEntities.get(currentBomber).update();
         for (int i = 0; i < flexEntities.size(); ++i) {
-            if(flexEntities.get(i) instanceof Bomber) continue;
+            if(flexEntities.get(i) instanceof Bomber){
+                Bomber bomber = (Bomber)flexEntities.get(i);
+                bomber.getBombManager().update();
+            }
             if(flexEntities.get(i) instanceof BalloomEnemy || flexEntities.get(i) instanceof DollEnemy) flexEntities.get(i).update();
-            if(flexEntities.get(i) instanceof OnealEnemy) flexEntities.get(i).update(map, flexEntities.get(currentBomber).getModX(), flexEntities.get(currentBomber).getModY());
+            if(flexEntities.get(i) instanceof OnealEnemy || flexEntities.get(i) instanceof NightmareEnemy) flexEntities.get(i).update(map, getBombermans());
         }
         camera.update(flexEntities.get(currentBomber));
     }
@@ -133,6 +171,11 @@ public class Map {
         return flexEntities.get(currentBomber);
     }
     public List<Bomber> getBombermans(){
+        List<Bomber> bombermans = new ArrayList<>();
+        for(int i = 0; i < numberBomber; ++i) bombermans.add((Bomber)flexEntities.get(i));
+        return bombermans;
+    }
+    public List<Bomber> getAllBombermans(){
         List<Bomber> bombermans = new ArrayList<>();
         for(int i = 0; i < MAX_NUMBER_BOMBERS; ++i) bombermans.add((Bomber)flexEntities.get(i));
         return bombermans;
@@ -186,5 +229,25 @@ public class Map {
     }
     public int getNumberBomber(){
         return numberBomber;
+    }
+
+    public void sendItemRand(){
+        if(currentBomber != 0) return;
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if(map.get(i).get(j) instanceof Brick){
+                    int rand = (int)(Math.random() * 6);
+                    if(rand >= 5) continue;
+                    String msg = "0,Item," + rand + "," + j + "," + i;
+                    byte[] data = msg.getBytes();
+                    DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
+                    try {
+                        SocketGame.socket.send(outPacket);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 }

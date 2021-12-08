@@ -1,14 +1,19 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+
+import java.net.DatagramPacket;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.util.Pair;
 import uet.oop.bomberman.controller.CollisionManager;
+import uet.oop.bomberman.controller.GameMenu;
 import uet.oop.bomberman.controller.KeyListener;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.SocketGame;
 import uet.oop.bomberman.controller.Camera;
 
 public class Bomber extends AnimationEntity {
@@ -17,13 +22,14 @@ public class Bomber extends AnimationEntity {
     private Boolean isCamFollow = false;
     protected int curNumberInMap;
     private BombManager bombManager;
-
+    private boolean ready = false;
 
     public Bomber(int x, int y, Image img, KeyListener keyListener, CollisionManager collisionManager) {
         super(x, y, img);
         this.keyListener = keyListener;
         this.collisionManager = collisionManager;
         bombManager = new BombManager(collisionManager);
+        speed = 4;
     }
 
     public void setIsCamFollow(Boolean is) {
@@ -36,10 +42,8 @@ public class Bomber extends AnimationEntity {
 
     @Override
     public void update() {
-
         updateBomberman();
         updateBombs();
-
     }
 
     private void updateBomberman() {
@@ -47,7 +51,7 @@ public class Bomber extends AnimationEntity {
 
         // Handle Key Press D
         if (keyListener.isPressed(KeyCode.D)) {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + CollisionManager.STEP, y, DIRECTION.RIGHT);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speed, y, DIRECTION.RIGHT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.RIGHT, true, curNumberInMap);
             } else {
@@ -57,7 +61,7 @@ public class Bomber extends AnimationEntity {
 
         // Handle Key Press A
         if (keyListener.isPressed(KeyCode.A)) {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - CollisionManager.STEP, y, DIRECTION.LEFT);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speed, y, DIRECTION.LEFT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.LEFT, true, curNumberInMap);
             } else {
@@ -69,7 +73,7 @@ public class Bomber extends AnimationEntity {
         if (keyListener.isPressed(KeyCode.W))
 
         {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - CollisionManager.STEP, DIRECTION.UP);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speed, DIRECTION.UP);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.UP, true, curNumberInMap);
             } else {
@@ -79,7 +83,7 @@ public class Bomber extends AnimationEntity {
 
         // Handle Key Press S
         if (keyListener.isPressed(KeyCode.S)) {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + CollisionManager.STEP, DIRECTION.DOWN);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speed, DIRECTION.DOWN);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.DOWN, true, curNumberInMap);
             } else {
@@ -99,14 +103,26 @@ public class Bomber extends AnimationEntity {
             yBomb = yBomb - yBomb % Sprite.SCALED_SIZE;
             xBomb /= Sprite.SCALED_SIZE;
             yBomb /= Sprite.SCALED_SIZE;
-            Bomb bomb = new Bomb(xBomb, yBomb, Sprite.bomb.getFxImage());
+            Bomb bomb = new Bomb(xBomb, yBomb, Sprite.bomb.getFxImage(), bombManager.getFlame());
             // getMap().replace(xBomb, yBomb, bomb);
-            if (bombManager.canSetBomb(xBomb, yBomb))
-                {
-                    bombManager.addBomb(bomb);
+            if (bombManager.canSetBomb(xBomb, yBomb)){
+                switch (GameMenu.gameState) {
+                    case IN_SINGLE_GAME:
+                        bombManager.addBomb(bomb);
+                        break;
+                    case IN_MULTIPLAYER_GAME:
+                        String msg = curNumberInMap + ",Bomb," + xBomb + "," + yBomb;
+                        byte[] data = msg.getBytes();
+                        DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
+                        try {
+                            SocketGame.socket.send(outPacket);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
                 }
+            }
         }
-        bombManager.update();
     }
 
     public Image chooseSprite() {
@@ -199,5 +215,15 @@ public class Bomber extends AnimationEntity {
         }
         // Render bombs front of Bomberman;
         bombManager.renderBombs(gc, camera);
+    }
+
+    public BombManager getBombManager(){
+        return bombManager;
+    }
+    public boolean getReady(){
+        return ready;
+    }
+    public void setReady(boolean ready){
+        this.ready = ready;
     }
 }

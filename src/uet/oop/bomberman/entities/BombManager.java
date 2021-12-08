@@ -180,4 +180,14 @@ public class BombManager {
             explosion.render(gc, camera);
         }
     }
+
+    public void setFlame(int flame){
+        this.flame = flame;
+    }
+    public int getFlame(){
+        return flame;
+    }
+    public List<Bomb> getBombs(){
+        return bombs;
+    }
 }

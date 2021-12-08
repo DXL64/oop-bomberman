@@ -1,6 +1,8 @@
 package uet.oop.bomberman.entities;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import javafx.scene.image.Image;
 import javafx.util.Pair;
@@ -9,7 +11,7 @@ import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Enemy extends AnimationEntity {
+public class Enemy extends AnimationEntity implements Destroyable {
     protected CollisionManager collisionManager;
 
     public final static int notGo = 0;
@@ -20,7 +22,6 @@ public class Enemy extends AnimationEntity {
     protected int count = 0;
     protected int spriteImage = 0;
     protected int direction = moveLeft;
-    protected int speed;
     protected int sizeCheckCollision;
     protected Boolean isCheckCollision = true;
 
@@ -139,6 +140,82 @@ public class Enemy extends AnimationEntity {
             if(goUp() == true) return;
             if(goRight() == true) return;
         }
+    }
+
+    protected int getDirectFromAStar(List<List<Integer>> data, int height, int width, int yModBomber, int xModBomber){
+        int thisModX = getModX();
+        int thisModY = getModY();
+        List<List<Integer>> dist = new ArrayList<>();
+        List<Integer> parent = new ArrayList<>();
+        for(int i = 0; i < height; ++i){
+            List<Integer> row = new ArrayList<>();
+            for(int j = 0; j < width; ++j){
+                row.add(Integer.MAX_VALUE / 2);
+                parent.add(0);
+            }
+            dist.add(row);
+        }
+        PriorityQueue< Pair<Integer, Pair<Integer, Integer>> > pq = new PriorityQueue< Pair<Integer, Pair<Integer, Integer>> >((x, y) -> x.getKey() - y.getKey());
+
+        pq.add(new Pair<>(Math.abs(xModBomber - thisModX) + Math.abs(yModBomber - thisModY), new Pair<>(yModBomber, xModBomber)));
+        dist.get(yModBomber).set(xModBomber, 0);
+        while(!pq.isEmpty()){
+            Pair<Integer, Pair<Integer, Integer>> u = pq.poll();
+            int x = u.getValue().getValue();
+            int y = u.getValue().getKey();
+            int fu = u.getKey();
+            if(data.get(y).get(x) == ENEMY) break;
+            if(x - 1 >= 0 && data.get(y).get(x - 1) != OBSTACLE){
+                int hv = Math.abs(y - thisModY) + Math.abs(x - 1 - thisModX);
+                int fv = dist.get(y).get(x - 1) + hv;
+                if(fv > fu){
+                    dist.get(y).set(x - 1, dist.get(y).get(x) + 1);
+                    fv = dist.get(y).get(x - 1) + hv;
+                    parent.set((x - 1) * height + y, x * height + y);
+                    pq.add(new Pair<>(fv, new Pair<>(y, x - 1)));
+                }
+            }
+            if(x + 1 <= width && data.get(y).get(x + 1) != OBSTACLE){
+                int hv = Math.abs(y - thisModY) + Math.abs(x + 1 - thisModX);
+                int fv = dist.get(y).get(x + 1) + hv;
+                if(fv > fu){
+                    dist.get(y).set(x + 1, dist.get(y).get(x) + 1);
+                    fv = dist.get(y).get(x + 1) + hv;
+                    parent.set((x + 1) * height + y, x * height + y);
+                    pq.add(new Pair<>(fv, new Pair<>(y, x + 1)));
+                }
+            }
+            if(y + 1 <= height && data.get(y + 1).get(x) != OBSTACLE){
+                int hv = Math.abs(y + 1 - thisModY) + Math.abs(x - thisModX);
+                int fv = dist.get(y + 1).get(x) + hv;
+                if(fv > fu){
+                    dist.get(y + 1).set(x,  dist.get(y).get(x) + 1);
+                    fv = dist.get(y + 1).get(x) + hv;
+                    parent.set(x * height + y + 1, x * height + y);
+                    pq.add(new Pair<>(fv, new Pair<>(y + 1, x)));
+                }
+            }
+            if(y - 1 >= 0 && data.get(y - 1).get(x) != OBSTACLE){
+                int hv = Math.abs(y - 1 - thisModY) + Math.abs(x - thisModX);
+                int fv = dist.get(y - 1).get(x) + hv;
+                if(fv > fu){
+                    dist.get(y - 1).set(x,  dist.get(y).get(x) + 1);
+                    fv = dist.get(y - 1).get(x) + hv;
+                    parent.set(x * height + y - 1, x * height + y);
+                    pq.add(new Pair<>(fv, new Pair<>(y - 1, x)));
+                }
+            }          
+        }
+        //cant find way to ENEMY
+        if(dist.get(thisModY).get(thisModX) == 0 || dist.get(thisModY).get(thisModX) == Integer.MAX_VALUE / 2) return notGo;
+        int nextStep = parent.get(thisModX * height + thisModY);
+        int newX = (int)(nextStep/height);
+        int newY = nextStep % height;
+        if(newX - thisModX == 1) return moveRight;
+        if(newX - thisModX == -1) return moveLeft;
+        if(newY - thisModY == -1) return moveUp;
+        if(newY - thisModY == 1) return moveDown;
+        return moveLeft;
     }
 
     @Override

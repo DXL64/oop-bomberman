@@ -2,6 +2,8 @@ package uet.oop.bomberman.entities;
 
 import java.net.DatagramPacket;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.SocketGame;
@@ -15,6 +17,8 @@ public abstract class AnimationEntity extends Entity {
     protected DIRECTION backStep = DIRECTION.RIGHT;
     protected int countStep = 0;
     protected boolean isRunning = false;
+    protected int speed;
+    protected int index;
 
     public AnimationEntity(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -48,13 +52,13 @@ public abstract class AnimationEntity extends Entity {
             isRunning = true;
             direction = direct;
             if (direct == DIRECTION.DOWN)
-                y += CollisionManager.STEP;
+                y += speed;
             if (direct == DIRECTION.UP)
-                y -= CollisionManager.STEP;
+                y -= speed;
             if (direct == DIRECTION.LEFT)
-                x -= CollisionManager.STEP;
+                x -= speed;
             if (direct == DIRECTION.RIGHT)
-                x += CollisionManager.STEP;
+                x += speed;
         } else {
             isRunning = false;
         }

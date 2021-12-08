@@ -37,7 +37,7 @@ public abstract class Entity {
 
     }
 
-    public void update(List<List<Entity>> map, int xBomber, int yBomber) {
+    public void update(List<List<Entity>> map, List<Bomber> bombers) {
     }
 
     /**

@@ -2,7 +2,6 @@ package uet.oop.bomberman.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 import uet.oop.bomberman.controller.Camera;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,9 +10,9 @@ import javafx.util.Pair;
 import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class OnealEnemy extends Enemy {
+public class NightmareEnemy extends Enemy {
 
-    public OnealEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager){
+    public NightmareEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager){
         super(xUnit, yUnit, img, collisionManager);
         this.speed = 2;
     }
@@ -66,6 +65,19 @@ public class OnealEnemy extends Enemy {
             } 
             formatMap.add(row);
         }
+        for(Bomber bomber : bombers){
+            List<Bomb> bombs = bomber.getBombManager().getBombs();
+            for(Bomb bomb : bombs){
+                int j = bomb.getModX();
+                int i = bomb.getModY();
+                for(int k = 1; k <= bomb.getFlame(); ++k){
+                    if(i + k < height) formatMap.get(i + k).set(j, OBSTACLE);
+                    if(i - k >= 0) formatMap.get(i - k).set(j, OBSTACLE);
+                    if(j + k < width) formatMap.get(i).set(j + k, OBSTACLE);
+                    if(j - k >= 0) formatMap.get(i).set(j - k, OBSTACLE);
+                }
+            }
+        } 
         formatMap.get(yModBomber).set(xModBomber, BOMBERMAN);
         formatMap.get(getModY()).set(getModX(), ENEMY);
         return formatMap;
@@ -73,16 +85,16 @@ public class OnealEnemy extends Enemy {
     public Image chooseSprite() {
         if(direction == moveLeft || direction == moveUp){
             switch(spriteImage / 3){
-                case 0: return Sprite.oneal_left1.getFxImage();
-                case 1: return Sprite.oneal_left2.getFxImage();
-                case 2: return Sprite.oneal_left3.getFxImage();
+                case 0: return Sprite.kondoria_left1.getFxImage();
+                case 1: return Sprite.kondoria_left2.getFxImage();
+                case 2: return Sprite.kondoria_left3.getFxImage();
             }
         }
         else if(direction == moveRight || direction == moveDown){
             switch(spriteImage / 3){
-                case 0: return Sprite.oneal_right1.getFxImage();
-                case 1: return Sprite.oneal_right2.getFxImage();
-                case 2: return Sprite.oneal_right3.getFxImage();
+                case 0: return Sprite.kondoria_right1.getFxImage();
+                case 1: return Sprite.kondoria_right2.getFxImage();
+                case 2: return Sprite.kondoria_right3.getFxImage();
             }
         }
         return null;
