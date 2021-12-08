@@ -45,7 +45,7 @@ public class Bomber extends AnimationEntity {
         isRunning = false;
         // Handle Key Press D
         if (keyListener.isPressed(KeyCode.D)) {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speedBomber, y, DIRECTION.RIGHT);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speed, y, DIRECTION.RIGHT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.RIGHT, true, indexOfFlex);
             } else {
@@ -55,7 +55,7 @@ public class Bomber extends AnimationEntity {
 
         // Handle Key Press A
         if (keyListener.isPressed(KeyCode.A)) {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speedBomber, y, DIRECTION.LEFT);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speed, y, DIRECTION.LEFT);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.LEFT, true, indexOfFlex);
             } else {
@@ -67,7 +67,7 @@ public class Bomber extends AnimationEntity {
         if (keyListener.isPressed(KeyCode.W))
 
         {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speedBomber, DIRECTION.UP);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speed, DIRECTION.UP);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.UP, true, indexOfFlex);
             } else {
@@ -77,7 +77,7 @@ public class Bomber extends AnimationEntity {
 
         // Handle Key Press S
         if (keyListener.isPressed(KeyCode.S)) {
-            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speedBomber, DIRECTION.DOWN);
+            Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speed, DIRECTION.DOWN);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
                 super.update(DIRECTION.DOWN, true, indexOfFlex);
             } else {
