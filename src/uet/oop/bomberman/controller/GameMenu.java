@@ -1,6 +1,5 @@
 package uet.oop.bomberman.controller;
 
-
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +19,10 @@ import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.graphics.SpriteBomber;
 
-
 public class GameMenu {
     public static enum GAME_STATE {
-        IN_MENU, IN_SINGLE_GAME, IN_MULTIPLAYER_GAME, IN_SURVIVAL_GAME, IN_MULTIPLAYER_MENU, IN_SURVIVAL_MENU, IN_PAUSE, END;
+        IN_MENU, IN_SINGLE_GAME, IN_MULTIPLAYER_GAME, IN_SURVIVAL_GAME, IN_MULTIPLAYER_MENU, IN_SURVIVAL_MENU, IN_PAUSE,
+        END, IN_END_STATE;
     }
 
     private final int SINGLE_GAME = 0;
@@ -32,10 +31,13 @@ public class GameMenu {
     private final int BOT_GAME = 3;
     private final int EXIT = 4;
     private long delayInput = 0;
+    public static GAME_STATE preGameState;
 
     List<Button> button = new ArrayList<>();
     Button startButton;
     Button readyButton;
+    Button pauseButton;
+    Button gotoMenuButton;
 
     private int choosenButton;
     private boolean isReady = false;
@@ -47,9 +49,9 @@ public class GameMenu {
     public GameMenu(KeyListener keyListener) {
         this.gameState = GAME_STATE.IN_MENU;
         this.keyListener = keyListener;
-        
+
         Text text = new Text("SINGLE PLAY");
-        text.setFont(Graphics.FUTUREFONT); 
+        text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth() / 2,
             Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE + (int) text.getLayoutBounds().getHeight() / 2, text));
@@ -84,14 +86,25 @@ public class GameMenu {
         text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         startButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
-            Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text);
-        
+                Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 2, text);
+
         text = new Text("READY");
         text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         readyButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
-            Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text);
+                Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 2, text);
 
+        text = new Text("CONTINUE GAME");
+        text.setFont(Graphics.FUTUREFONT);
+        text.setFill(Color.WHITE);
+        pauseButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
+                Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 2, text);
+
+        text = new Text("GO TO MENU");
+        text.setFont(Graphics.FUTUREFONT);
+        text.setFill(Color.WHITE);
+        gotoMenuButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
+                Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 2, text);
 
         choosenButton = SINGLE_GAME;
     }
@@ -122,9 +135,9 @@ public class GameMenu {
                                 gameState = GAME_STATE.IN_SURVIVAL_MENU;
                                 BombermanGame.map = new MultiPlayerMap(6, keyListener);
                                 break;
-                            case EXIT: 
+                            case EXIT:
                                 System.out.println("[ENTER END STATE]");
-                                gameState = GAME_STATE.END; 
+                                gameState = GAME_STATE.END;
                                 break;
                         }
                     } else if (keyListener.isPressed(KeyCode.S)) {
@@ -155,46 +168,67 @@ public class GameMenu {
                 if (now - delayInput > Timer.TIME_FOR_SINGLE_INPUT) {
                     delayInput = now;
                     if (keyListener.isPressed(KeyCode.ENTER)) {
-                        if(BombermanGame.map.getCurrentBomber() == 0){
+                        if (BombermanGame.map.getCurrentBomber() == 0) {
                             numberReady = 0;
-                            for(Bomber bomber : BombermanGame.map.getBombermans()){
-                                if(bomber.getReady() == true) ++numberReady;
+                            for (Bomber bomber : BombermanGame.map.getBombermans()) {
+                                if (bomber.getReady() == true)
+                                    ++numberReady;
                             }
-                            if(numberReady == BombermanGame.map.getNumberBomber() - 1 && numberReady > 0){
+                            if (numberReady == BombermanGame.map.getNumberBomber() - 1 && numberReady > 0) {
                                 String msg = "0,Start";
                                 byte[] data = msg.getBytes();
-                                DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
+                                DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address,
+                                        SocketGame.PORT);
                                 try {
                                     SocketGame.socket.send(outPacket);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                if(gameState == GAME_STATE.IN_SURVIVAL_MENU || gameState == GAME_STATE.IN_SURVIVAL_GAME) BombermanGame.map.sendItemRand();
+                                if (gameState == GAME_STATE.IN_SURVIVAL_MENU
+                                        || gameState == GAME_STATE.IN_SURVIVAL_GAME)
+                                    BombermanGame.map.sendItemRand();
                             }
-                        }
-                        else {
+                        } else {
                             String msg = new String();
-                            if(isReady == false){
+                            if (isReady == false) {
                                 isReady = true;
                                 msg = BombermanGame.map.getCurrentBomber() + ",Ready";
-                            }
-                            else {
+                            } else {
                                 isReady = false;
                                 msg = BombermanGame.map.getCurrentBomber() + ",NotReady";
                             }
                             byte[] data = msg.getBytes();
-                            DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
+                            DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address,
+                                    SocketGame.PORT);
                             try {
                                 SocketGame.socket.send(outPacket);
                             } catch (Exception e) {
                                 e.printStackTrace();
-                            } 
+                            }
                         }
                     }
                 }
                 break;
 
-            case IN_PAUSE:           
+            case IN_PAUSE:
+                now = Timer.now();
+                if (now - delayInput > Timer.TIME_FOR_SINGLE_INPUT) {
+                    delayInput = now;
+                    if (keyListener.isPressed(KeyCode.ENTER))
+                        gameState = GAME_STATE.IN_SINGLE_GAME;
+                }
+                break;
+
+            case IN_END_STATE:
+                now = Timer.now();
+                if (now - delayInput > Timer.TIME_FOR_SINGLE_INPUT) {
+                    delayInput = now;
+                    if (keyListener.isPressed(KeyCode.ENTER)) {
+                        gameState = GAME_STATE.IN_MENU;
+                        if (SocketGame.socket != null)
+                            SocketGame.socket.close();
+                    }
+                }
                 break;
 
             case END:
@@ -209,14 +243,14 @@ public class GameMenu {
         return gameState;
     }
 
-    public void setGameState(GAME_STATE state){
+    public void setGameState(GAME_STATE state) {
         gameState = state;
     }
 
     /**
      * Render menu.
      */
-    public void render(GraphicsContext gc) {     
+    public void render(GraphicsContext gc) {
         switch (gameState) {
             case IN_MENU:
                 for (int i = 0; i < button.size(); i++) {
@@ -235,24 +269,58 @@ public class GameMenu {
                     if (BombermanGame.map.getBombermans().get(i).getReady()) {
                         gc.drawImage(Graphics.readySlot[i], x, y, 120, 160);
                     } else {
-                        gc.drawImage(Graphics.notReadySlot[i], 
+                        gc.drawImage(Graphics.notReadySlot[i],
                                 Graphics.slotCoordinates[i][Graphics.X_COORDINATE],
                                 Graphics.slotCoordinates[i][Graphics.Y_COORDINATE], 120, 160);
                     }
-                    gc.drawImage(SpriteBomber.player_down[i].getFxImageOrigin(), x + 60 - SpriteBomber.DEFAULT_SIZE / 2, y + 80 - SpriteBomber.DEFAULT_SIZE / 2, SpriteBomber.DEFAULT_SIZE, SpriteBomber.DEFAULT_SIZE);
+                    gc.drawImage(SpriteBomber.player_down[i].getFxImageOrigin(), x + 60 - SpriteBomber.DEFAULT_SIZE / 2,
+                            y + 80 - SpriteBomber.DEFAULT_SIZE / 2, SpriteBomber.DEFAULT_SIZE,
+                            SpriteBomber.DEFAULT_SIZE);
                 }
                 for (int i = BombermanGame.map.getNumberBomber(); i < Map.MAX_NUMBER_BOMBERS; i++) {
-                    gc.drawImage(Graphics.emptySlot[i], 
+                    gc.drawImage(Graphics.emptySlot[i],
                             Graphics.slotCoordinates[i][Graphics.X_COORDINATE],
                             Graphics.slotCoordinates[i][Graphics.Y_COORDINATE], 120, 160);
                 }
 
-                if(BombermanGame.map.getCurrentBomber() == 0) startButton.render(gc);
+                if (BombermanGame.map.getCurrentBomber() == 0)
+                    startButton.render(gc);
                 else {
-                    if(isReady == false) readyButton.render(gc);
-                    else readyButton.renderChoosen(gc);        
+                    if (isReady == false)
+                        readyButton.render(gc);
+                    else
+                        readyButton.renderChoosen(gc);
                 }
                 break;
+            case IN_PAUSE:
+                pauseButton.render(gc);
+            case IN_END_STATE:
+                switch (preGameState) {
+                    case IN_SINGLE_GAME:
+                        if (BombermanGame.map.getIsWin()) {
+                            gc.drawImage(Graphics.winner[BombermanGame.map.getCurrentBomber()], 0, 0,
+                                    Graphics.WIDTH * Sprite.SCALED_SIZE, Graphics.HEIGHT * Sprite.SCALED_SIZE);
+                        } else
+                            gc.drawImage(Graphics.loser[BombermanGame.map.getCurrentBomber()], 0, 0,
+                                    Graphics.WIDTH * Sprite.SCALED_SIZE, Graphics.HEIGHT * Sprite.SCALED_SIZE);
+                        break;
+                    case IN_MULTIPLAYER_GAME:
+                        if (BombermanGame.map.getIsWin()) {
+                            gc.drawImage(Graphics.winner[BombermanGame.map.getCurrentBomber()], 0, 0,
+                                    Graphics.WIDTH * Sprite.SCALED_SIZE, Graphics.HEIGHT * Sprite.SCALED_SIZE);
+                        } else
+                            gc.drawImage(Graphics.loser[BombermanGame.map.getCurrentBomber()], 0, 0,
+                                    Graphics.WIDTH * Sprite.SCALED_SIZE, Graphics.HEIGHT * Sprite.SCALED_SIZE);
+                        break;
+                    case IN_SURVIVAL_GAME:
+                        if (((Bomber) BombermanGame.map.getBomberman()).getDeath())
+                            gc.drawImage(Graphics.loser[BombermanGame.map.getCurrentBomber()], 0, 0,
+                                    Graphics.WIDTH * Sprite.SCALED_SIZE, Graphics.HEIGHT * Sprite.SCALED_SIZE);
+                        else
+                            gc.drawImage(Graphics.winner[BombermanGame.map.getCurrentBomber()], 0, 0,
+                                    Graphics.WIDTH * Sprite.SCALED_SIZE, Graphics.HEIGHT * Sprite.SCALED_SIZE);
+                        break;
+                }
         }
     }
 }

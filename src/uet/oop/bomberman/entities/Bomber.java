@@ -100,6 +100,9 @@ public class Bomber extends DestroyableEntity {
                 super.update(DIRECTION.DOWN, false, indexOfFlex);
             }
         }
+        else if(keyListener.isPressed(KeyCode.P)){
+            if(GameMenu.gameState == GAME_STATE.IN_SINGLE_GAME) GameMenu.gameState = GAME_STATE.IN_PAUSE;
+        }
     }
 
     public void updateItems(){
@@ -115,15 +118,19 @@ public class Bomber extends DestroyableEntity {
         if(item instanceof Portal){
             Map map = BombermanGame.map;
             if(map.getNumberEnemyLiving() == 0){
-                System.out.println("Enter Portal");
                 if(isGoToPortal == false){
                     map.setNumberPlayerGoPortal(map.getNumberPlayerGoPortal() + 1);
                     isGoToPortal = true;
                 }
                 this.die();
                 if(map.getNumberPlayerGoPortal() == map.getNumberBomber()){
-                    int level = map.getLevel();
-                    BombermanGame.map.Constructor(level + 1, keyListener);;
+                    int nextLevel = map.getLevel() + 1;
+                    if(nextLevel == 2){
+                        BombermanGame.map.setIsWin(true);
+                        GameMenu.preGameState = GameMenu.gameState;
+                        GameMenu.gameState = GAME_STATE.IN_END_STATE;
+                    }
+                    else BombermanGame.map.Constructor(nextLevel, keyListener);
                 }
             }
         }
@@ -307,8 +314,20 @@ public class Bomber extends DestroyableEntity {
 
     @Override
     public void die() {
-        // TODO Auto-generated method stub
+        if(death == false) 
+            BombermanGame.map.setNumberBomberDie(BombermanGame.map.getNumberBomberDie() + 1);
         death = true;
+        if(BombermanGame.map.getNumberBomberDie() == BombermanGame.map.getNumberBomber() - 1){
+            if(GameMenu.gameState == GAME_STATE.IN_SURVIVAL_GAME){
+                GameMenu.preGameState = GameMenu.gameState;
+                GameMenu.gameState = GAME_STATE.IN_END_STATE;
+            }
+        }
+        if(BombermanGame.map.getNumberBomberDie() == BombermanGame.map.getNumberBomber()){
+            BombermanGame.map.setIsWin(false);
+            GameMenu.preGameState = GameMenu.gameState;
+            GameMenu.gameState = GAME_STATE.IN_END_STATE;
+        }
     }
 
     public int getFlame() {

@@ -23,4 +23,7 @@ public abstract class DestroyableEntity extends AnimationEntity {
         // TODO Auto-generated method stub
         return null;
     }
+    public boolean getDeath(){
+        return death;
+    }
 } 
