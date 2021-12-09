@@ -32,6 +32,8 @@ public class DollEnemy extends Enemy {
             goDown();
         else if (direction == DIRECTION.UP)
             goUp();
+            
+        super.update();
     }
 
     public Image chooseSprite() {

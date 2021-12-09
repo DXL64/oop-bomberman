@@ -51,36 +51,34 @@ public class GameMenu {
         Text text = new Text("SINGLE PLAY");
         text.setFont(Graphics.FUTUREFONT); 
         text.setFill(Color.WHITE);
-        button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
-                / 2,
-            Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
+        button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth() / 2,
+            Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE + (int) text.getLayoutBounds().getHeight() / 2, text));
 
         text = new Text("MULTI PLAY");
         text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
-        button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
-                / 2,
-            Graphics.HEIGHT / 8 * 7 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
+        button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth() / 2,
+                Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE + 3 * (int) text.getLayoutBounds().getHeight() / 2, text));
 
         text = new Text("SURVIVAL PLAY");
         text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
+
         button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
                 / 2,
-            Graphics.HEIGHT / 3 * 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
-
+                Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE + 5 * (int) text.getLayoutBounds().getHeight() / 2, text));
         text = new Text("BOT PLAY");
         text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
                 / 2,
-            Graphics.HEIGHT / 4 * 3 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
+                Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE + 7 * (int) text.getLayoutBounds().getHeight() / 2, text));
 
         text = new Text("EXIT");
         text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth() / 2,
-            Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 2, text));
+                Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE + 9 * (int) text.getLayoutBounds().getHeight() / 2, text));
 
         text = new Text("START");
         text.setFont(Graphics.FUTUREFONT);

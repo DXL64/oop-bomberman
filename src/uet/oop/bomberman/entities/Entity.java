@@ -102,4 +102,8 @@ public abstract class Entity {
     public String toString() {
         return "Entity [" + x + ", " + y + "]";
     }
+
+    public int getFixHitbox() {
+        return 0;
+    }
 }

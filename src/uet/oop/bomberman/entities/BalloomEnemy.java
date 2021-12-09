@@ -50,6 +50,7 @@ public class BalloomEnemy extends Enemy {
             }
             else goUp();
         }
+        //super.update();
     }
     
     public Image chooseSprite() {

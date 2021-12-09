@@ -37,6 +37,9 @@ public class Bomber extends DestroyableEntity {
         this.collisionManager = collisionManager;
         bombManager = new BombManager(collisionManager);
         speed = 2;
+
+        hitbox = new Hitbox(x + Hitbox.FIX_HITBOX_BOMBER_X, y + Hitbox.FIX_HITBOX_BOMBER_Y, Sprite.SCALED_SIZE - Hitbox.FIX_HITBOX_BOMBER_X * 2, 
+                Sprite.SCALED_SIZE - Hitbox.FIX_HITBOX_BOMBER_Y * 2);
     }
 
     public void setIsCamFollow(Boolean is) {
@@ -47,6 +50,7 @@ public class Bomber extends DestroyableEntity {
     public void update() {
         updateBomberman();
         updateBombs();
+        checkDeath();
     }
 
     private void updateBomberman() {
@@ -111,7 +115,7 @@ public class Bomber extends DestroyableEntity {
         if(item instanceof Portal){
             Map map = BombermanGame.map;
             if(map.getNumberEnemyLiving() == 0){
-                System.out.println("AAAA");
+                System.out.println("Enter Portal");
                 if(isGoToPortal == false){
                     map.setNumberPlayerGoPortal(map.getNumberPlayerGoPortal() + 1);
                     isGoToPortal = true;
@@ -129,7 +133,8 @@ public class Bomber extends DestroyableEntity {
         boolean result = false;
         boolean onLastBomb = false;
         for (int i = 0; i < bombManager.getBombs().size(); i++) {
-            if (collisionManager.collide(xPredict, yPredict, bombManager.getBombs().get(i))) {
+            Hitbox predict = new Hitbox(xPredict + Hitbox.FIX_HITBOX_BOMBER_X / 2, yPredict, hitbox.width, hitbox.height);
+            if (collisionManager.collide(predict, bombManager.getBombs().get(i).hitbox)) {
                 if (lastBombCoordinate != null) {
                     if (bombManager.getBombs().get(i).x / Sprite.SCALED_SIZE == lastBombCoordinate.getKey() &&
                             bombManager.getBombs().get(i).y / Sprite.SCALED_SIZE == lastBombCoordinate.getValue()) {
@@ -187,6 +192,14 @@ public class Bomber extends DestroyableEntity {
                         }
                         break;
                 }
+            }
+        }
+    }
+
+    private void checkDeath() {
+        for (Entity enemy : collisionManager.getMap().getFlexEntities()) {
+            if (enemy instanceof Enemy) {
+                if (collisionManager.collide(hitbox, enemy.hitbox)) die();
             }
         }
     }

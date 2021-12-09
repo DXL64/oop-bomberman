@@ -59,8 +59,8 @@ public class Button {
 
     public void renderChoosen(GraphicsContext gc) {
         gc.strokeText(buttonName.getText(), x, y);
-        gc.setFont(Graphics.CHOOSENFONT);
-        gc.setFill(Color.CRIMSON);
+        gc.setFont(Graphics.FUTUREFONT);
+        gc.setFill(Color.CYAN);
         gc.fillText(buttonName.getText(), x, y);
     }
     

@@ -2,12 +2,10 @@ package uet.oop.bomberman.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 import uet.oop.bomberman.controller.Camera;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.util.Pair;
 import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
@@ -37,10 +35,22 @@ public class OnealEnemy extends Enemy {
             }
         }
         sizeCheckCollision = speed;
-        if (direction == DIRECTION.LEFT) goLeft();
-        else if (direction == DIRECTION.RIGHT) goRight();
-        else if (direction == DIRECTION.DOWN) goDown();
-        else if (direction == DIRECTION.UP) goUp();
+        if (direction == DIRECTION.LEFT) {
+            
+            goLeft();
+        }
+        else if (direction == DIRECTION.RIGHT) {
+           
+            goRight();
+        } 
+        else if (direction == DIRECTION.DOWN) {
+           
+            goDown();
+        } 
+        else if (direction == DIRECTION.UP) {
+            
+            goUp();
+        } 
     }
 
     private int getNearestBomber(List<Bomber> bombers) {

@@ -35,9 +35,12 @@ public class Enemy extends DestroyableEntity {
     public Enemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager) {
         super(xUnit, yUnit, img);
         this.collisionManager = collisionManager;
+        hitbox = new Hitbox(x + Hitbox.FIX_HITBOX_ENEMY, y + Hitbox.FIX_HITBOX_ENEMY, 
+                Sprite.SCALED_SIZE - Hitbox.FIX_HITBOX_ENEMY * 2, Sprite.SCALED_SIZE - Hitbox.FIX_HITBOX_ENEMY * 2);
     }
 
     public void update() {
+        
     }
 
     protected boolean checkCollide(int xPredict, int yPredict) {
@@ -246,5 +249,9 @@ public class Enemy extends DestroyableEntity {
 
     public void updateCount(){
         ++count;
+    }
+
+    public int getFixHitbox() {
+        return Hitbox.FIX_HITBOX_ENEMY;
     }
 }

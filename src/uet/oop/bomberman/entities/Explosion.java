@@ -12,7 +12,6 @@ import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Explosion extends AnimationEntity {
-
     public static enum EXPLOSION_STATE {
         BRICK, MIDDLE, END;
     }
@@ -22,6 +21,7 @@ public class Explosion extends AnimationEntity {
     private EXPLOSION_STATE explosionState;
     private CollisionManager collisionManager;
 
+
     public Explosion(int xUnit, int yUnit, Image img, DIRECTION direction, EXPLOSION_STATE explosionState, CollisionManager collisionManager) {
         super(xUnit, yUnit, img);
         this.direction = direction;
@@ -29,6 +29,8 @@ public class Explosion extends AnimationEntity {
         this.collisionManager = collisionManager;
         exploded = false;
         count = 0;
+        hitbox = new Hitbox(x + Hitbox.FIX_HITBOX_EXLOSION, y + Hitbox.FIX_HITBOX_EXLOSION, 
+                    Sprite.SCALED_SIZE - Hitbox.FIX_HITBOX_EXLOSION * 2,  Sprite.SCALED_SIZE - Hitbox.FIX_HITBOX_EXLOSION * 2);
     }
 
     public void update() {
@@ -38,8 +40,15 @@ public class Explosion extends AnimationEntity {
         for (int i = 0; i < map.getFlexEntities().size(); i++) {
             if (map.getFlexEntities().get(i) instanceof DestroyableEntity) {
                 DestroyableEntity tmp = (DestroyableEntity) map.getFlexEntities().get(i);
+                //if (tmp instanceof Bomber) System.out.println("Bomber" + tmp.death);
                 if(tmp.death == true) continue;
-                if (collisionManager.collide(this, tmp)) {
+                if (tmp.getHitbox() == null) {
+                    if (collisionManager.collide(this, tmp)) {
+                        if (tmp instanceof Enemy)
+                            map.setNumberEnemyLiving(map.getNumberEnemyLiving() - 1);
+                        tmp.die();
+                    }
+                } else if (collisionManager.collide(hitbox, tmp.getHitbox())) {
                     if(tmp instanceof Enemy) map.setNumberEnemyLiving(map.getNumberEnemyLiving() - 1);
                     tmp.die();
                 }

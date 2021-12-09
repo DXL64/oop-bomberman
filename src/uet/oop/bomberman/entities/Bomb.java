@@ -16,6 +16,7 @@ public class Bomb extends AnimationEntity implements Obstacle {
         count = 0;
         exploded = false;
         this.flame = flame;
+        hitbox = new Hitbox(x + Hitbox.FIX_HITBOX_BOMB, y + Hitbox.FIX_HITBOX_BOMB, Sprite.SCALED_SIZE - Hitbox.FIX_HITBOX_BOMB * 2, Sprite.SCALED_SIZE - Hitbox.FIX_HITBOX_BOMB * 2);
     }
 
     @Override
@@ -55,5 +56,9 @@ public class Bomb extends AnimationEntity implements Obstacle {
     }
     public int getFlame(){
         return flame;
+    }
+
+    public int getFixHitbox() {
+        return Hitbox.FIX_HITBOX_BOMB;
     }
 }

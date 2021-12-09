@@ -38,8 +38,8 @@ public class NightmareEnemy extends Enemy {
         else if(direction == DIRECTION.RIGHT) goRight();
         else if(direction == DIRECTION.DOWN) goDown();
         else if(direction == DIRECTION.UP) goUp();
-        return;
-    
+        
+        super.update();
     }
 
     private int getNearestBomber(List<Bomber> bombers){

@@ -53,14 +53,34 @@ public abstract class AnimationEntity extends Entity {
         if (success) {
             isRunning = true;
             direction = direct;
-            if (direct == DIRECTION.DOWN)
+            if (direct == DIRECTION.DOWN) {
+                if (hitbox != null) {
+                    hitbox.x = x + getFixHitbox();
+                    hitbox.y = y + getFixHitbox();
+                }
                 y += speed;
-            if (direct == DIRECTION.UP)
+            }
+            if (direct == DIRECTION.UP) {
+                if (hitbox != null) {
+                    hitbox.x = x + getFixHitbox();
+                    hitbox.y = y + getFixHitbox();
+                }
                 y -= speed;
-            if (direct == DIRECTION.LEFT)
+            }
+            if (direct == DIRECTION.LEFT) {
+                if (hitbox != null) {
+                    hitbox.x = x + getFixHitbox();
+                    hitbox.y = y + getFixHitbox();
+                }
                 x -= speed;
-            if (direct == DIRECTION.RIGHT)
+            }
+            if (direct == DIRECTION.RIGHT) {
+                if (hitbox != null) {
+                    hitbox.x = x + getFixHitbox();
+                    hitbox.y = y + getFixHitbox();
+                }
                 x += speed;
+            }
         } else {
             isRunning = false;
         }
