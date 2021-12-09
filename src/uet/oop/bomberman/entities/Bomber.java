@@ -113,6 +113,7 @@ public class Bomber extends DestroyableEntity {
         }
         if(item instanceof Portal){
             Map map = BombermanGame.map;
+            System.out.println(map.getNumberEnemyLiving());
             if(map.getNumberEnemyLiving() == 0){
                 if(isGoToPortal == false){
                     map.setNumberPlayerGoPortal(map.getNumberPlayerGoPortal() + 1);
@@ -123,6 +124,10 @@ public class Bomber extends DestroyableEntity {
                     int nextLevel = map.getLevel() + 1;
                     if(nextLevel == 2){
                         BombermanGame.map.setIsWin(true);
+<<<<<<< HEAD
+=======
+                        GameMenu.preGameState = GameMenu.gameState;
+>>>>>>> 49813fca8bfce9a186e5ef6c5d0ae9f4b549ede1
                         GameMenu.gameState = GAME_STATE.IN_END_STATE;
                     }
                     else BombermanGame.map.Constructor(nextLevel, keyListener);
@@ -304,10 +309,18 @@ public class Bomber extends DestroyableEntity {
             BombermanGame.map.setNumberBomberDie(BombermanGame.map.getNumberBomberDie() + 1);
         death = true;
         if(BombermanGame.map.getNumberBomberDie() == BombermanGame.map.getNumberBomber() - 1){
+<<<<<<< HEAD
             GameMenu.gameState = GAME_STATE.IN_END_STATE;
+=======
+            if(GameMenu.gameState == GameMenu.GAME_STATE.IN_SURVIVAL_GAME) {
+                GameMenu.preGameState = GameMenu.gameState;
+                GameMenu.gameState = GAME_STATE.IN_END_STATE;
+            }
+>>>>>>> 49813fca8bfce9a186e5ef6c5d0ae9f4b549ede1
         }
         if(BombermanGame.map.getNumberBomberDie() == BombermanGame.map.getNumberBomber()){
             BombermanGame.map.setIsWin(false);
+            GameMenu.preGameState = GameMenu.gameState;
             GameMenu.gameState = GAME_STATE.IN_END_STATE;
         }
     }
@@ -338,5 +351,8 @@ public class Bomber extends DestroyableEntity {
 
     public void setReady(boolean ready) {
         this.ready = ready;
+    }
+    public boolean getDeath() {
+        return death;
     }
 }

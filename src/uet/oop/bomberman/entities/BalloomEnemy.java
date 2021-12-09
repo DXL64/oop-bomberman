@@ -9,6 +9,7 @@ import javafx.util.Pair;
 import uet.oop.bomberman.controller.Camera;
 
 public class BalloomEnemy extends Enemy {
+    public boolean batTu = false;
     public static final int delayFPS = 4;
 
     public BalloomEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager) {
@@ -53,6 +54,7 @@ public class BalloomEnemy extends Enemy {
     }
     
     public Image chooseSprite() {
+        if(count > 100) batTu = false;
         if (death) {
             if (count < 30) {       
                 return Sprite.balloom_dead.getFxImage();
@@ -85,6 +87,7 @@ public class BalloomEnemy extends Enemy {
     }
 
     public void die() {
+        if(batTu && count < 100) return;
         if (!death) {
             death = true;
             count = 0;
