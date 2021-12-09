@@ -23,7 +23,7 @@ import uet.oop.bomberman.graphics.SpriteBomber;
 
 public class GameMenu {
     public static enum GAME_STATE {
-        IN_MENU, IN_SINGLE_GAME, IN_MULTIPLAYER_GAME, IN_SURVIVAL_GAME, IN_MULTIPLAYER_MENU, IN_SURVIVAL_MENU, IN_PAUSE, END;
+        IN_MENU, IN_SINGLE_GAME, IN_MULTIPLAYER_GAME, IN_SURVIVAL_GAME, IN_MULTIPLAYER_MENU, IN_SURVIVAL_MENU, IN_PAUSE, END, IN_END_STATE;
     }
 
     private final int SINGLE_GAME = 0;
@@ -36,6 +36,8 @@ public class GameMenu {
     List<Button> button = new ArrayList<>();
     Button startButton;
     Button readyButton;
+    Button pauseButton;
+    Button gotoMenuButton;
 
     private int choosenButton;
     private boolean isReady = false;
@@ -94,6 +96,17 @@ public class GameMenu {
         readyButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
             Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text);
 
+        text = new Text("CONTINUE GAME");
+        text.setFont(Graphics.FUTUREFONT);
+        text.setFill(Color.WHITE);
+        pauseButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
+        Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text);
+
+        text = new Text("GO TO MENU");
+        text.setFont(Graphics.FUTUREFONT);
+        text.setFill(Color.WHITE);
+        gotoMenuButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
+        Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text);
 
         choosenButton = SINGLE_GAME;
     }
@@ -196,7 +209,24 @@ public class GameMenu {
                 }
                 break;
 
-            case IN_PAUSE:           
+            case IN_PAUSE:
+                now = Timer.now();
+                if (now - delayInput > Timer.TIME_FOR_SINGLE_INPUT) {
+                    delayInput = now;
+                    if (keyListener.isPressed(KeyCode.ENTER)) 
+                        gameState = GAME_STATE.IN_SINGLE_GAME;
+                }
+                break;
+
+            case IN_END_STATE:
+                now = Timer.now();
+                if (now - delayInput > Timer.TIME_FOR_SINGLE_INPUT) {
+                    delayInput = now;
+                    if (keyListener.isPressed(KeyCode.ENTER)){
+                        gameState = GAME_STATE.IN_MENU;
+                        if(SocketGame.socket != null) SocketGame.socket.close();
+                    }
+                }
                 break;
 
             case END:
@@ -255,6 +285,10 @@ public class GameMenu {
                     else readyButton.renderChoosen(gc);        
                 }
                 break;
+            case IN_PAUSE:
+                pauseButton.render(gc);
+            case IN_END_STATE:
+                gotoMenuButton.render(gc);
         }
     }
 }

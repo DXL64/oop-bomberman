@@ -46,7 +46,10 @@ public class Map {
     protected int currentBomber = 0;
     protected int numberBomber = 1;
     protected int numberEnemyLiving = 0;
+    protected int numberBomberDie = 0;
     protected int numberPlayerGoPortal = 0;
+    protected boolean isWin;
+    protected int whoWin;
     public static final int MAX_NUMBER_BOMBERS = 4;
 
     public Map(int level, KeyListener keyListener) {
@@ -328,5 +331,23 @@ public class Map {
     }
     public int getNumberPlayerGoPortal(){
         return numberPlayerGoPortal;
+    }
+    public void setNumberBomberDie(int number){
+        numberBomberDie = number;
+    }
+    public int getNumberBomberDie(){
+        return numberBomberDie;
+    }
+    public void setIsWin(boolean is){
+        isWin = is;
+    }
+    public boolean getIsWin(){
+        return isWin;
+    }
+    public void setWhoWin(int who){
+        whoWin = who;
+    }
+    public int getWhoWin(){
+        return whoWin;
     }
 }
