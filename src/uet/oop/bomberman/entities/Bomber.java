@@ -122,7 +122,7 @@ public class Bomber extends DestroyableEntity {
                     map.setNumberPlayerGoPortal(map.getNumberPlayerGoPortal() + 1);
                     isGoToPortal = true;
                 }
-                if(map.getNumberPlayerGoPortal() == map.getNumberBomber()){
+                if(map.getNumberPlayerGoPortal() == map.getNumberBomber() - map.getNumberBomberDie()){
                     int nextLevel = map.getLevel() + 1;
                     if(nextLevel == 4){
                         BombermanGame.map.setIsWin(true);
@@ -321,7 +321,19 @@ public class Bomber extends DestroyableEntity {
         if(death == false) 
             BombermanGame.map.setNumberBomberDie(BombermanGame.map.getNumberBomberDie() + 1);
         death = true;
+
+        if(GameMenu.gameState == GAME_STATE.IN_SURVIVAL_GAME && indexOfFlex == BombermanGame.map.getCurrentBomber()){
+            GameMenu.preGameState = GameMenu.gameState;
+            GameMenu.gameState = GAME_STATE.IN_END_STATE;
+            try {
+                SocketGame.socket.leaveGroup(SocketGame.address);
+            } catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
         if(BombermanGame.map.getNumberBomberDie() == BombermanGame.map.getNumberBomber() - 1){
+            System.out.println("AAAA" + BombermanGame.map.getNumberBomberDie());
             if(GameMenu.gameState == GAME_STATE.IN_SURVIVAL_GAME){
                 GameMenu.preGameState = GameMenu.gameState;
                 GameMenu.gameState = GAME_STATE.IN_END_STATE;
@@ -333,6 +345,7 @@ public class Bomber extends DestroyableEntity {
             }
         }
         if(BombermanGame.map.getNumberBomberDie() == BombermanGame.map.getNumberBomber()){
+            System.out.println("BBBB" + BombermanGame.map.getNumberBomberDie());
             BombermanGame.map.setIsWin(false);
             GameMenu.preGameState = GameMenu.gameState;
             GameMenu.gameState = GAME_STATE.IN_END_STATE;
