@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -128,6 +129,11 @@ public class Bomber extends DestroyableEntity {
                         BombermanGame.map.setIsWin(true);
                         GameMenu.preGameState = GameMenu.gameState;
                         GameMenu.gameState = GAME_STATE.IN_END_STATE;
+                        try {
+                            SocketGame.socket.leaveGroup(SocketGame.address);
+                        } catch(IOException e){
+                            e.printStackTrace();
+                        }
                     }
                     else BombermanGame.map.Constructor(nextLevel, keyListener);
                 }
@@ -320,12 +326,22 @@ public class Bomber extends DestroyableEntity {
             if(GameMenu.gameState == GAME_STATE.IN_SURVIVAL_GAME){
                 GameMenu.preGameState = GameMenu.gameState;
                 GameMenu.gameState = GAME_STATE.IN_END_STATE;
+                try {
+                    SocketGame.socket.leaveGroup(SocketGame.address);
+                } catch(IOException e){
+                    e.printStackTrace();
+                }
             }
         }
         if(BombermanGame.map.getNumberBomberDie() == BombermanGame.map.getNumberBomber()){
             BombermanGame.map.setIsWin(false);
             GameMenu.preGameState = GameMenu.gameState;
             GameMenu.gameState = GAME_STATE.IN_END_STATE;
+            try {
+                SocketGame.socket.leaveGroup(SocketGame.address);
+            } catch(IOException e){
+                e.printStackTrace();
+            }
         }
     }
 
