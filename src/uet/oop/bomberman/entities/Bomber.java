@@ -51,7 +51,7 @@ public class Bomber extends DestroyableEntity {
     public void update() {
         updateBomberman();
         updateBombs();
-        checkDeath();
+        // checkDeath();
     }
 
     private void updateBomberman() {
