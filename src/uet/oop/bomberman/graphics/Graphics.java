@@ -27,6 +27,7 @@ public class Graphics {
     public static Font TITLEFONT;
     public static Font DEFAULTFONT;
     public static Font CHOOSENFONT;
+    public static Font FUTUREFONT;
 
     private GraphicsContext gc;
 
@@ -36,6 +37,7 @@ public class Graphics {
             TITLEFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 50);
             DEFAULTFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/default.ttf")), 30);
             CHOOSENFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 25);
+            FUTUREFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/Future Techno Italic 400.ttf")), 25);
         } catch (IOException e) {
             System.out.println("[IOException] Wrong filepaths.");
         }

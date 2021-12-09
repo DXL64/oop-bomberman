@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import uet.oop.bomberman.controller.GameMenu;
 import uet.oop.bomberman.controller.KeyListener;
+import uet.oop.bomberman.controller.Sound;
 import uet.oop.bomberman.controller.Timer;
 import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
@@ -33,6 +34,7 @@ public class BombermanGame extends Application {
     @Override
     public void start(Stage stage) {
         // Tao Canvas
+        Sound.backgroundGame.loop();
         canvas = new Canvas(Sprite.SCALED_SIZE * Graphics.WIDTH, Sprite.SCALED_SIZE * Graphics.HEIGHT);
         graphics = new Graphics(canvas);
         // Tao root container

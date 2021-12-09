@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.PickResult;
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.controller.CollisionManager;
+import uet.oop.bomberman.controller.Sound;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
 
