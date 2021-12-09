@@ -122,7 +122,6 @@ public class Bomber extends DestroyableEntity {
                     map.setNumberPlayerGoPortal(map.getNumberPlayerGoPortal() + 1);
                     isGoToPortal = true;
                 }
-                this.die();
                 if(map.getNumberPlayerGoPortal() == map.getNumberBomber()){
                     int nextLevel = map.getLevel() + 1;
                     if(nextLevel == 4){
