@@ -122,7 +122,7 @@ public class Bomber extends DestroyableEntity {
                 if(map.getNumberPlayerGoPortal() == map.getNumberBomber()){
                     int nextLevel = map.getLevel() + 1;
                     if(nextLevel == 2){
-                        BombermanGame.map.setIsWin(false);
+                        BombermanGame.map.setIsWin(true);
                         GameMenu.gameState = GAME_STATE.IN_END_STATE;
                     }
                     else BombermanGame.map.Constructor(nextLevel, keyListener);
@@ -303,12 +303,13 @@ public class Bomber extends DestroyableEntity {
         if(death == false) 
             BombermanGame.map.setNumberBomberDie(BombermanGame.map.getNumberBomberDie() + 1);
         death = true;
+        if(BombermanGame.map.getNumberBomberDie() == BombermanGame.map.getNumberBomber() - 1){
+            GameMenu.gameState = GAME_STATE.IN_END_STATE;
+        }
         if(BombermanGame.map.getNumberBomberDie() == BombermanGame.map.getNumberBomber()){
             BombermanGame.map.setIsWin(false);
             GameMenu.gameState = GAME_STATE.IN_END_STATE;
         }
-            
-
     }
 
     public int getFlame() {
