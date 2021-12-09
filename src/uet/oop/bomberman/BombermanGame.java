@@ -64,25 +64,13 @@ public class BombermanGame extends Application {
     public void update() {
         switch (menu.getGameState()) {
         case IN_MENU:
-            menu.update();
-            break;
-
         case IN_MULTIPLAYER_MENU:
-            menu.update();
-            break;
-
         case IN_SURVIVAL_MENU:
             menu.update();
             break;
 
         case IN_SINGLE_GAME:
-            map.update();
-            break;
-
         case IN_MULTIPLAYER_GAME:
-            map.update();
-            break;
-        
         case IN_SURVIVAL_GAME:
             map.update();
             break;
@@ -100,28 +88,15 @@ public class BombermanGame extends Application {
 
     public void render() {
         switch (menu.getGameState()) {
+
         case IN_MENU:
-            graphics.renderMenu(menu);
-            break;
-        
         case IN_MULTIPLAYER_MENU:
-            graphics.renderMenu(menu);
-            break;
-        
         case IN_SURVIVAL_MENU:
             graphics.renderMenu(menu);
             break;
 
-        case IN_SINGLE_GAME:
-            graphics.clearScreen(canvas);
-            graphics.renderMap(map);
-            break;
-
+        case IN_SINGLE_GAME:   
         case IN_MULTIPLAYER_GAME:
-            graphics.clearScreen(canvas);
-            graphics.renderMap(map);
-            break;
-        
         case IN_SURVIVAL_GAME:
             graphics.clearScreen(canvas);
             graphics.renderMap(map);

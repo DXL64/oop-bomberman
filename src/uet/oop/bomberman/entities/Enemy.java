@@ -70,7 +70,6 @@ public class Enemy extends DestroyableEntity {
                     return false;
                 }
             }
-            x -= speed;
             direction = moveLeft;
             super.update(DIRECTION.LEFT, true, indexOfFlex);
             return true;
@@ -92,7 +91,6 @@ public class Enemy extends DestroyableEntity {
                     return false;
                 }
             }
-            x += speed;
             direction = moveRight;
             super.update(DIRECTION.RIGHT, true, indexOfFlex);
             return true;
@@ -114,7 +112,6 @@ public class Enemy extends DestroyableEntity {
                     return false;
                 }
             }
-            y -= speed;
             direction = moveUp;
             super.update(DIRECTION.UP, true, indexOfFlex);
             return true;
@@ -136,7 +133,6 @@ public class Enemy extends DestroyableEntity {
                     return false;
                 }
             }
-            y += speed;
             direction = moveDown;
             super.update(DIRECTION.DOWN, true, indexOfFlex);
             return true;
@@ -257,5 +253,9 @@ public class Enemy extends DestroyableEntity {
     public void die() {
         // TODO Auto-generated method stub
 
+    }
+
+    public void updateCount(){
+        ++count;
     }
 }

@@ -36,16 +36,12 @@ public class OnealEnemy extends Enemy {
                     goRand();
                     return;
                 }
-                sizeCheckCollision = speed;
-                if (direction == moveLeft)
-                    goLeft();
-                else if (direction == moveRight)
-                    goRight();
-                else if (direction == moveDown)
-                    goDown();
-                else if (direction == moveUp)
-                    goUp();
             }
+            sizeCheckCollision = speed;
+            if (direction == moveLeft) goLeft();
+            else if (direction == moveRight) goRight();
+            else if (direction == moveDown) goDown();
+            else if (direction == moveUp) goUp();
         }
     }
 

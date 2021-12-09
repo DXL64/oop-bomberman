@@ -38,7 +38,7 @@ public class Map {
     protected List<List<Entity>> map = new ArrayList<>();
     protected List<Entity> flexEntities = new ArrayList<>(); // 4 first elements is for bomber
     protected List< Pair<Integer, Integer> > brickList = new ArrayList<>();
-    protected int[][] itemList = new int[13][31];
+    protected int[][] itemList = new int[31][31];
     protected Camera camera;
     protected List< Pair<Integer, Integer> > coordinateBomberman = new ArrayList<>();
     protected int height;
@@ -47,11 +47,9 @@ public class Map {
     protected int currentBomber = 0;
     protected int numberBomber = 1;
     public static final int MAX_NUMBER_BOMBERS = 4;
-    public static int randomStart = 9;
     
     public Map(int level, KeyListener keyListener) {
         mapLevel = level;
-        randomStart = (int)(Math.random() * 1000);
         Path currentWorkingDir = Paths.get("").toAbsolutePath();
         File file = new File(currentWorkingDir.normalize().toString() + "/res/levels/Level" + level +".txt");
         try {
@@ -112,15 +110,15 @@ public class Map {
                             break;
                         case 'b':
                             tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
-                            //flexEntities.add(new BombItem(j, i, Sprite.item.getFxImage()));
+                            itemList[i][j] = BombItem.code;
                             break;
                         case 'f':
                             tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
-                            //flexEntities.add(new BombItem(j, i, Sprite.item.getFxImage()));
+                            itemList[i][j] = FlameItem.code;
                             break;
                         case 's':
                             tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
-                            //flexEntities.add(new BombItem(j, i, Sprite.item.getFxImage()));
+                            itemList[i][j] = SpeedItem.code;
                             break;
                         default:
                             tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
@@ -130,29 +128,11 @@ public class Map {
                 map.add(tempList);
             }
             setupBomberman(keyListener);
-            randomItem();
             camera = new Camera(0, 0, width, height);
             scanner.close();
         } catch (FileNotFoundException exception) {
             System.out.println(exception.getMessage());
         }
-    }
-
-    public void randomItem() {
-        int n = brickList.size();
-        Random random = new Random();
-        Pair<Integer, Integer> x = brickList.get((random.nextInt(n/3)));
-        System.out.print(x.getKey() + " ");
-        System.out.println(x.getValue());
-        itemList[x.getKey()][x.getValue()] = SpeedItem.code;
-        x = brickList.get((random.nextInt(n/3) + n/3));
-        System.out.print(x.getKey() + " ");
-        System.out.println(x.getValue());
-        itemList[x.getKey()][x.getValue()] = FlameItem.code;
-        x = brickList.get((random.nextInt(n/3) + 2 * n / 3));
-        System.out.print(x.getKey() + " ");
-        System.out.println(x.getValue());
-        itemList[x.getKey()][x.getValue()] = BombItem.code;
     }
 
     public void setupBomberman(KeyListener keyListener){
@@ -169,6 +149,7 @@ public class Map {
             if(flexEntities.get(i) instanceof Bomber){
                 Bomber bomber = (Bomber)flexEntities.get(i);
                 bomber.getBombManager().update();
+                bomber.updateItems();
             }
             if(flexEntities.get(i) instanceof Enemy){
                 if(currentBomber != 0){
@@ -281,8 +262,8 @@ public class Map {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if(map.get(i).get(j) instanceof Brick){
-                    int rand = (int)(Math.random() * 6);
-                    if(rand >= 5) continue;
+                    int rand = (int)(Math.random() * 8) + 1;
+                    if(rand > 3) continue;
                     String msg = "0,Item," + rand + "," + j + "," + i;
                     byte[] data = msg.getBytes();
                     DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
@@ -294,5 +275,9 @@ public class Map {
                 }
             }
         }
+    }
+
+    public void setItem(int y, int x, int type){
+        itemList[y][x] = type;
     }
 }

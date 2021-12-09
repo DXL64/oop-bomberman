@@ -167,6 +167,7 @@ public class GameMenu {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
+                                if(gameState == GAME_STATE.IN_SURVIVAL_MENU || gameState == GAME_STATE.IN_SURVIVAL_GAME) BombermanGame.map.sendItemRand();
                             }
                         }
                         else {
@@ -225,12 +226,6 @@ public class GameMenu {
                 }
                 break;
             case IN_MULTIPLAYER_MENU:
-                if(BombermanGame.map.getCurrentBomber() == 0) startButton.render(gc);
-                else {
-                    if(isReady == false) readyButton.render(gc);
-                    else readyButton.renderChoosen(gc);        
-                }
-                break;
             case IN_SURVIVAL_MENU:
                 if(BombermanGame.map.getCurrentBomber() == 0) startButton.render(gc);
                 else {

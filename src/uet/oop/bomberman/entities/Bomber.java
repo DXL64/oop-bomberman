@@ -90,7 +90,9 @@ public class Bomber extends DestroyableEntity {
                 super.update(DIRECTION.DOWN, false, indexOfFlex);
             }
         }
-        // Handle item
+    }
+
+    public void updateItems(){
         Entity item = collisionManager.getEntityAt(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE);
         if (item instanceof Items) {
             System.out.println(item);

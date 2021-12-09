@@ -54,50 +54,6 @@ public class BalloomEnemy extends Enemy {
             }
         }
     }
-
-    public Boolean goLeft() {
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speed, y, DIRECTION.LEFT);
-        if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-            x -= speed;
-            direction = moveLeft;
-            spriteImage = (spriteImage + 1) % 3;
-            return true;
-        }
-        return false;
-    }
-
-    public Boolean goRight() {
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speed, y, DIRECTION.RIGHT);
-        if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-            x += speed;
-            direction = moveRight;
-            spriteImage = (spriteImage + 1) % 3;
-            return true;
-        }
-        return false;
-    }
-
-    public Boolean goUp() {
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speed, DIRECTION.UP);
-        if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-            y -= speed;
-            direction = moveUp;
-            spriteImage = (spriteImage + 1) % 3;
-            return true;
-        }
-        return false;
-    }
-
-    public Boolean goDown() {
-        Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speed, DIRECTION.DOWN);
-        if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle)) {
-            y += speed;
-            direction = moveDown;
-            spriteImage = (spriteImage + 1) % 3;
-            return true;
-        }
-        return false;
-    }
     
     public Image chooseSprite() {
         if (death) {

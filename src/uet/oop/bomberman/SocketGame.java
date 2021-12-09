@@ -9,9 +9,12 @@ import uet.oop.bomberman.controller.GameMenu;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.entities.AnimationEntity;
 import uet.oop.bomberman.entities.Bomb;
+import uet.oop.bomberman.entities.BombItem;
 import uet.oop.bomberman.entities.BombManager;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.FlameItem;
+import uet.oop.bomberman.entities.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class SocketGame {
@@ -116,19 +119,12 @@ public class SocketGame {
                             int typeItem =  Integer.parseInt(tokens[2]);
                             int xMod = Integer.parseInt(tokens[3]);
                             int yMod = Integer.parseInt(tokens[4]);
-                            switch(typeItem){
-                                case 0:
-                                case 1:
-                                case 2:
-                                case 3:
-                            }
+                            map.setItem(yMod, xMod, typeItem);
                         }
                         else if(tokens[1].equals("Start")){
                             if(GameMenu.gameState == GameMenu.GAME_STATE.IN_MULTIPLAYER_MENU){
                                 System.out.println("[ENTER MULTIPLAYER GAME]");
                                 BombermanGame.menu.setGameState(GameMenu.GAME_STATE.IN_MULTIPLAYER_GAME);
-
-
                             }
                             else if(GameMenu.gameState == GameMenu.GAME_STATE.IN_SURVIVAL_MENU){
                                 System.out.println("[ENTER SURVIVAL GAME]");
