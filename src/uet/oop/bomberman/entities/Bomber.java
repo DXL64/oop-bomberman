@@ -205,7 +205,7 @@ public class Bomber extends DestroyableEntity {
 
     private void checkDeath() {
         for (Entity enemy : collisionManager.getMap().getFlexEntities()) {
-            if (enemy instanceof Enemy) {
+            if (enemy instanceof Enemy && !((Enemy)enemy).death) {
                 if (collisionManager.collide(hitbox, enemy.hitbox)) die();
             }
         }

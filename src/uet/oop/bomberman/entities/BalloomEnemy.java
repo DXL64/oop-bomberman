@@ -51,6 +51,8 @@ public class BalloomEnemy extends Enemy {
             }
             else goUp();
         }
+        hitbox.x = x + getFixHitbox();
+        hitbox.y = y + getFixHitbox();
         //super.update();
     }
     
