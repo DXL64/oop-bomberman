@@ -35,21 +35,33 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Map {
 
-    protected List<List<Entity>> map = new ArrayList<>();
-    protected List<Entity> flexEntities = new ArrayList<>(); // 4 first elements is for bomber
-    protected List< Pair<Integer, Integer> > brickList = new ArrayList<>();
-    protected int[][] itemList = new int[31][31];
+    protected List<List<Entity>> map;
+    protected List<Entity> flexEntities; // 4 first elements is for bomber
+    protected int[][] itemList;
     protected Camera camera;
-    protected List< Pair<Integer, Integer> > coordinateBomberman = new ArrayList<>();
+    protected List< Pair<Integer, Integer> > coordinateBomberman;
     protected int height;
     protected int width;
     protected int mapLevel;
     protected int currentBomber = 0;
     protected int numberBomber = 1;
+    protected int numberEnemyLiving = 0;
+    protected int numberPlayerGoPortal = 0;
     public static final int MAX_NUMBER_BOMBERS = 4;
-    
+
     public Map(int level, KeyListener keyListener) {
+        Constructor(level, keyListener);
+    }
+    
+    public void Constructor(int level, KeyListener keyListener){
+        map = new ArrayList<>();
+        flexEntities = new ArrayList<>();
+        itemList = new int[31][31];
         mapLevel = level;
+        coordinateBomberman = new ArrayList<>();
+        numberEnemyLiving = 0;
+        numberPlayerGoPortal = 0;
+        
         Path currentWorkingDir = Paths.get("").toAbsolutePath();
         File file = new File(currentWorkingDir.normalize().toString() + "/res/levels/Level" + level +".txt");
         try {
@@ -73,32 +85,34 @@ public class Map {
                             break;
                         case '*':
                             tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
-                            Pair<Integer, Integer> e = new Pair<Integer, Integer> (i,j);
-                            brickList.add(e);
                             break;
                         case '1':
                             Enemy temp = new BalloomEnemy(j, i, Sprite.balloom_left1.getFxImage(), new CollisionManager(this));
                             flexEntities.add(temp);
                             temp.setIndexOfFlex(flexEntities.size() - 1);
                             tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            ++numberEnemyLiving;
                             break;
                         case '2':
                             temp = new OnealEnemy(j, i, Sprite.oneal_left1.getFxImage(), new CollisionManager(this));
                             flexEntities.add(temp);
                             temp.setIndexOfFlex(flexEntities.size() - 1);
                             tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            ++numberEnemyLiving;
                             break;
                         case '3':
                             temp = new DollEnemy(j, i, Sprite.doll_left1.getFxImage(), new CollisionManager(this));
                             flexEntities.add(temp);
                             temp.setIndexOfFlex(flexEntities.size() - 1);
                             tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            ++numberEnemyLiving;
                             break;
                         case '4':
                             temp = new NightmareEnemy(j, i, Sprite.doll_left1.getFxImage(), new CollisionManager(this));
                             flexEntities.add(temp);
                             temp.setIndexOfFlex(flexEntities.size() - 1);
                             tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            ++numberEnemyLiving;
                             break;
                         case 'p':
                             coordinateBomberman.add(new Pair<>(j, i));
@@ -106,7 +120,7 @@ public class Map {
                             break;
                         case 'x':
                             tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
-                            flexEntities.add(new Portal(j, i, Sprite.portal.getFxImage()));
+                            itemList[i][j] = Portal.code;
                             break;
                         case 'b':
                             tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
@@ -279,5 +293,18 @@ public class Map {
 
     public void setItem(int y, int x, int type){
         itemList[y][x] = type;
+    }
+
+    public void setNumberEnemyLiving(int number){
+        numberEnemyLiving = number;
+    }
+    public int getNumberEnemyLiving(){
+        return numberEnemyLiving;
+    }
+    public void setNumberPlayerGoPortal(int number){
+        numberPlayerGoPortal = number;
+    }
+    public int getNumberPlayerGoPortal(){
+        return numberPlayerGoPortal;
     }
 }

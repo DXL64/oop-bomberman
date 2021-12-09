@@ -11,8 +11,12 @@ import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.GameMenu;
 import uet.oop.bomberman.controller.KeyListener;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
+import uet.oop.bomberman.controller.GameMenu.GAME_STATE;
 import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Map;
+import uet.oop.bomberman.MultiPlayerMap;
 import uet.oop.bomberman.SocketGame;
 import uet.oop.bomberman.controller.Camera;
 
@@ -21,9 +25,9 @@ public class Bomber extends DestroyableEntity {
     private CollisionManager collisionManager;
     private Boolean isCamFollow = false;
     private BombManager bombManager;
-    protected int curNumberInMap;
     private Pair<Integer, Integer> lastBombCoordinate;
     private boolean ready = false;
+    private boolean isGoToPortal = false;
 
     public Bomber(int x, int y, Image img, KeyListener keyListener, CollisionManager collisionManager) {
         super(x, y, img);
@@ -101,6 +105,21 @@ public class Bomber extends DestroyableEntity {
             collisionManager.getMap().replace(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE,
                     new Grass(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.grass.getFxImage()));
         }
+        if(item instanceof Portal){
+            Map map = BombermanGame.map;
+            if(map.getNumberEnemyLiving() == 0){
+                System.out.println("AAAA");
+                if(isGoToPortal == false){
+                    map.setNumberPlayerGoPortal(map.getNumberPlayerGoPortal() + 1);
+                    isGoToPortal = true;
+                }
+                this.die();
+                if(map.getNumberPlayerGoPortal() == map.getNumberBomber()){
+                    int level = map.getLevel();
+                    BombermanGame.map.Constructor(level + 1, keyListener);;
+                }
+            }
+        }
     }
 
     private boolean checkCollide(int xPredict, int yPredict) {
@@ -154,7 +173,7 @@ public class Bomber extends DestroyableEntity {
                         // TODO: Check if this is suitable
                         lastBombCoordinate = new Pair<Integer, Integer>(xBomb, yBomb);
 
-                        String msg = indexOfFlex + ",Bomb," + xBomb + "," + yBomb;
+                        String msg = indexOfFlex + ",Bomb," + xBomb + "," + yBomb + "," + BombermanGame.map.getLevel();
                         byte[] data = msg.getBytes();
                         DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address,
                                 SocketGame.PORT);
@@ -185,13 +204,13 @@ public class Bomber extends DestroyableEntity {
             }
         } else {
             if (direction == backStep) {
-                countStep++;
-                countStep = countStep % 15;
+                count++;
+                count = count % 15;
 
             } else
-                countStep = 0;
+                count = 0;
 
-            int chooseFrame = countStep / 5;
+            int chooseFrame = count / 5;
 
             switch (direction) {
                 case LEFT:

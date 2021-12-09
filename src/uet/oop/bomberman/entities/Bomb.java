@@ -13,7 +13,7 @@ public class Bomb extends AnimationEntity implements Obstacle {
     public Bomb(int xUnit, int yUnit, Image img, int flame) {
         super(xUnit, yUnit, img);
         timeSet = Timer.now();
-        countStep = 0;
+        count = 0;
         exploded = false;
         this.flame = flame;
     }
@@ -21,8 +21,8 @@ public class Bomb extends AnimationEntity implements Obstacle {
     @Override
     public void update() {
 
-        countStep++;
-        countStep = countStep % 75;
+        count++;
+        count = count % 75;
 
         img = chooseSprite();
         if (!exploded) exploded = Timer.now() - timeSet > Timer.TIME_FOR_BOMB_EXPLODE;
@@ -37,7 +37,7 @@ public class Bomb extends AnimationEntity implements Obstacle {
     }
 
     public Image chooseSprite() {
-        int chooseFrame = countStep / 25;
+        int chooseFrame = count / 25;
         switch (chooseFrame) {
             case 0:
                 return Sprite.bomb.getFxImage();

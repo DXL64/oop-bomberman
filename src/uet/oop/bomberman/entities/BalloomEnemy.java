@@ -18,58 +18,56 @@ public class BalloomEnemy extends Enemy {
     }
 
     public void update() {
-        if (death) {
-            super.update();
-        } else {
-            ++count;
-            if (count % 4 == 0 || count % 4 == 2 || count % 4 == 3)
-                return;
-            if (count % 64 == 1) {
+        ++count;
+        if (death) return;
+        if (count % 4 == 0 || count % 4 == 2 || count % 4 == 3)
+            return;
+        if (count % 64 == 1) {
+            goRand();
+            return;
+        }
+        if (direction == DIRECTION.LEFT) {
+            if (checkCollide(x, y)) {
                 goRand();
-                return;
             }
-            if (direction == moveLeft) {
-                if (checkCollide(x, y)) {
-                    goRand();
-                }
-                else goLeft();
+            else goLeft();
+        }
+        else if (direction == DIRECTION.RIGHT) {
+            if (checkCollide(x, y)) {
+                goRand();
             }
-            else if (direction == moveRight) {
-                if (checkCollide(x, y)) {
-                    goRand();
-                }
-                else goRight();
+            else goRight();
+        }
+        else if (direction == DIRECTION.DOWN) {
+            if (checkCollide(x, y)) {
+                goRand();
             }
-            else if (direction == moveDown) {
-                if (checkCollide(x, y)) {
-                    goRand();
-                }
-                else goDown();
+            else goDown();
+        }
+        else if (direction == DIRECTION.UP) {
+            if (checkCollide(x, y)) {
+                goRand();
             }
-            else if (direction == moveUp) {
-                if (checkCollide(x, y)) {
-                    goRand();
-                }
-                else goUp();
-            }
+            else goUp();
         }
     }
     
     public Image chooseSprite() {
         if (death) {
-            if (countStep < 30) {       
+            if (count < 30) {       
                 return Sprite.balloom_dead.getFxImage();
             }
+            return null;
         }
         spriteImage = count % 9;
-        if(direction == moveLeft || direction == moveUp){
+        if(direction == DIRECTION.LEFT || direction == DIRECTION.UP){
             switch(spriteImage / 3){
                 case 0: return Sprite.balloom_left1.getFxImage();
                 case 1: return Sprite.balloom_left2.getFxImage();
                 case 2: return Sprite.balloom_left3.getFxImage();
             }
         }
-        else if(direction == moveRight || direction == moveDown){
+        else if(direction == DIRECTION.RIGHT || direction == DIRECTION.DOWN){
             switch(spriteImage / 3){
                 case 0: return Sprite.balloom_right1.getFxImage();
                 case 1: return Sprite.balloom_right2.getFxImage();
@@ -81,17 +79,15 @@ public class BalloomEnemy extends Enemy {
 
     @Override
     public void render(GraphicsContext gc, Camera camera) {
-        if (countStep < 30) {
-            Image img = chooseSprite();
-            gc.drawImage(img, x - camera.getX(), y - camera.getY());
-        }
+        img = chooseSprite();
+        if (death && count >= 30) return;
+        gc.drawImage(img, x - camera.getX(), y - camera.getY());
     }
 
     public void die() {
         if (!death) {
             death = true;
             count = 0;
-            countStep = 0;
         }
     }
 }

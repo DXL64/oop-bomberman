@@ -6,6 +6,7 @@ import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.SocketGame;
 import uet.oop.bomberman.controller.Camera;
 import uet.oop.bomberman.controller.CollisionManager;
@@ -15,7 +16,7 @@ import uet.oop.bomberman.controller.Direction.DIRECTION;
 public abstract class AnimationEntity extends Entity {
     protected DIRECTION direction = DIRECTION.RIGHT;
     protected DIRECTION backStep = DIRECTION.RIGHT;
-    protected int countStep = 0;
+    protected int count = 0;
     protected boolean isRunning = false;
     protected int speed = 2;
     protected int indexOfFlex;
@@ -68,13 +69,13 @@ public abstract class AnimationEntity extends Entity {
     public void sendMessageSocket(DIRECTION direct, boolean success, int curNumberInMap) {
         String msg = new String();
         if (direct == DIRECTION.DOWN)
-            msg = curNumberInMap + ",S," + success;
+            msg = curNumberInMap + ",S," + success + "," + BombermanGame.map.getLevel();
         if (direct == DIRECTION.UP)
-            msg = curNumberInMap + ",W," + success;
+            msg = curNumberInMap + ",W," + success + "," + BombermanGame.map.getLevel();
         if (direct == DIRECTION.LEFT)
-            msg = curNumberInMap + ",A," + success;
+            msg = curNumberInMap + ",A," + success + "," + BombermanGame.map.getLevel();
         if (direct == DIRECTION.RIGHT)
-            msg = curNumberInMap + ",D," + success;
+            msg = curNumberInMap + ",D," + success + "," + BombermanGame.map.getLevel();
         byte[] data = msg.getBytes();
         DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
         try {

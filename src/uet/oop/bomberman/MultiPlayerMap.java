@@ -27,7 +27,7 @@ import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class MultiPlayerMap extends Map {
-    SocketGame socketGame;
+    private SocketGame socketGame;
 
     public MultiPlayerMap(int level, KeyListener keyListener){
         super(level, keyListener);

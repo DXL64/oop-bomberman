@@ -27,7 +27,7 @@ public class Explosion extends AnimationEntity {
         this.explosionState = explosionState;
         this.collisionManager = collisionManager;
         exploded = false;
-        countStep = 0;
+        count = 0;
     }
 
     public void update() {
@@ -37,7 +37,9 @@ public class Explosion extends AnimationEntity {
         for (int i = 0; i < map.getFlexEntities().size(); i++) {
             if (map.getFlexEntities().get(i) instanceof DestroyableEntity) {
                 DestroyableEntity tmp = (DestroyableEntity) map.getFlexEntities().get(i);
+                if(tmp.death == true) continue;
                 if (collisionManager.collide(this, tmp)) {
+                    if(tmp instanceof Enemy) map.setNumberEnemyLiving(map.getNumberEnemyLiving() - 1);
                     tmp.die();
                 }
             }
@@ -49,9 +51,9 @@ public class Explosion extends AnimationEntity {
             }
         }
 
-        countStep++;
+        count++;
 
-        if (countStep == 30)
+        if (count == 30)
             exploded = true;
 
         img = chooseSprite();
@@ -63,7 +65,7 @@ public class Explosion extends AnimationEntity {
 
     @Override
     public Image chooseSprite() {
-        int chooseFrame = countStep / 10;
+        int chooseFrame = count / 10;
 
         switch (explosionState) {
             case MIDDLE:

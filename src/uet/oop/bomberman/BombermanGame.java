@@ -24,6 +24,7 @@ public class BombermanGame extends Application {
     public static GameMenu menu;
     public static Map map;
     private KeyListener keyListener;
+    public static SocketGame socketGame;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);

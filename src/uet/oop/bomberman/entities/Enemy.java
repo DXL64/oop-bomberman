@@ -24,7 +24,6 @@ public class Enemy extends DestroyableEntity {
     public final static int moveDown = 2;
     protected int count = 0;
     protected int spriteImage = 0;
-    protected int direction = moveLeft;
     protected int sizeCheckCollision;
     protected Boolean isCheckCollision = true;
 
@@ -39,9 +38,6 @@ public class Enemy extends DestroyableEntity {
     }
 
     public void update() {
-        if (death) {
-            super.update();
-        }
     }
 
     protected boolean checkCollide(int xPredict, int yPredict) {
@@ -59,7 +55,6 @@ public class Enemy extends DestroyableEntity {
     public Boolean goLeft() {
         if(isCheckCollision == false){
             if(x - speed <= 0) return false;
-            direction = moveLeft;
             super.update(DIRECTION.LEFT, true, indexOfFlex);
             return true;
         }
@@ -70,7 +65,6 @@ public class Enemy extends DestroyableEntity {
                     return false;
                 }
             }
-            direction = moveLeft;
             super.update(DIRECTION.LEFT, true, indexOfFlex);
             return true;
         }
@@ -80,7 +74,6 @@ public class Enemy extends DestroyableEntity {
     protected Boolean goRight() {
         if(isCheckCollision == false){
             if(x + speed >= (BombermanGame.map.getWidth() - 1) * Sprite.SCALED_SIZE) return false;
-            direction = moveRight;
             super.update(DIRECTION.RIGHT, true, indexOfFlex);
             return true;
         }
@@ -91,7 +84,6 @@ public class Enemy extends DestroyableEntity {
                     return false;
                 }
             }
-            direction = moveRight;
             super.update(DIRECTION.RIGHT, true, indexOfFlex);
             return true;
         }
@@ -101,7 +93,6 @@ public class Enemy extends DestroyableEntity {
     protected Boolean goUp() {
         if(isCheckCollision == false){
             if(y - speed <= 0) return false;
-            direction = moveUp;
             super.update(DIRECTION.UP, true, indexOfFlex);
             return true;
         }
@@ -112,7 +103,6 @@ public class Enemy extends DestroyableEntity {
                     return false;
                 }
             }
-            direction = moveUp;
             super.update(DIRECTION.UP, true, indexOfFlex);
             return true;
         }
@@ -122,7 +112,6 @@ public class Enemy extends DestroyableEntity {
     protected Boolean goDown() {
         if(isCheckCollision == false){
             if(y + speed >= (BombermanGame.map.getHeight() - 1) * Sprite.SCALED_SIZE) return false;
-            direction = moveDown;
             super.update(DIRECTION.DOWN, true, indexOfFlex);
             return true;
         }
@@ -133,7 +122,6 @@ public class Enemy extends DestroyableEntity {
                     return false;
                 }
             }
-            direction = moveDown;
             super.update(DIRECTION.DOWN, true, indexOfFlex);
             return true;
         }
@@ -167,7 +155,7 @@ public class Enemy extends DestroyableEntity {
         }
     }
 
-    protected int getDirectFromAStar(List<List<Integer>> data, int height, int width, int yModBomber, int xModBomber){
+    protected DIRECTION getDirectFromAStar(List<List<Integer>> data, int height, int width, int yModBomber, int xModBomber){
         int thisModX = getModX();
         int thisModY = getModY();
         List<List<Integer>> dist = new ArrayList<>();
@@ -232,15 +220,16 @@ public class Enemy extends DestroyableEntity {
             }          
         }
         //cant find way to ENEMY
-        if(dist.get(thisModY).get(thisModX) == 0 || dist.get(thisModY).get(thisModX) == Integer.MAX_VALUE / 2) return notGo;
+        if(dist.get(thisModY).get(thisModX) == 0 || dist.get(thisModY).get(thisModX) == Integer.MAX_VALUE / 2) 
+            return DIRECTION.NOTGO;
         int nextStep = parent.get(thisModX * height + thisModY);
         int newX = (int)(nextStep/height);
         int newY = nextStep % height;
-        if(newX - thisModX == 1) return moveRight;
-        if(newX - thisModX == -1) return moveLeft;
-        if(newY - thisModY == -1) return moveUp;
-        if(newY - thisModY == 1) return moveDown;
-        return moveLeft;
+        if(newX - thisModX == 1) return DIRECTION.RIGHT;
+        if(newX - thisModX == -1) return DIRECTION.LEFT;
+        if(newY - thisModY == -1) return DIRECTION.UP;
+        if(newY - thisModY == 1) return DIRECTION.DOWN;
+        return DIRECTION.NOTGO;
     }
 
     @Override
