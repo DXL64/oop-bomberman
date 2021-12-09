@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.util.Pair;
 import uet.oop.bomberman.controller.CollisionManager;
+import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class NightmareEnemy extends Enemy {
@@ -18,6 +19,7 @@ public class NightmareEnemy extends Enemy {
     }
     public void update(List<List<Entity>> map, List<Bomber> bombers){
         ++count;
+        if (death) return;
         if(count % 2 == 0) return;
         if(count % 32 == 1){
             int indexNearest = getNearestBomber(bombers);
@@ -25,17 +27,17 @@ public class NightmareEnemy extends Enemy {
             int yModBomber = bombers.get(indexNearest).getModY();
             List<List<Integer>> data = formatData(map, xModBomber, yModBomber, bombers);
             direction = getDirectFromAStar(data, map.size(), map.get(0).size(), yModBomber, xModBomber);
-            if(direction == notGo){
+            if(direction == DIRECTION.NOTGO){
                 sizeCheckCollision = Sprite.SCALED_SIZE;
                 goRand();
                 return;
             }
         }
         sizeCheckCollision = speed;
-        if(direction == moveLeft) goLeft();
-        else if(direction == moveRight) goRight();
-        else if(direction == moveDown) goDown();
-        else if(direction == moveUp) goUp();
+        if(direction == DIRECTION.LEFT) goLeft();
+        else if(direction == DIRECTION.RIGHT) goRight();
+        else if(direction == DIRECTION.DOWN) goDown();
+        else if(direction == DIRECTION.UP) goUp();
         return;
     
     }
@@ -83,15 +85,21 @@ public class NightmareEnemy extends Enemy {
         return formatMap;
     }
     public Image chooseSprite() {
+        if (death) {
+            if (count < 30) {       
+                return Sprite.kondoria_dead.getFxImage();
+            }
+            return null;
+        }
         spriteImage = count % 9;
-        if(direction == moveLeft || direction == moveUp){
+        if(direction == DIRECTION.LEFT || direction == DIRECTION.UP){
             switch(spriteImage / 3){
                 case 0: return Sprite.kondoria_left1.getFxImage();
                 case 1: return Sprite.kondoria_left2.getFxImage();
                 case 2: return Sprite.kondoria_left3.getFxImage();
             }
         }
-        else if(direction == moveRight || direction == moveDown){
+        else if(direction == DIRECTION.RIGHT || direction == DIRECTION.DOWN){
             switch(spriteImage / 3){
                 case 0: return Sprite.kondoria_right1.getFxImage();
                 case 1: return Sprite.kondoria_right2.getFxImage();
@@ -102,7 +110,8 @@ public class NightmareEnemy extends Enemy {
     }
     @Override
     public void render(GraphicsContext gc, Camera camera) {
-        Image img = chooseSprite();
+        img = chooseSprite();
+        if (death && count >= 30) return;
         gc.drawImage(img, x - camera.getX(), y - camera.getY());
     }
 
@@ -110,7 +119,6 @@ public class NightmareEnemy extends Enemy {
         if (!death) {
             death = true;
             count = 0;
-            countStep = 0;
         }
     }
 }

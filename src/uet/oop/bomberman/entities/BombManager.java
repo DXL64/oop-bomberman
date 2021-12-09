@@ -9,6 +9,7 @@ import javafx.util.Pair;
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.controller.Camera;
 import uet.oop.bomberman.controller.CollisionManager;
+import uet.oop.bomberman.controller.Sound;
 import uet.oop.bomberman.controller.Timer;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.entities.Explosion.EXPLOSION_STATE;
@@ -22,6 +23,7 @@ public class BombManager {
     private int numberOfBombs = 1;
     private long delayBombSet;
     private int flame = 1;
+    private Sound sound;
 
     public BombManager(CollisionManager collisionManager) {
         this.map = collisionManager.getMap();
@@ -31,6 +33,7 @@ public class BombManager {
 
     public void addBomb(Bomb bomb) {
         bombs.add(bomb);
+        Sound.newbomb.play();
     }
 
     public void update() {
@@ -73,6 +76,8 @@ public class BombManager {
                         map.replace(x, y + i, new FlameItem(x, y + i, Sprite.powerup_flames.getFxImage()));
                     else if(map.getItem(x, y + i) == BombItem.code)
                         map.replace(x, y + i, new BombItem(x, y + i, Sprite.powerup_bombs.getFxImage()));
+                    else if(map.getItem(x, y + i) == Portal.code)
+                        map.replace(x, y + i, new Portal(x, y + i, Sprite.portal.getFxImage()));
                     else
                         map.replace(x, y + i, new Grass(x, y + i, Sprite.grass.getFxImage()));
                     System.out.println(Sprite.grass.getFxImage());
@@ -102,6 +107,8 @@ public class BombManager {
                         map.replace(x - i, y, new FlameItem(x - i, y, Sprite.powerup_flames.getFxImage()));
                     else if(map.getItem(x - i, y) == BombItem.code)
                         map.replace(x - i, y, new BombItem(x - i, y, Sprite.powerup_bombs.getFxImage()));
+                    else if(map.getItem(x - i, y) == Portal.code)
+                        map.replace(x - i, y, new Portal(x - i, y, Sprite.portal.getFxImage()));
                     else
                         map.replace(x - i, y, new Grass(x - i, y, Sprite.grass.getFxImage()));
                 }
@@ -130,6 +137,8 @@ public class BombManager {
                         map.replace(x + i, y, new FlameItem(x + i, y, Sprite.powerup_flames.getFxImage()));
                     else if(map.getItem(x + i, y) == BombItem.code)
                         map.replace(x + i, y, new BombItem(x + i, y, Sprite.powerup_bombs.getFxImage()));
+                    else if(map.getItem(x + i, y) == Portal.code)
+                        map.replace(x + i, y, new Portal(x + i, y, Sprite.portal.getFxImage()));
                     else
                         map.replace(x + i, y, new Grass(x + i, y, Sprite.grass.getFxImage()));
                 }
@@ -158,6 +167,8 @@ public class BombManager {
                         map.replace(x, y - i, new FlameItem(x, y - i, Sprite.powerup_flames.getFxImage()));
                     else if(map.getItem(x, y - i) == BombItem.code)
                         map.replace(x, y - i, new BombItem(x, y - i, Sprite.powerup_bombs.getFxImage()));
+                    else if(map.getItem(x, y - i) == Portal.code)
+                        map.replace(x, y - i, new Portal(x, y - i, Sprite.portal.getFxImage()));
                     else
                         map.replace(x, y - i, new Grass(x, y - i, Sprite.grass.getFxImage()));
                 }
@@ -174,6 +185,7 @@ public class BombManager {
         }
         
         bombs.remove(iBomb);
+        Sound.bombExplose.play();
     }
 
     public boolean canSetBomb(int xBomb, int yBomb) {
@@ -218,7 +230,7 @@ public class BombManager {
     public int getNumberOfBombs() {
         return numberOfBombs;
     }
-
+    
     public void setNumberOfBombs(int numberOfBombs) {
         this.numberOfBombs = numberOfBombs;
     }

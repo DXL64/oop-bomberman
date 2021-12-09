@@ -16,10 +16,6 @@ public abstract class DestroyableEntity extends AnimationEntity {
     public abstract void die();
 
     public void update() {
-        if (countStep != 30) {
-            countStep++;
-            img = chooseSprite();
-        }
     }
 
     @Override

@@ -49,47 +49,47 @@ public class GameMenu {
         this.keyListener = keyListener;
         
         Text text = new Text("SINGLE PLAY");
-        text.setFont(Graphics.DEFAULTFONT); 
+        text.setFont(Graphics.FUTUREFONT); 
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
                 / 2,
             Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
         text = new Text("MULTI PLAY");
-        text.setFont(Graphics.DEFAULTFONT);
+        text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
                 / 2,
             Graphics.HEIGHT / 8 * 7 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
         text = new Text("SURVIVAL PLAY");
-        text.setFont(Graphics.DEFAULTFONT);
+        text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
                 / 2,
             Graphics.HEIGHT / 3 * 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
         text = new Text("BOT PLAY");
-        text.setFont(Graphics.DEFAULTFONT);
+        text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
                 / 2,
             Graphics.HEIGHT / 4 * 3 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
         text = new Text("EXIT");
-        text.setFont(Graphics.DEFAULTFONT);
+        text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth() / 2,
             Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 2, text));
 
         text = new Text("START");
-        text.setFont(Graphics.DEFAULTFONT);
+        text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         startButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
             Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text);
         
         text = new Text("READY");
-        text.setFont(Graphics.DEFAULTFONT);
+        text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         readyButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
             Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text);
@@ -105,8 +105,11 @@ public class GameMenu {
                 if (now - delayInput > Timer.TIME_FOR_SINGLE_INPUT) {
                     delayInput = now;
                     if (keyListener.isPressed(KeyCode.ENTER)) {
+                        Sound.menuSelect.play();
                         switch (choosenButton) {
                             case SINGLE_GAME:
+                                Sound.backgroundGame.stop();
+                                Sound.menu.loop();
                                 System.out.println("[ENTER SINGLE GAME]");
                                 gameState = GAME_STATE.IN_SINGLE_GAME;
                                 BombermanGame.map = new Map(1, keyListener);
@@ -127,11 +130,13 @@ public class GameMenu {
                                 break;
                         }
                     } else if (keyListener.isPressed(KeyCode.S)) {
+                        Sound.menuMove.play();
                         choosenButton++;
                         if (choosenButton == button.size()) {
                             choosenButton = 0;
                         }
                     } else if (keyListener.isPressed(KeyCode.W)) {
+                        Sound.menuMove.play();
                         choosenButton--;
                         if (choosenButton < 0) {
                             choosenButton = button.size() - 1;

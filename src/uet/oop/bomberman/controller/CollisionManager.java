@@ -15,8 +15,8 @@ public class CollisionManager {
     private Map map;
 
     public final static int STEP = 2;
-    public final static int FIX_WIDTH = 3;
-    public final static int FIX_HEIGHT = 2;
+    public final static int FIX_WIDTH = 5;
+    public final static int FIX_HEIGHT = 4;
 
     public CollisionManager(Map map) {
         this.map = map;

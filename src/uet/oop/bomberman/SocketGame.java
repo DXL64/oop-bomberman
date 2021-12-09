@@ -41,8 +41,6 @@ public class SocketGame {
                     String msgHello = hashCode + ",Hello";
                     byte[] data = msgHello.getBytes();
                     outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
-
-                    List<Entity> flexEntities = map.getFlexEntities();
                     
                     try {
                         //Send messages to multicast group
@@ -77,38 +75,49 @@ public class SocketGame {
                                 map.setNumberBomber(map.getCurrentBomber() + 1);
                                 System.out.println("You are number: " + map.getCurrentBomber());
                                 System.out.println("Number players current is in room: " + map.getNumberBomber());
-                                Bomber bomberCur = (Bomber)flexEntities.get(map.getCurrentBomber());
+                                Bomber bomberCur = (Bomber)map.getFlexEntities().get(map.getCurrentBomber());
                                 bomberCur.setIsCamFollow(true);
                                 map.getBombermans().get(Integer.parseInt(tokens[4])).setReady(Boolean.parseBoolean(tokens[5]));
                             }
                         }
                         else if(tokens[1].equals("D")){
+                            int level = Integer.parseInt(tokens[3]);
+                            if(level != map.getLevel()) continue;
                             int cur = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            AnimationEntity animationEntity = (AnimationEntity)flexEntities.get(cur);
+                            AnimationEntity animationEntity = (AnimationEntity)map.getFlexEntities().get(cur);
                             animationEntity.updateDirect(DIRECTION.RIGHT, success);
                         }
                         else if(tokens[1].equals("S")){
+                            int level = Integer.parseInt(tokens[3]);
+                            if(level != map.getLevel()) continue;
                             int cur = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            AnimationEntity animationEntity = (AnimationEntity)flexEntities.get(cur);
+
+                            AnimationEntity animationEntity = (AnimationEntity)map.getFlexEntities().get(cur);
                             animationEntity.updateDirect(DIRECTION.DOWN, success);
                         }
                         else if(tokens[1].equals("A")){
+                            int level = Integer.parseInt(tokens[3]);
+                            if(level != map.getLevel()) continue;
                             int cur = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            AnimationEntity animationEntity = (AnimationEntity)flexEntities.get(cur);
+                            AnimationEntity animationEntity = (AnimationEntity)map.getFlexEntities().get(cur);
                             animationEntity.updateDirect(DIRECTION.LEFT, success);
                         }
                         else if(tokens[1].equals("W")){
+                            int level = Integer.parseInt(tokens[3]);
+                            if(level != map.getLevel()) continue;
                             int cur = Integer.parseInt(tokens[0]);
                             Boolean success = Boolean.parseBoolean(tokens[2]);
-                            AnimationEntity animationEntity = (AnimationEntity)flexEntities.get(cur);
+                            AnimationEntity animationEntity = (AnimationEntity)map.getFlexEntities().get(cur);
                             animationEntity.updateDirect(DIRECTION.UP, success);
                         }
                         else if(tokens[1].equals("Bomb")){
+                            int level = Integer.parseInt(tokens[4]);
+                            if(level != map.getLevel()) continue;
                             int curBomber = Integer.parseInt(tokens[0]);
-                            Bomber bomberCur = (Bomber)flexEntities.get(curBomber);
+                            Bomber bomberCur = (Bomber)map.getFlexEntities().get(curBomber);
                             BombManager bombManager = bomberCur.getBombManager();
                             int xBomb = Integer.parseInt(tokens[2]);
                             int yBomb = Integer.parseInt(tokens[3]);
@@ -132,12 +141,12 @@ public class SocketGame {
                         }
                         else if(tokens[1].equals("Ready")){
                             int curBomber = Integer.parseInt(tokens[0]);
-                            Bomber bomberCur = (Bomber)flexEntities.get(curBomber);
+                            Bomber bomberCur = (Bomber)map.getFlexEntities().get(curBomber);
                             bomberCur.setReady(true);
                         }
                         else if(tokens[1].equals("NotReady")){
                             int curBomber = Integer.parseInt(tokens[0]);
-                            Bomber bomberCur = (Bomber)flexEntities.get(curBomber);
+                            Bomber bomberCur = (Bomber)map.getFlexEntities().get(curBomber);
                             bomberCur.setReady(false);
                         }
                     }
