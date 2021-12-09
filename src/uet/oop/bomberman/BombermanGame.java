@@ -25,7 +25,6 @@ public class BombermanGame extends Application {
     public static GameMenu menu;
     public static Map map;
     private KeyListener keyListener;
-    public static SocketGame socketGame;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -69,6 +68,8 @@ public class BombermanGame extends Application {
         case IN_MENU:
         case IN_MULTIPLAYER_MENU:
         case IN_SURVIVAL_MENU:
+        case IN_PAUSE:
+        case IN_END_STATE:
             menu.update();
             break;
 
@@ -76,9 +77,6 @@ public class BombermanGame extends Application {
         case IN_MULTIPLAYER_GAME:
         case IN_SURVIVAL_GAME:
             map.update();
-            break;
-        
-        case IN_PAUSE:
             break;
 
         case END:
@@ -95,6 +93,8 @@ public class BombermanGame extends Application {
         case IN_MENU:
         case IN_MULTIPLAYER_MENU:
         case IN_SURVIVAL_MENU:
+        case IN_PAUSE:
+        case IN_END_STATE:
             graphics.renderMenu(menu);
             break;
 
@@ -103,9 +103,6 @@ public class BombermanGame extends Application {
         case IN_SURVIVAL_GAME:
             graphics.clearScreen(canvas);
             graphics.renderMap(map);
-            break;
-
-        case IN_PAUSE:
             break;
 
         case END:
