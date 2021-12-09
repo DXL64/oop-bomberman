@@ -51,7 +51,6 @@ public class Bomber extends DestroyableEntity {
     public void update() {
         updateBomberman();
         updateBombs();
-        // checkDeath();
     }
 
     private void updateBomberman() {
@@ -208,7 +207,7 @@ public class Bomber extends DestroyableEntity {
         }
     }
 
-    private void checkDeath() {
+    public void checkDeath() {
         for (Entity enemy : collisionManager.getMap().getFlexEntities()) {
             if (enemy instanceof Enemy && !((Enemy)enemy).death) {
                 if (collisionManager.collide(hitbox, enemy.hitbox)) die();
