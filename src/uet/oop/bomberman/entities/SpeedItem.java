@@ -11,6 +11,6 @@ public class SpeedItem extends Items {
 
     @Override
     public void powerUp(Bomber bomber) {
-        bomber.setSpeedBomber(Math.max(bomber.getSpeedBomber() + speedBonus, 5));
+        bomber.setSpeedBomber(Math.min(bomber.getSpeedBomber() + speedBonus, 5));
     }
 }

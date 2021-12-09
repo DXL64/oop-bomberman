@@ -28,6 +28,7 @@ public class Graphics {
     public static Font DEFAULTFONT;
     public static Font CHOOSENFONT;
     public static Font FUTUREFONT;
+    public static Font FUTUREFONTTHIN;
 	public static Image backGroundMenu;
     public static Image emptySlot[] = new Image[Map.MAX_NUMBER_BOMBERS];
     public static Image readySlot[] = new Image[Map.MAX_NUMBER_BOMBERS];
@@ -44,6 +45,7 @@ public class Graphics {
             DEFAULTFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/default.ttf")), 30);
             CHOOSENFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 25);
             FUTUREFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/Future Techno Italic 400.ttf")), 25);
+            FUTUREFONTTHIN = Font.loadFont(Files.newInputStream(Paths.get("res/font/Future Techno Italic 400.ttf")), 15);
             backGroundMenu = new Image(Files.newInputStream(Paths.get("res/lobby/BG.png")));
             int x = 115;
             int y = 160;

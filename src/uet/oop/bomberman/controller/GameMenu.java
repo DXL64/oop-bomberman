@@ -85,20 +85,20 @@ public class GameMenu {
         text = new Text("START");
         text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
-        startButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
-                Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 2, text);
+        startButton = new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth() / 2,
+                Graphics.HEIGHT * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 3 + 4, text);
 
         text = new Text("READY");
         text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
-        readyButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
-                Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 2, text);
+        readyButton = new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth() / 2,
+                Graphics.HEIGHT * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 3 + 4, text);
 
         text = new Text("CONTINUE GAME");
         text.setFont(Graphics.FUTUREFONT);
         text.setFill(Color.WHITE);
         pauseButton = new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
-                Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 2, text);
+                Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 3, text);
 
         text = new Text("GO TO MENU");
         text.setFont(Graphics.FUTUREFONT);
