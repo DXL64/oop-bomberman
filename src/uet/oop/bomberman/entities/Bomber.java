@@ -122,10 +122,9 @@ public class Bomber extends DestroyableEntity {
                     map.setNumberPlayerGoPortal(map.getNumberPlayerGoPortal() + 1);
                     isGoToPortal = true;
                 }
-                this.die();
                 if(map.getNumberPlayerGoPortal() == map.getNumberBomber()){
                     int nextLevel = map.getLevel() + 1;
-                    if(nextLevel == 2){
+                    if(nextLevel == 4){
                         BombermanGame.map.setIsWin(true);
                         GameMenu.preGameState = GameMenu.gameState;
                         GameMenu.gameState = GAME_STATE.IN_END_STATE;
