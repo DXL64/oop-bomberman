@@ -10,6 +10,7 @@ import javafx.util.Pair;
 import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.GameMenu;
 import uet.oop.bomberman.controller.KeyListener;
+import uet.oop.bomberman.controller.Sound;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
@@ -93,13 +94,14 @@ public class Bomber extends DestroyableEntity {
     }
 
     public void updateItems(){
-        Entity item = collisionManager.getEntityAt(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE);
+        Entity item = collisionManager.getEntityAt((x+16) / Sprite.SCALED_SIZE, (y+16) / Sprite.SCALED_SIZE);
         if (item instanceof Items) {
+            Sound.item.play();
             System.out.println(item);
             Items tmp = (Items) item;
             tmp.powerUp(this);
-            collisionManager.getMap().replace(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE,
-                    new Grass(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.grass.getFxImage()));
+            collisionManager.getMap().replace((x+16) / Sprite.SCALED_SIZE, (y+16) / Sprite.SCALED_SIZE,
+                    new Grass((x+16) / Sprite.SCALED_SIZE, (y+16) / Sprite.SCALED_SIZE, Sprite.grass.getFxImage()));
         }
     }
 

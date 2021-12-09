@@ -9,6 +9,7 @@ import javafx.util.Pair;
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.controller.Camera;
 import uet.oop.bomberman.controller.CollisionManager;
+import uet.oop.bomberman.controller.Sound;
 import uet.oop.bomberman.controller.Timer;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.entities.Explosion.EXPLOSION_STATE;
@@ -22,6 +23,7 @@ public class BombManager {
     private int numberOfBombs = 1;
     private long delayBombSet;
     private int flame = 1;
+    private Sound sound;
 
     public BombManager(CollisionManager collisionManager) {
         this.map = collisionManager.getMap();
@@ -31,6 +33,7 @@ public class BombManager {
 
     public void addBomb(Bomb bomb) {
         bombs.add(bomb);
+        Sound.newbomb.play();
     }
 
     public void update() {
@@ -174,6 +177,7 @@ public class BombManager {
         }
         
         bombs.remove(iBomb);
+        Sound.bombExplose.play();
     }
 
     public boolean canSetBomb(int xBomb, int yBomb) {
@@ -218,7 +222,7 @@ public class BombManager {
     public int getNumberOfBombs() {
         return numberOfBombs;
     }
-
+    
     public void setNumberOfBombs(int numberOfBombs) {
         this.numberOfBombs = numberOfBombs;
     }
