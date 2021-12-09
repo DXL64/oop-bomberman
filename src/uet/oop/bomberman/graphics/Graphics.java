@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -15,6 +16,8 @@ import javafx.util.Pair;
 import uet.oop.bomberman.Map;
 import uet.oop.bomberman.controller.Button;
 import uet.oop.bomberman.controller.GameMenu;
+import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.Entity;
 import javafx.scene.image.*;
 
 
@@ -74,8 +77,13 @@ public class Graphics {
             map.getMap().get(i).forEach(g -> g.render(gc,map.getCamera()));    
         }
         for(int i = 0; i < map.getFlexEntities().size(); ++i){
-            if(i < map.getNumberBomber() || i >= map.MAX_NUMBER_BOMBERS) 
-                map.getFlexEntities().get(i).render(gc, map.getCamera());
+            if(i < map.getNumberBomber() || i >= map.MAX_NUMBER_BOMBERS) {
+                Entity entity = map.getFlexEntities().get(i);
+                if (entity instanceof Bomber) {
+                    if (!((Bomber) entity).getDeath())
+                    map.getFlexEntities().get(i).render(gc, map.getCamera());
+                }
+            }
         }
     }
     public void renderText(Font font, Text text, int x, int y) {
