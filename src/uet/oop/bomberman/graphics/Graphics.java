@@ -3,6 +3,7 @@ package uet.oop.bomberman.graphics;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.canvas.Canvas;
@@ -10,32 +11,46 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Pair;
 import uet.oop.bomberman.Map;
-import uet.oop.bomberman.MultiPlayerMap;
 import uet.oop.bomberman.controller.Button;
 import uet.oop.bomberman.controller.GameMenu;
-import uet.oop.bomberman.entities.Bomber;
-import uet.oop.bomberman.entities.Enemy;
-import uet.oop.bomberman.graphics.Sprite;
-
+import javafx.scene.image.*;
 
 
 public class Graphics {
-    public static final int WIDTH = 18;
-    public static final int HEIGHT = 13;
+    public static final int WIDTH = 22;
+    public static final int HEIGHT = 11;
 
+    public static int X_COORDINATE = 0;
+    public static int Y_COORDINATE = 1;
     public static Font TITLEFONT;
     public static Font DEFAULTFONT;
     public static Font CHOOSENFONT;
-
+	public static Image backGroundMenu;
+    public static Image emptySlot[] = new Image[Map.MAX_NUMBER_BOMBERS];
+    public static Image readySlot[] = new Image[Map.MAX_NUMBER_BOMBERS];
+    public static Image notReadySlot[] = new Image[Map.MAX_NUMBER_BOMBERS];
+    public static int slotCoordinates[][] = new int[Map.MAX_NUMBER_BOMBERS][2];
     private GraphicsContext gc;
 
     public Graphics(Canvas canvas) {
         gc = canvas.getGraphicsContext2D();
         try {
-            TITLEFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 50);
             DEFAULTFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/default.ttf")), 30);
             CHOOSENFONT = Font.loadFont(Files.newInputStream(Paths.get("res/font/title.ttf")), 25);
+            backGroundMenu = new Image(Files.newInputStream(Paths.get("res/lobby/BG.png")));
+            int x = 115;
+            int y = 160;
+            for (int i = 0; i < 4; i++) {
+                emptySlot[i] = new Image(Files.newInputStream(Paths.get("res/lobby/" + (i + 1) + "Empty.png")));
+                readySlot[i] = new Image(Files.newInputStream(Paths.get("res/lobby/" + (i + 1) + "Ready.png")));
+                notReadySlot[i] = new Image(Files.newInputStream(Paths.get("res/lobby/" + (i + 1) + "nReady.png")));
+                slotCoordinates[i][X_COORDINATE] = x;
+                slotCoordinates[i][Y_COORDINATE] = y;
+                x += 135;
+            }
+
         } catch (IOException e) {
             System.out.println("[IOException] Wrong filepaths.");
         }
@@ -61,15 +76,9 @@ public class Graphics {
     }
 
     public void renderMenu(GameMenu menu) {
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE);
-
-        renderText(TITLEFONT, menu.getTitleText(), 
-            WIDTH / 2 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getWidth() / 5 * 2, 
-            HEIGHT / 6 * Sprite.SCALED_SIZE - (int) menu.getTitleText().getLayoutBounds().getHeight() / 5 * 2);
-
+        
+        gc.drawImage(backGroundMenu, 0, 0, WIDTH * Sprite.SCALED_SIZE, HEIGHT * Sprite.SCALED_SIZE);
         menu.render(gc);
-        // gc.drawImage(Sprite.player_dead1.getFxImage(), 0, 0);
     }
 
     public void renderButton(Button button) {

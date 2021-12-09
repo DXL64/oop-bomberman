@@ -18,6 +18,7 @@ import uet.oop.bomberman.SocketGame;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.graphics.SpriteBomber;
 
 
 public class GameMenu {
@@ -31,8 +32,6 @@ public class GameMenu {
     private final int BOT_GAME = 3;
     private final int EXIT = 4;
     private long delayInput = 0;
-
-    private Text titleText;
 
     List<Button> button = new ArrayList<>();
     Button startButton;
@@ -52,36 +51,36 @@ public class GameMenu {
         Text text = new Text("SINGLE PLAY");
         text.setFont(Graphics.DEFAULTFONT); 
         text.setFill(Color.WHITE);
-        button.add(new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
+        button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
+                / 2,
             Graphics.HEIGHT / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
         text = new Text("MULTI PLAY");
         text.setFont(Graphics.DEFAULTFONT);
         text.setFill(Color.WHITE);
-        button.add(new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
+        button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
+                / 2,
             Graphics.HEIGHT / 8 * 7 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
         text = new Text("SURVIVAL PLAY");
         text.setFont(Graphics.DEFAULTFONT);
         text.setFill(Color.WHITE);
-        button.add(new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
+        button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
+                / 2,
             Graphics.HEIGHT / 3 * 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
         text = new Text("BOT PLAY");
         text.setFont(Graphics.DEFAULTFONT);
         text.setFill(Color.WHITE);
-        button.add(new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
+        button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth()
+                / 2,
             Graphics.HEIGHT / 4 * 3 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
 
         text = new Text("EXIT");
         text.setFont(Graphics.DEFAULTFONT);
         text.setFill(Color.WHITE);
-        button.add(new Button(Graphics.WIDTH / 7 * Sprite.SCALED_SIZE,
-            Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight()/2, text));
-
-        titleText = new Text("BOMBERMAN");
-        titleText.setFont(Graphics.TITLEFONT);
-        titleText.setFill(Color.CYAN);
+        button.add(new Button(Graphics.WIDTH / 2 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getWidth() / 2,
+            Graphics.HEIGHT / 8 * 10 * Sprite.SCALED_SIZE - (int) text.getLayoutBounds().getHeight() / 2, text));
 
         text = new Text("START");
         text.setFont(Graphics.DEFAULTFONT);
@@ -154,7 +153,7 @@ public class GameMenu {
                     delayInput = now;
                     if (keyListener.isPressed(KeyCode.ENTER)) {
                         if(BombermanGame.map.getCurrentBomber() == 0){
-                            int numberReady = 0;
+                            numberReady = 0;
                             for(Bomber bomber : BombermanGame.map.getBombermans()){
                                 if(bomber.getReady() == true) ++numberReady;
                             }
@@ -227,6 +226,24 @@ public class GameMenu {
                 break;
             case IN_MULTIPLAYER_MENU:
             case IN_SURVIVAL_MENU:
+                for (int i = 0; i < BombermanGame.map.getNumberBomber(); i++) {
+                    int x = Graphics.slotCoordinates[i][Graphics.X_COORDINATE];
+                    int y = Graphics.slotCoordinates[i][Graphics.Y_COORDINATE];
+                    if (BombermanGame.map.getBombermans().get(i).getReady()) {
+                        gc.drawImage(Graphics.readySlot[i], x, y, 120, 160);
+                    } else {
+                        gc.drawImage(Graphics.notReadySlot[i], 
+                                Graphics.slotCoordinates[i][Graphics.X_COORDINATE],
+                                Graphics.slotCoordinates[i][Graphics.Y_COORDINATE], 120, 160);
+                    }
+                    gc.drawImage(SpriteBomber.player_down[i].getFxImageOrigin(), x + 60 - SpriteBomber.DEFAULT_SIZE / 2, y + 80 - SpriteBomber.DEFAULT_SIZE / 2, SpriteBomber.DEFAULT_SIZE, SpriteBomber.DEFAULT_SIZE);
+                }
+                for (int i = BombermanGame.map.getNumberBomber(); i < Map.MAX_NUMBER_BOMBERS; i++) {
+                    gc.drawImage(Graphics.emptySlot[i], 
+                            Graphics.slotCoordinates[i][Graphics.X_COORDINATE],
+                            Graphics.slotCoordinates[i][Graphics.Y_COORDINATE], 120, 160);
+                }
+
                 if(BombermanGame.map.getCurrentBomber() == 0) startButton.render(gc);
                 else {
                     if(isReady == false) readyButton.render(gc);
@@ -234,12 +251,5 @@ public class GameMenu {
                 }
                 break;
         }
-    }
-    
-    /**
-     * Get titleText.
-     */
-    public Text getTitleText() {
-        return titleText;
     }
 }

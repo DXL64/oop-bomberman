@@ -13,6 +13,7 @@ import uet.oop.bomberman.controller.KeyListener;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Graphics;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.graphics.SpriteBomber;
 import uet.oop.bomberman.SocketGame;
 import uet.oop.bomberman.controller.Camera;
 
@@ -170,18 +171,19 @@ public class Bomber extends DestroyableEntity {
     }
 
     public Image chooseSprite() {
+        //return SpriteBomber.test.getFxImageOrigin();
         if (!isRunning) {
-            switch (direction) {
+            switch (direction) { 
                 case LEFT:
-                    return Sprite.player_left.getFxImage();
+                    return SpriteBomber.player_left[indexOfFlex].getFxImageOrigin();
                 case RIGHT:
-                    return Sprite.player_right.getFxImage();
+                    return SpriteBomber.player_right[indexOfFlex].getFxImageOrigin();
                 case UP:
-                    return Sprite.player_up.getFxImage();
+                    return SpriteBomber.player_up[indexOfFlex].getFxImageOrigin();
                 case DOWN:
-                    return Sprite.player_down.getFxImage();
+                    return SpriteBomber.player_down[indexOfFlex].getFxImageOrigin();
                 default:
-                    return Sprite.player_right.getFxImage();
+                    return SpriteBomber.player_down[indexOfFlex].getFxImageOrigin();
             }
         } else {
             if (direction == backStep) {
@@ -197,38 +199,38 @@ public class Bomber extends DestroyableEntity {
                 case LEFT:
                     backStep = DIRECTION.LEFT;
                     if (chooseFrame == 0)
-                        return Sprite.player_left.getFxImage();
+                        return SpriteBomber.player_left[indexOfFlex].getFxImageOrigin();
                     if (chooseFrame == 1)
-                        return Sprite.player_left_1.getFxImage();
+                        return SpriteBomber.player_left_1[indexOfFlex].getFxImageOrigin();
                     if (chooseFrame == 2)
-                        return Sprite.player_left_2.getFxImage();
+                        return SpriteBomber.player_left_2[indexOfFlex].getFxImageOrigin();
                     break;
                 case RIGHT:
                     backStep = DIRECTION.RIGHT;
                     if (chooseFrame == 0)
-                        return Sprite.player_right.getFxImage();
+                        return SpriteBomber.player_right[indexOfFlex].getFxImageOrigin();
                     if (chooseFrame == 1)
-                        return Sprite.player_right_1.getFxImage();
+                        return SpriteBomber.player_right_1[indexOfFlex].getFxImageOrigin();
                     if (chooseFrame == 2)
-                        return Sprite.player_right_2.getFxImage();
+                        return SpriteBomber.player_right_2[indexOfFlex].getFxImageOrigin();
                     break;
                 case UP:
                     backStep = DIRECTION.UP;
                     if (chooseFrame == 0)
-                        return Sprite.player_up.getFxImage();
+                        return SpriteBomber.player_up[indexOfFlex].getFxImageOrigin();
                     if (chooseFrame == 1)
-                        return Sprite.player_up_1.getFxImage();
+                        return SpriteBomber.player_up_1[indexOfFlex].getFxImageOrigin();
                     if (chooseFrame == 2)
-                        return Sprite.player_up_2.getFxImage();
+                        return SpriteBomber.player_up_2[indexOfFlex].getFxImageOrigin();
                     break;
                 case DOWN:
                     backStep = DIRECTION.DOWN;
                     if (chooseFrame == 0)
-                        return Sprite.player_down.getFxImage();
+                        return SpriteBomber.player_down[indexOfFlex].getFxImageOrigin();
                     if (chooseFrame == 1)
-                        return Sprite.player_down_1.getFxImage();
+                        return SpriteBomber.player_down_1[indexOfFlex].getFxImageOrigin();
                     if (chooseFrame == 2)
-                        return Sprite.player_down_2.getFxImage();
+                        return SpriteBomber.player_down_2[indexOfFlex].getFxImageOrigin();
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid game state");
@@ -260,11 +262,10 @@ public class Bomber extends DestroyableEntity {
                     - Graphics.HEIGHT * Sprite.SCALED_SIZE) {
                 yRender = y - (camera.getScreenHeight() * Sprite.SCALED_SIZE - Graphics.HEIGHT * Sprite.SCALED_SIZE);
             }
-
-            gc.drawImage(img, xRender, yRender);
+            gc.drawImage(img, xRender, yRender, Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
 
         } else {
-            gc.drawImage(img, x - camera.getX(), y - camera.getY());
+            gc.drawImage(img, x - camera.getX(), y - camera.getY(), Sprite.SCALED_SIZE, Sprite.SCALED_SIZE);
         }
         // Render bombs front of Bomberman;
         bombManager.renderBombs(gc, camera);

@@ -3,8 +3,6 @@ import java.io.IOException;
 import java.net.*;
 import java.util.List;
 
-import javafx.application.Platform;
-import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.GameMenu;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.entities.AnimationEntity;
@@ -63,7 +61,7 @@ public class SocketGame {
                                 map.setNumberBomber(map.getNumberBomber() + 1);
                                 System.out.println("You are number: " + map.getCurrentBomber());
                                 System.out.println("Number players current is in room: " + map.getNumberBomber());
-                                String msgRely = hashCode + ",Hi," + (map.getNumberBomber() - 1) + "," + tokens[0]; 
+                                String msgRely = hashCode + ",Hi," + (map.getNumberBomber() - 1) + "," + tokens[0] + "," + map.getCurrentBomber() + "," + ((Bomber) map.getBomberman()).getReady(); 
                                 byte[] dataRely = msgRely.getBytes();
                                 outPacket = new DatagramPacket(dataRely, dataRely.length, SocketGame.address, SocketGame.PORT);
                                 try {
@@ -81,6 +79,7 @@ public class SocketGame {
                                 System.out.println("Number players current is in room: " + map.getNumberBomber());
                                 Bomber bomberCur = (Bomber)flexEntities.get(map.getCurrentBomber());
                                 bomberCur.setIsCamFollow(true);
+                                map.getBombermans().get(Integer.parseInt(tokens[4])).setReady(Boolean.parseBoolean(tokens[5]));
                             }
                         }
                         else if(tokens[1].equals("D")){

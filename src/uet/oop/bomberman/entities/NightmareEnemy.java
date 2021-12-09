@@ -105,4 +105,12 @@ public class NightmareEnemy extends Enemy {
         Image img = chooseSprite();
         gc.drawImage(img, x - camera.getX(), y - camera.getY());
     }
+
+    public void die() {
+        if (!death) {
+            death = true;
+            count = 0;
+            countStep = 0;
+        }
+    }
 }

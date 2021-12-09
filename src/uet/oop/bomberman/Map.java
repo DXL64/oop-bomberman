@@ -37,29 +37,31 @@ public class Map {
 
     protected List<List<Entity>> map = new ArrayList<>();
     protected List<Entity> flexEntities = new ArrayList<>(); // 4 first elements is for bomber
-    protected List< Pair<Integer, Integer> > brickList = new ArrayList<>();
-    protected int[][] itemList = new int[31][31];
+    protected List<Pair<Integer, Integer>> brickList = new ArrayList<>();
+    protected int[][] itemList;
     protected Camera camera;
-    protected List< Pair<Integer, Integer> > coordinateBomberman = new ArrayList<>();
+    protected List<Pair<Integer, Integer>> coordinateBomberman = new ArrayList<>();
     protected int height;
     protected int width;
     protected int mapLevel;
     protected int currentBomber = 0;
     protected int numberBomber = 1;
     public static final int MAX_NUMBER_BOMBERS = 4;
-    
+
     public Map(int level, KeyListener keyListener) {
         mapLevel = level;
         Path currentWorkingDir = Paths.get("").toAbsolutePath();
-        File file = new File(currentWorkingDir.normalize().toString() + "/res/levels/Level" + level +".txt");
+        File file = new File(currentWorkingDir.normalize().toString() + "/res/levels/Level" + level + ".txt");
         try {
             Scanner scanner = new Scanner(file);
             height = scanner.nextInt();
             height = scanner.nextInt();
             width = scanner.nextInt();
+            itemList = new int[height][width];
             scanner.nextLine();
-            for(int i = 0; i < MAX_NUMBER_BOMBERS; ++i){
-                Bomber temp = new Bomber(1, 1, Sprite.player_right.getFxImage(), keyListener, new CollisionManager(this));
+            for (int i = 0; i < MAX_NUMBER_BOMBERS; ++i) {
+                Bomber temp = new Bomber(1, 1, Sprite.player_right.getFxImage(), keyListener,
+                        new CollisionManager(this));
                 temp.setIndexOfFlex(i);
                 flexEntities.add(temp);
             }
@@ -73,11 +75,12 @@ public class Map {
                             break;
                         case '*':
                             tempList.add(new Brick(j, i, Sprite.brick.getFxImage()));
-                            Pair<Integer, Integer> e = new Pair<Integer, Integer> (i,j);
+                            Pair<Integer, Integer> e = new Pair<Integer, Integer>(i, j);
                             brickList.add(e);
                             break;
                         case '1':
-                            Enemy temp = new BalloomEnemy(j, i, Sprite.balloom_left1.getFxImage(), new CollisionManager(this));
+                            Enemy temp = new BalloomEnemy(j, i, Sprite.balloom_left1.getFxImage(),
+                                    new CollisionManager(this));
                             flexEntities.add(temp);
                             temp.setIndexOfFlex(flexEntities.size() - 1);
                             tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
@@ -124,7 +127,7 @@ public class Map {
                             tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
                             break;
                     }
-                } 
+                }
                 map.add(tempList);
             }
             setupBomberman(keyListener);
@@ -135,8 +138,8 @@ public class Map {
         }
     }
 
-    public void setupBomberman(KeyListener keyListener){
-        for(int i = 0; i < coordinateBomberman.size(); ++i){
+    public void setupBomberman(KeyListener keyListener) {
+        for (int i = 0; i < coordinateBomberman.size(); ++i) {
             Pair<Integer, Integer> coordinate = coordinateBomberman.get(i);
             flexEntities.get(i).setXUnit(coordinate.getKey());
             flexEntities.get(i).setYUnit(coordinate.getValue());
@@ -146,18 +149,19 @@ public class Map {
     public void update() {
         flexEntities.get(currentBomber).update();
         for (int i = 0; i < flexEntities.size(); ++i) {
-            if(flexEntities.get(i) instanceof Bomber){
-                Bomber bomber = (Bomber)flexEntities.get(i);
+            if (flexEntities.get(i) instanceof Bomber) {
+                Bomber bomber = (Bomber) flexEntities.get(i);
                 bomber.getBombManager().update();
                 bomber.updateItems();
             }
-            if(flexEntities.get(i) instanceof Enemy){
-                if(currentBomber != 0){
+            if (flexEntities.get(i) instanceof Enemy) {
+                if (currentBomber != 0) {
                     flexEntities.get(i).updateCount();
-                }
-                else {
-                    if(flexEntities.get(i) instanceof BalloomEnemy || flexEntities.get(i) instanceof DollEnemy) flexEntities.get(i).update();
-                    if(flexEntities.get(i) instanceof OnealEnemy || flexEntities.get(i) instanceof NightmareEnemy) flexEntities.get(i).update(map, getBombermans());
+                } else {
+                    if (flexEntities.get(i) instanceof BalloomEnemy || flexEntities.get(i) instanceof DollEnemy)
+                        flexEntities.get(i).update();
+                    if (flexEntities.get(i) instanceof OnealEnemy || flexEntities.get(i) instanceof NightmareEnemy)
+                        flexEntities.get(i).update(map, getBombermans());
                 }
             }
         }
@@ -166,8 +170,9 @@ public class Map {
 
     /**
      * Replace an entity to x, y coordinate in map.
-     * @param x x coordinate in map.
-     * @param y y coordinate in map.
+     * 
+     * @param x      x coordinate in map.
+     * @param y      y coordinate in map.
      * @param entity entity to replace.
      */
     public void replace(int x, int y, Entity entity) {
@@ -187,26 +192,34 @@ public class Map {
     public Entity getBomberman() {
         return flexEntities.get(currentBomber);
     }
-    public List<Bomber> getBombermans(){
+
+    public List<Bomber> getBombermans() {
         List<Bomber> bombermans = new ArrayList<>();
-        for(int i = 0; i < numberBomber; ++i) bombermans.add((Bomber)flexEntities.get(i));
+        for (int i = 0; i < numberBomber; ++i)
+            bombermans.add((Bomber) flexEntities.get(i));
         return bombermans;
     }
-    public List<Bomber> getAllBombermans(){
+
+    public List<Bomber> getAllBombermans() {
         List<Bomber> bombermans = new ArrayList<>();
-        for(int i = 0; i < MAX_NUMBER_BOMBERS; ++i) bombermans.add((Bomber)flexEntities.get(i));
+        for (int i = 0; i < MAX_NUMBER_BOMBERS; ++i)
+            bombermans.add((Bomber) flexEntities.get(i));
         return bombermans;
     }
+
     public List<Enemy> getEnemy() {
         List<Enemy> enemies = new ArrayList<>();
-        for(int i = 0; i < flexEntities.size(); ++i){
-            if(flexEntities.get(i) instanceof Enemy) enemies.add((Enemy)flexEntities.get(i));
+        for (int i = 0; i < flexEntities.size(); ++i) {
+            if (flexEntities.get(i) instanceof Enemy)
+                enemies.add((Enemy) flexEntities.get(i));
         }
         return enemies;
     }
-    public int getLevel(){
+
+    public int getLevel() {
         return mapLevel;
     }
+
     /**
      * Getter for camera.
      */
@@ -214,59 +227,68 @@ public class Map {
         return camera;
     }
 
-    public List<Entity> getFlexEntities(){
+    public List<Entity> getFlexEntities() {
         return flexEntities;
     }
 
     public Entity getCoordinate(int x, int y) {
         /*
-        x -= x % Sprite.SCALED_SIZE;
-        y -= y % Sprite.SCALED_SIZE;
-        //System.out.println("\tx: " + x);
-        //System.out.println("\ty: " + y);
-        int modX = Math.round(x / Sprite.SCALED_SIZE);
-        int modY = Math.round(y / Sprite.SCALED_SIZE);
-        System.out.println("\tmodX = " + modX);
-        System.out.println("\tmodY = " + modY);
-        */
+         * x -= x % Sprite.SCALED_SIZE;
+         * y -= y % Sprite.SCALED_SIZE;
+         * //System.out.println("\tx: " + x);
+         * //System.out.println("\ty: " + y);
+         * int modX = Math.round(x / Sprite.SCALED_SIZE);
+         * int modY = Math.round(y / Sprite.SCALED_SIZE);
+         * System.out.println("\tmodX = " + modX);
+         * System.out.println("\tmodY = " + modY);
+         */
         int modX = Math.round(x / Sprite.SCALED_SIZE);
         int modY = Math.round(y / Sprite.SCALED_SIZE);
         return map.get(modY).get(modX);
-        
+
     }
 
-    public void setCurrentBomber(int temp){
+    public void setCurrentBomber(int temp) {
         currentBomber = temp;
     }
-    public int getCurrentBomber(){
+
+    public int getCurrentBomber() {
         return currentBomber;
     }
-    public void setNumberBomber(int temp){
+
+    public void setNumberBomber(int temp) {
         numberBomber = temp;
     }
-    public int getNumberBomber(){
+
+    public int getNumberBomber() {
         return numberBomber;
     }
+
     public int getItem(int x, int y) {
         return itemList[y][x];
     }
-    public int getWidth(){
+
+    public int getWidth() {
         return width;
     }
-    public int getHeight(){
+
+    public int getHeight() {
         return height;
     }
 
-    public void sendItemRand(){
-        if(currentBomber != 0) return;
+    public void sendItemRand() {
+        if (currentBomber != 0)
+            return;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if(map.get(i).get(j) instanceof Brick){
-                    int rand = (int)(Math.random() * 8) + 1;
-                    if(rand > 3) continue;
+                if (map.get(i).get(j) instanceof Brick) {
+                    int rand = (int) (Math.random() * 8) + 1;
+                    if (rand > 3)
+                        continue;
                     String msg = "0,Item," + rand + "," + j + "," + i;
                     byte[] data = msg.getBytes();
-                    DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
+                    DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address,
+                            SocketGame.PORT);
                     try {
                         SocketGame.socket.send(outPacket);
                     } catch (Exception e) {
@@ -277,7 +299,7 @@ public class Map {
         }
     }
 
-    public void setItem(int y, int x, int type){
+    public void setItem(int y, int x, int type) {
         itemList[y][x] = type;
     }
 }

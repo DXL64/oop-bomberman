@@ -61,7 +61,7 @@ public class Button {
         gc.strokeText(buttonName.getText(), x, y);
         gc.setFont(Graphics.CHOOSENFONT);
         gc.setFill(Color.CRIMSON);
-        gc.fillText(buttonName.getText(), x - 5, y);
+        gc.fillText(buttonName.getText(), x, y);
     }
     
 }

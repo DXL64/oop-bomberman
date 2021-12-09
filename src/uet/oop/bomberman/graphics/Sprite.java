@@ -18,6 +18,9 @@ public class Sprite {
 	protected int _realHeight;
 	private SpriteSheet _sheet;
 
+
+
+
 	/*
 	|--------------------------------------------------------------------------
 	| Board sprites
