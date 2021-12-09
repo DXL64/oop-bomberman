@@ -297,7 +297,7 @@ public class GameMenu {
             case IN_PAUSE:
                 pauseButton.render(gc);
             case IN_END_STATE:
-                switch (gameState) {
+                switch (preGameState) {
                     case IN_SINGLE_GAME:
                         if (BombermanGame.map.getIsWin()) {
                             gc.drawImage(Graphics.winner[BombermanGame.map.getCurrentBomber()], 0, 0,
@@ -315,7 +315,6 @@ public class GameMenu {
                                     Graphics.WIDTH * Sprite.SCALED_SIZE, Graphics.HEIGHT * Sprite.SCALED_SIZE);
                         break;
                     case IN_SURVIVAL_GAME:
-                        System.out.println("ccc");;
                         if (((Bomber) BombermanGame.map.getBomberman()).getDeath())
                             gc.drawImage(Graphics.loser[BombermanGame.map.getCurrentBomber()], 0, 0,
                                     Graphics.WIDTH * Sprite.SCALED_SIZE, Graphics.HEIGHT * Sprite.SCALED_SIZE);
