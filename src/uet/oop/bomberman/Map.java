@@ -172,10 +172,13 @@ public class Map {
     }
 
     public void update() {
-        flexEntities.get(currentBomber).update();
+        Bomber bomber = (Bomber)flexEntities.get(currentBomber);
+        if(bomber.getDeath() == false) bomber.update();
+        
         for (int i = 0; i < flexEntities.size(); ++i) {
             if (flexEntities.get(i) instanceof Bomber) {
-                Bomber bomber = (Bomber) flexEntities.get(i);
+                bomber = (Bomber)flexEntities.get(i);
+                if(bomber.getDeath() == true) continue;
                 bomber.getBombManager().update();
                 bomber.updateItems();
                 bomber.checkDeath();
