@@ -4,7 +4,7 @@ public class Hitbox {
     public static int FIX_HITBOX_EXLOSION = 4;
     public static int FIX_HITBOX_ENEMY = 1;
     public static int FIX_HITBOX_BOMBER_X = 8;
-    public static int FIX_HITBOX_BOMBER_Y = 1;
+    public static int FIX_HITBOX_BOMBER_Y = 2;
     public static int FIX_HITBOX_BOMB = 2;
 
     protected int x;

@@ -35,37 +35,41 @@ public class Explosion extends AnimationEntity {
 
     public void update() {
 
-        Map map = collisionManager.getMap();
+        if (!(img == Sprite.brick_exploded.getFxImage() || img == Sprite.brick_exploded1.getFxImage() 
+         || img == Sprite.brick_exploded2.getFxImage())) {
 
-        for (int i = 0; i < map.getFlexEntities().size(); i++) {
-            if (map.getFlexEntities().get(i) instanceof DestroyableEntity) {
-                DestroyableEntity tmp = (DestroyableEntity) map.getFlexEntities().get(i);
-                //if (tmp instanceof Bomber) System.out.println("Bomber" + tmp.death);
-                if(tmp.death == true) continue;
-                if (tmp instanceof BalloomEnemy && ((BalloomEnemy) tmp).batTu && tmp.count < 100)
-                    continue;
-                if (tmp.getHitbox() == null) {
-                    if (collisionManager.collide(this, tmp)) {
-                        if (tmp instanceof Enemy)
-                            map.setNumberEnemyLiving(map.getNumberEnemyLiving() - 1);
+            Map map = collisionManager.getMap();
+             
+            for (int i = 0; i < map.getFlexEntities().size(); i++) {
+                if (map.getFlexEntities().get(i) instanceof DestroyableEntity) {
+                    DestroyableEntity tmp = (DestroyableEntity) map.getFlexEntities().get(i);
+                    //if (tmp instanceof Bomber) System.out.println("Bomber" + tmp.death);
+                    if(tmp.death == true) continue;
+                    if (tmp instanceof BalloomEnemy && ((BalloomEnemy) tmp).batTu && tmp.count < 100)
+                        continue;
+                    if (tmp.getHitbox() == null) {
+                        if (collisionManager.collide(this, tmp)) {
+                            if (tmp instanceof Enemy)
+                                map.setNumberEnemyLiving(map.getNumberEnemyLiving() - 1);
+                            tmp.die();
+                        }
+                    } else if (collisionManager.collide(hitbox, tmp.getHitbox())) {
+                        if(tmp instanceof Enemy) map.setNumberEnemyLiving(map.getNumberEnemyLiving() - 1);
                         tmp.die();
                     }
-                } else if (collisionManager.collide(hitbox, tmp.getHitbox())) {
-                    if(tmp instanceof Enemy) map.setNumberEnemyLiving(map.getNumberEnemyLiving() - 1);
-                    tmp.die();
                 }
             }
-        }
-        List<Bomb> bombs = collisionManager.getBombList();
-        for (Bomb bomb : bombs) {
-            if (x == bomb.x && y == bomb.y) {
-                bomb.setExploded(true);
+            List<Bomb> bombs = collisionManager.getBombList();
+            for (Bomb bomb : bombs) {
+                if (x == bomb.x && y == bomb.y) {
+                    bomb.setExploded(true);
+                }
             }
         }
 
         count++;
 
-        if (count == 30)
+        if (count == 15)
             exploded = true;
 
         img = chooseSprite();
@@ -77,7 +81,7 @@ public class Explosion extends AnimationEntity {
 
     @Override
     public Image chooseSprite() {
-        int chooseFrame = count / 10;
+        int chooseFrame = count / 5;
 
         switch (explosionState) {
             case MIDDLE:
