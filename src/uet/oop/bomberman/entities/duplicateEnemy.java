@@ -115,6 +115,7 @@ public class duplicateEnemy extends Enemy {
 
     public void die() {
         if (!death) {
+            death = true;
             BalloomEnemy e1 = new BalloomEnemy(x/ Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(),
             new CollisionManager(collisionManager.getMap()));
             BalloomEnemy e2 = new BalloomEnemy(x/ Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.balloom_left1.getFxImage(),
@@ -123,7 +124,7 @@ public class duplicateEnemy extends Enemy {
             e2.batTu = true;
             collisionManager.getMap().addFlexEntity(e1);
             collisionManager.getMap().addFlexEntity(e2);
-            death = true;
+            collisionManager.getMap().setNumberEnemyLiving(collisionManager.getMap().getNumberEnemyLiving() + 2);
             count = 0;
         }
     }

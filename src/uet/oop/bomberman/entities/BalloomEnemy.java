@@ -54,6 +54,7 @@ public class BalloomEnemy extends Enemy {
     }
     
     public Image chooseSprite() {
+        if(count > 100) batTu = false;
         if (death) {
             if (count < 30) {       
                 return Sprite.balloom_dead.getFxImage();

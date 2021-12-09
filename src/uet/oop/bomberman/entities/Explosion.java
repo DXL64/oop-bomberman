@@ -39,6 +39,7 @@ public class Explosion extends AnimationEntity {
             if (map.getFlexEntities().get(i) instanceof DestroyableEntity) {
                 DestroyableEntity tmp = (DestroyableEntity) map.getFlexEntities().get(i);
                 if(tmp.death == true) continue;
+                if(tmp instanceof BalloomEnemy && ((BalloomEnemy)tmp).batTu && tmp.count < 100) continue;
                 if (collisionManager.collide(this, tmp)) {
                     if(tmp instanceof Enemy) map.setNumberEnemyLiving(map.getNumberEnemyLiving() - 1);
                     tmp.die();
