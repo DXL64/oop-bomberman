@@ -48,8 +48,8 @@ public class Bomber extends DestroyableEntity {
         // Handle Key Press D
         if (keyListener.isPressed(KeyCode.D)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x + speed, y, DIRECTION.RIGHT);
-            if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle || 
-            checkCollide(x + speed, y))) {
+            if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle ||
+                    checkCollide(x + speed, y))) {
                 super.update(DIRECTION.RIGHT, true, indexOfFlex);
             } else {
                 super.update(DIRECTION.RIGHT, false, indexOfFlex);
@@ -59,8 +59,8 @@ public class Bomber extends DestroyableEntity {
         // Handle Key Press A
         if (keyListener.isPressed(KeyCode.A)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x - speed, y, DIRECTION.LEFT);
-            if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle || 
-                checkCollide(x - speed, y))) {
+            if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle ||
+                    checkCollide(x - speed, y))) {
                 super.update(DIRECTION.LEFT, true, indexOfFlex);
             } else {
                 super.update(DIRECTION.LEFT, false, indexOfFlex);
@@ -73,7 +73,7 @@ public class Bomber extends DestroyableEntity {
         {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y - speed, DIRECTION.UP);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle ||
-                checkCollide(x, y - speed))) {
+                    checkCollide(x, y - speed))) {
                 super.update(DIRECTION.UP, true, indexOfFlex);
             } else {
                 super.update(DIRECTION.UP, false, indexOfFlex);
@@ -84,19 +84,20 @@ public class Bomber extends DestroyableEntity {
         if (keyListener.isPressed(KeyCode.S)) {
             Pair<Entity, Entity> tmp = collisionManager.checkCollision(x, y + speed, DIRECTION.DOWN);
             if (!(tmp.getKey() instanceof Obstacle || tmp.getValue() instanceof Obstacle ||
-                checkCollide(x, y + speed))) {
+                    checkCollide(x, y + speed))) {
                 super.update(DIRECTION.DOWN, true, indexOfFlex);
             } else {
                 super.update(DIRECTION.DOWN, false, indexOfFlex);
             }
         }
         // Handle item
-        Entity item = collisionManager.getEntityAt(x/Sprite.SCALED_SIZE, y/Sprite.SCALED_SIZE);
-        if(item instanceof Items) {
+        Entity item = collisionManager.getEntityAt(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE);
+        if (item instanceof Items) {
             System.out.println(item);
             Items tmp = (Items) item;
             tmp.powerUp(this);
-            collisionManager.getMap().replace(x/Sprite.SCALED_SIZE, y/Sprite.SCALED_SIZE, new Grass(x/Sprite.SCALED_SIZE, y/Sprite.SCALED_SIZE, Sprite.grass.getFxImage()));
+            collisionManager.getMap().replace(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE,
+                    new Grass(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE, Sprite.grass.getFxImage()));
         }
     }
 
@@ -106,8 +107,8 @@ public class Bomber extends DestroyableEntity {
         for (int i = 0; i < bombManager.getBombs().size(); i++) {
             if (collisionManager.collide(xPredict, yPredict, bombManager.getBombs().get(i))) {
                 if (lastBombCoordinate != null) {
-                    if (bombManager.getBombs().get(i).x / Sprite.SCALED_SIZE == lastBombCoordinate.getKey() && 
-                        bombManager.getBombs().get(i).y / Sprite.SCALED_SIZE == lastBombCoordinate.getValue()) {
+                    if (bombManager.getBombs().get(i).x / Sprite.SCALED_SIZE == lastBombCoordinate.getKey() &&
+                            bombManager.getBombs().get(i).y / Sprite.SCALED_SIZE == lastBombCoordinate.getValue()) {
                         onLastBomb = true;
                         result = false;
                     } else {
@@ -117,14 +118,14 @@ public class Bomber extends DestroyableEntity {
                         result = true;
                         break;
                     }
-                }
-                else {
+                } else {
                     result = true;
                     break;
                 }
             }
         }
-        if (!onLastBomb) lastBombCoordinate = null;
+        if (!onLastBomb)
+            lastBombCoordinate = null;
         return result;
     }
 
@@ -140,20 +141,21 @@ public class Bomber extends DestroyableEntity {
             yBomb /= Sprite.SCALED_SIZE;
             Bomb bomb = new Bomb(xBomb, yBomb, Sprite.bomb.getFxImage(), bombManager.getFlame());
             // getMap().replace(xBomb, yBomb, bomb);
-            if (bombManager.canSetBomb(xBomb, yBomb)){
+            if (bombManager.canSetBomb(xBomb, yBomb)) {
                 switch (GameMenu.gameState) {
                     case IN_SINGLE_GAME:
-                        lastBombCoordinate = new Pair<Integer,Integer>(xBomb, yBomb);
+                        lastBombCoordinate = new Pair<Integer, Integer>(xBomb, yBomb);
                         bombManager.addBomb(bomb);
                         break;
                     case IN_MULTIPLAYER_GAME:
                     case IN_SURVIVAL_GAME:
-                        //TODO: Check if this is suitable
-                        lastBombCoordinate = new Pair<Integer,Integer>(xBomb, yBomb);
+                        // TODO: Check if this is suitable
+                        lastBombCoordinate = new Pair<Integer, Integer>(xBomb, yBomb);
 
                         String msg = indexOfFlex + ",Bomb," + xBomb + "," + yBomb;
                         byte[] data = msg.getBytes();
-                        DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address, SocketGame.PORT);
+                        DatagramPacket outPacket = new DatagramPacket(data, data.length, SocketGame.address,
+                                SocketGame.PORT);
                         try {
                             SocketGame.socket.send(outPacket);
                         } catch (Exception e) {
@@ -239,17 +241,26 @@ public class Bomber extends DestroyableEntity {
         img = chooseSprite();
         isRunning = false;
         if (isCamFollow == true) {
+            int xRender = x;
+            int yRender = y;
             if (camera.getX() > 0 && camera.getX() < camera.getScreenWidth() * Sprite.SCALED_SIZE
                     - Graphics.WIDTH * Sprite.SCALED_SIZE) {
-                int tempX = Graphics.WIDTH * Sprite.DEFAULT_SIZE;
-                gc.drawImage(img, tempX, y);
+                xRender = Graphics.WIDTH * Sprite.DEFAULT_SIZE;
             } else if (camera.getX() == camera.getScreenWidth() * Sprite.SCALED_SIZE
                     - Graphics.WIDTH * Sprite.SCALED_SIZE) {
-                int tempX = x - (camera.getScreenWidth() * Sprite.SCALED_SIZE - Graphics.WIDTH * Sprite.SCALED_SIZE);
-                gc.drawImage(img, tempX, y);
-            } else {
-                gc.drawImage(img, x, y);
+                xRender = x - (camera.getScreenWidth() * Sprite.SCALED_SIZE - Graphics.WIDTH * Sprite.SCALED_SIZE);
             }
+
+            if (camera.getY() > 0 && camera.getY() < camera.getScreenHeight() * Sprite.SCALED_SIZE
+                    - Graphics.HEIGHT * Sprite.SCALED_SIZE) {
+                yRender = Graphics.HEIGHT * Sprite.DEFAULT_SIZE;
+            } else if (camera.getY() == camera.getScreenHeight() * Sprite.SCALED_SIZE
+                    - Graphics.HEIGHT * Sprite.SCALED_SIZE) {
+                yRender = y - (camera.getScreenHeight() * Sprite.SCALED_SIZE - Graphics.HEIGHT * Sprite.SCALED_SIZE);
+            }
+
+            gc.drawImage(img, xRender, yRender);
+
         } else {
             gc.drawImage(img, x - camera.getX(), y - camera.getY());
         }
@@ -278,13 +289,16 @@ public class Bomber extends DestroyableEntity {
     public void setNumberOfBombs(int numberOfBombs) {
         bombManager.setNumberOfBombs(numberOfBombs);
     }
-    public BombManager getBombManager(){
+
+    public BombManager getBombManager() {
         return bombManager;
     }
-    public boolean getReady(){
+
+    public boolean getReady() {
         return ready;
     }
-    public void setReady(boolean ready){
+
+    public void setReady(boolean ready) {
         this.ready = ready;
     }
 }

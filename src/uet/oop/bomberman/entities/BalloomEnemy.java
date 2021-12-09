@@ -100,6 +100,11 @@ public class BalloomEnemy extends Enemy {
     }
     
     public Image chooseSprite() {
+        if (death) {
+            if (countStep < 30) {       
+                return Sprite.balloom_dead.getFxImage();
+            }
+        }
         spriteImage = count % 9;
         if(direction == moveLeft || direction == moveUp){
             switch(spriteImage / 3){

@@ -38,7 +38,7 @@ public class DollEnemy extends Enemy {
 
     public Image chooseSprite() {
         if (death) {
-            if (countStep < 30) {        
+            if (countStep < 30) {       
                 return Sprite.doll_dead.getFxImage();
             }
         }

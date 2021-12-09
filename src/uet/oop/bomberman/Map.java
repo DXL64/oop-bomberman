@@ -131,7 +131,7 @@ public class Map {
             }
             setupBomberman(keyListener);
             randomItem();
-            camera = new Camera(0, 0, width);
+            camera = new Camera(0, 0, width, height);
             scanner.close();
         } catch (FileNotFoundException exception) {
             System.out.println(exception.getMessage());
