@@ -32,6 +32,8 @@ public class Graphics {
     public static Image emptySlot[] = new Image[Map.MAX_NUMBER_BOMBERS];
     public static Image readySlot[] = new Image[Map.MAX_NUMBER_BOMBERS];
     public static Image notReadySlot[] = new Image[Map.MAX_NUMBER_BOMBERS];
+    public static Image winner[] = new Image[Map.MAX_NUMBER_BOMBERS];
+    public static Image loser[] = new Image[Map.MAX_NUMBER_BOMBERS];
     public static int slotCoordinates[][] = new int[Map.MAX_NUMBER_BOMBERS][2];
 
     private GraphicsContext gc;
@@ -49,6 +51,8 @@ public class Graphics {
                 emptySlot[i] = new Image(Files.newInputStream(Paths.get("res/lobby/" + (i + 1) + "Empty.png")));
                 readySlot[i] = new Image(Files.newInputStream(Paths.get("res/lobby/" + (i + 1) + "Ready.png")));
                 notReadySlot[i] = new Image(Files.newInputStream(Paths.get("res/lobby/" + (i + 1) + "nReady.png")));
+                winner[i] = new Image(Files.newInputStream(Paths.get("res/EndState/" + (i + 1) + "win.png")));
+                loser[i] = new Image(Files.newInputStream(Paths.get("res/EndState/" + (i + 1) + "lose.png")));
                 slotCoordinates[i][X_COORDINATE] = x;
                 slotCoordinates[i][Y_COORDINATE] = y;
                 x += 135;

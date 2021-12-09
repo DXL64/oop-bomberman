@@ -31,6 +31,7 @@ import uet.oop.bomberman.entities.OnealEnemy;
 import uet.oop.bomberman.entities.Portal;
 import uet.oop.bomberman.entities.SpeedItem;
 import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.duplicateEnemy;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Map {
@@ -117,6 +118,13 @@ public class Map {
                             tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
                             ++numberEnemyLiving;
                             break;
+                        case '5':
+                            temp = new duplicateEnemy(j, i, Sprite.doll_left1.getFxImage(), new CollisionManager(this));
+                            flexEntities.add(temp);
+                            temp.setIndexOfFlex(flexEntities.size() - 1);
+                            tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                            ++numberEnemyLiving;
+                            break;
                         case 'p':
                             coordinateBomberman.add(new Pair<>(j, i));
                             tempList.add(new Grass(j, i, Sprite.grass.getFxImage()));
@@ -175,6 +183,8 @@ public class Map {
                     if (flexEntities.get(i) instanceof BalloomEnemy || flexEntities.get(i) instanceof DollEnemy)
                         flexEntities.get(i).update();
                     if (flexEntities.get(i) instanceof OnealEnemy || flexEntities.get(i) instanceof NightmareEnemy)
+                        flexEntities.get(i).update(map, getBombermans());
+                    if (flexEntities.get(i) instanceof duplicateEnemy)
                         flexEntities.get(i).update(map, getBombermans());
                 }
             }
@@ -328,5 +338,8 @@ public class Map {
     }
     public int getNumberPlayerGoPortal(){
         return numberPlayerGoPortal;
+    }
+    public void addFlexEntity(Entity x) {
+        flexEntities.add(x);
     }
 }
