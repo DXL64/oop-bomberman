@@ -178,6 +178,7 @@ public class Map {
                 Bomber bomber = (Bomber) flexEntities.get(i);
                 bomber.getBombManager().update();
                 bomber.updateItems();
+                bomber.checkDeath();
             }
             if (flexEntities.get(i) instanceof Enemy) {
                 if (currentBomber != 0) {

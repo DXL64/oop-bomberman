@@ -83,6 +83,7 @@ public class Graphics {
                     if (!((Bomber) entity).getDeath())
                     map.getFlexEntities().get(i).render(gc, map.getCamera());
                 }
+                else map.getFlexEntities().get(i).render(gc, map.getCamera());
             }
         }
     }
