@@ -9,9 +9,9 @@ Yêu cầu của bài tập lớn Bomberman Game là viết một phiên bản J
 
 | Họ và tên     | Mã sinh viên |
 | ------------- | ------------ |
-| Phạm Gia Linh | 20020203     |
-| Phạm Tiến Du  | 20020039     |
-| Đặng Xuân Lộc | 20020057     |
+| [Phạm Gia Linh](https://github.com/phamgialinhlx) | 20020203     |
+| [Phạm Tiến Du](https://github.com/dupham2206)  | 20020039     |
+| [Đặng Xuân Lộc](https://github.com/DXL64) | 20020057     |
 
 ## Mô tả về các đối tượng trong trò chơi
 Nếu bạn đã từng chơi Bomberman, bạn sẽ cảm thấy quen thuộc với những đối tượng này. Chúng được được chia làm hai loại chính là nhóm đối tượng động (*Bomber*, *Enemy*, *Bomb*) và nhóm đối tượng tĩnh (*Grass*, *Wall*, *Brick*, *Door*, *Item*).
