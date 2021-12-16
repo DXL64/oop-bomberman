@@ -3,8 +3,6 @@
 ## Giới thiệu
 Yêu cầu của bài tập lớn Bomberman Game là viết một phiên bản Java mô phỏng lại trò chơi [Bomberman](https://www.youtube.com/watch?v=mKIOVwqgSXM) kinh điển của NES.
 
-<img src="res/demo.png" alt="drawing" width="400"/>
-
 ## Sinh viên thực hiện 
 
 | Họ và tên     | Mã sinh viên |
@@ -85,3 +83,9 @@ lúc chậm và di chuyển, biết đuổi theo Bomber và khi chết thì Enem
 - Phát triển thêm các loại Enemy khác (tổng cộng 5 loại)
 - Xử lý hiệu ứng âm thanh (thêm music & sound effects)
 - Phát triển hệ thống server-client để nhiều người có thể cùng chơi qua mạng LAN hoặc Internet
+
+## Demo screenshot
+<img src="res/screenshot/menu.png" alt="drawing" width="600"/>
+<img src="res/screenshot/multi_play_menu.png" alt="drawing" width="600"/>
+<img src="res/screenshot/multi_play_game.png" alt="drawing" width="600"/>
+<img src="res/screenshot/game_over_survival.png" alt="drawing" width="600"/>
