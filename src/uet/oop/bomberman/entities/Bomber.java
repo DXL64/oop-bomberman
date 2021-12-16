@@ -106,7 +106,7 @@ public class Bomber extends DestroyableEntity {
     }
 
     public void updateItems(){
-        Entity item = collisionManager.getEntityAt((x+16) / Sprite.SCALED_SIZE, (y+16) / Sprite.SCALED_SIZE);
+        Entity item = collisionManager.getEntityAt((x + 16) / Sprite.SCALED_SIZE, (y + 16) / Sprite.SCALED_SIZE);
         if (item instanceof Items) {
             Sound.item.play();
             System.out.println(item);
