@@ -35,19 +35,17 @@ Các *Item* cũng được giấu phía sau Brick và chỉ hiện ra khi Brick 
 
 Thông tin về các loại *Enemy* được liệt kê như dưới đây:
 
-- ![](res/sprites/balloom_left1.png) *Balloom* là Enemy đơn giản nhất, di chuyển ngẫu nhiên với vận tốc cố định
-- ![](res/sprites/oneal_left1.png) *Oneal* có tốc độ di chuyển thay đổi, lúc nhanh, 
-lúc chậm và di chuyển "thông minh" hơn so với Balloom (biết đuổi theo Bomber)
-- ![](res/sprites/doll_left1.png) *Doll* Là Enemy di chuyển ngẫu nhiên với vận tốc cố định và có thể đi xuyên tường
-- ![](res/sprites/kondoria_left1.png) *Nightmare* Là Enemy có tốc độ di chuyển thay đổi, lúc nhanh, 
-lúc chậm và di chuyển "thông minh" hơn so với Balloom (biết đuổi theo Bomber) và biết tránh boom
-- ![](res/sprites/minvo_left1.png) *Duplicate* Là Enemy có tốc độ di chuyển thay đổi, lúc nhanh, 
-lúc chậm và di chuyển, biết đuổi theo Bomber và khi chết thì Enemy này sẽ sinh ra 2 Balloom enemy ngay tại vị trí bị tiêu diệt
+- ![](res/sprites/balloom_left1.png) *Balloom* là Enemy đơn giản nhất, di chuyển ngẫu nhiên với vận tốc 32 pixels / 64 khung hình, không thể đi xuyên bomb.
+- ![](res/sprites/oneal_left1.png) *Oneal* có tốc độ di chuyển đuổi theo bomber gần nhất (sử dụng [thuật toán A*](https://en.wikipedia.org/wiki/A*_search_algorithm)) với vận tốc 32 pixels / 32 khung hình, không định vị được bomb và đi xuyên bomb.
+- ![](res/sprites/doll_left1.png) *Doll* Là Enemy di chuyển ngẫu nhiên với vận tốc 32 pixels / 24 khung hình và có thể đi xuyên qua mọi object.
+- ![](res/sprites/kondoria_left1.png) *Nightmare* Là Enemy có tốc độ di chuyển đuổi theo bomber gần nhất (sử dụng [thuật toán A*](https://en.wikipedia.org/wiki/A*_search_algorithm)) với vận tốc 32 pixels / 32 khung hình, định vị được bomb và lửa của bomb đồng thời né được bomb nếu đủ thời gian chạy.
+- ![](res/sprites/minvo_left1.png) *Duplicate* Là Enemy có tốc độ di chuyển đuổi theo bomber gần nhất (sử dụng [thuật toán A*](https://en.wikipedia.org/wiki/A*_search_algorithm)) với vận tốc 32 pixels / 32 khung hình, không định vị được bomb và đi xuyên bomb. Khi chết thì Enemy này sẽ sinh ra 2 Balloom enemy ngay tại vị trí bị tiêu diệt
 
 
 
 ## Mô tả game play
 ### Điều khiển
+- Game hoàn toàn điều khiển bằng bàn phím.
 - Trong menu: sử dụng `W`, `S` để di chuyển giữa các chế độ chơi, `Enter` để chọn.
 - Đối với Bomber sử dụng các phím `W`, `A`, `S`, `D` tương ứng với đi lên, trái, xuống, phải. `Space` để đặt bomb.
 - Khi đang trong chế độ chơi Single, có thể sử dụng phím `P` để dừng lại trò chơi. Nhấn `Enter` để tiếp tục trò chơi
@@ -66,12 +64,18 @@ lúc chậm và di chuyển, biết đuổi theo Bomber và khi chết thì Enem
 
 ### Các chế độ chơi
 - Có ba chế độ chơi là `Single Play`, `Multi Play` và `Survival Play`.
-- Chế độ `Single Play` là chế độ một người chơi: Trong một màn chơi, Bomber sẽ được người chơi di chuyển, đặt và kích hoạt Bomb với mục tiêu chính là tiêu diệt tất cả Enemy và tìm ra vị trí Portal để có thể qua màn mới. 
+- Chế độ `Single Play` là chế độ một người chơi: Trong một màn chơi, Bomber sẽ được người chơi di chuyển, đặt và kích hoạt Bomb với mục tiêu chính là tiêu diệt tất cả Enemy và tìm ra vị trí Portal để có thể qua màn mới. Người chơi hoàn thành 4 Level sẽ chiến thắng.
 
-- Trong chế độ nhiều người chơi (`Multi Play` và `Survival Play`), các Bombers (Tối đa 4 người, tối thiểu 2 người) sẽ được kết nối chung thông qua một mạng LAN hoặc sử dụng [Radmin VPN](https://www.radmin-vpn.com/). Chủ phòng sẽ là người đầu tiên vào game. Trò chơi bắt đầu khi những người chơi khác sẵn sàng và chủ phòng sẽ bấm `Enter` để vào game.
+- Trong chế độ nhiều người chơi (`Multi Play` và `Survival Play`), các Bombers (Tối đa 4 người, tối thiểu 2 người) sẽ được kết nối chung thông qua một mạng LAN. Nếu chơi qua mạng Internet thì sẽ sử dụng [Radmin VPN](https://www.radmin-vpn.com/) để ghép các mạng LAN lại thành 1 mạng LAN chung. Chủ phòng sẽ là người đầu tiên vào game. Trò chơi bắt đầu khi những người chơi khác sẵn sàng và chủ phòng sẽ bấm `Enter` để vào game.
 
-- `Multi Play`: Các bombers sẽ được người chơi di chuyển, đặt và kích hoạt Bomb với mục tiêu chính là tiêu diệt tất cả Enemy và tìm ra vị trí Portal để có thể qua màn mới. Khi một người chơi không may mắn bị giết khi va chạm với Enemy có thể hổi sinh nếu sang màn sau.
-- `Survial Play`: Nhiệm vụ của các bombers là người sống sót cuối cùng
+- `Multi Play`: Các bombers sẽ được người chơi di chuyển, đặt và kích hoạt Bomb với mục tiêu chính là tiêu diệt tất cả Enemy và tìm ra vị trí Portal để có thể qua màn mới. Khi một người chơi không may mắn bị giết khi va chạm với Enemy có thể hổi sinh nếu sang màn sau. Mọi người chơi hoàn thành 4 Level sẽ chiến thắng.
+- `Survial Play`: Nhiệm vụ của các bomber là giết các bomber còn lại và là người sống sót cuối cùng
+
+### Cơ chế mạng LAN
+- Sử dụng cách thức truyền tin [Multicast](https://vi.wikipedia.org/wiki/Multicast) với địa chỉ 224.0.0.224, cổng 7777. Việc sử dụng cách thức truyền tin này để tận dụng tốc độ truyền tin nhưng sẽ còn nhiều hạn chế.
+- Định danh: Người chơi vào phòng đầu tiên sẽ điều khiển Bomber số 0. Những người chơi khác vào phòng sẽ gửi đi message có dạng "Hello". Những người trong phòng nhận được sẽ gửi lại message dạng "Hi" cùng mã số bomber sẽ điều khiển của người mới vào.
+- Lúc Chơi: Mỗi khi người chơi nào ấn các nút di chuyển hay đặt bomb thì sẽ gửi các message dạng "A", "S", "W", "D", "Bomb" tương ứng. Và chỉ update di chuyển của bomber khi nhận được message để đảm bảo sự đồng bộ giữa các người chơi. Cách di chuyển của Enemy sẽ do client của bomber chủ phòng quyết định (random rồi gửi cho các người chơi còn lại và cũng chỉ update sau khi nhận được message).
+
 
 ## Tóm tắt các tính năng trong bài tập lớn
 - Thiết kế cây thừa kế cho các đối tượng game
