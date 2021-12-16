@@ -10,8 +10,8 @@ import uet.oop.bomberman.controller.CollisionManager;
 import uet.oop.bomberman.controller.Direction.DIRECTION;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class duplicateEnemy extends Enemy {
-    public duplicateEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager) {
+public class DuplicateEnemy extends Enemy {
+    public DuplicateEnemy(int xUnit, int yUnit, Image img, CollisionManager collisionManager) {
         super(xUnit, yUnit, img, collisionManager);
         this.speed = 2;
         sizeCheckCollision = speed;
